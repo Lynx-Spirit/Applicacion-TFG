@@ -3,10 +3,8 @@ package com.tfgmanuel.dungeonvault.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +30,7 @@ import com.tfgmanuel.dungeonvault.ui.components.CustomTextField
 
 @Preview
 @Composable
-fun PagInicio(modifier: Modifier = Modifier) {
+fun CrearCuenta(modifier: Modifier = Modifier) {
     Box (
         modifier = Modifier.fillMaxSize()
     ) {
@@ -41,6 +39,15 @@ fun PagInicio(modifier: Modifier = Modifier) {
             contentDescription = "Fondo pantalla inicio",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop
+        )
+
+        Text(
+            modifier = Modifier
+                .clickable { /**/ }
+                .padding(horizontal = 10.dp),
+            text = "<",
+            color = Color.White,
+            fontSize = 40.sp
         )
 
         Text (
@@ -55,7 +62,7 @@ fun PagInicio(modifier: Modifier = Modifier) {
 
         Box (
             modifier = Modifier.fillMaxWidth(0.85f)
-                .height(350.dp)
+                .height(430.dp)
                 .align(Alignment.Center)
                 .background (
                     color = Color.Black.copy(alpha = 0.9f),
@@ -69,7 +76,7 @@ fun PagInicio(modifier: Modifier = Modifier) {
             ) {
                 Text (
                     modifier = Modifier.align(Alignment.Start),
-                    text = "Iniciar sesión",
+                    text = "Crear cuenta",
                     color = Color.White,
                     fontSize = 32.sp
                 )
@@ -88,7 +95,7 @@ fun PagInicio(modifier: Modifier = Modifier) {
                 CustomButtonImgText (
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
-                        .fillMaxHeight(0.13f),
+                        .fillMaxHeight(0.105f),
                     onClick = { /*TODO*/},
                     painter = painterResource(id = R.drawable.googlelogo),
                     contentDescription = "Logo google",
@@ -125,34 +132,20 @@ fun PagInicio(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                Row (
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically){
-                    Column (
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(0.5f),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            modifier = Modifier.clickable {  },
-                            text = "Crear cuenta >",
-                            color = Color.White,
-                            )
+                CustomTextField (
+                    value = "CONTRASEÑA",
+                    textLabel = "REPETIR CONTRASEÑA",
+                    onValueChange = {},
+                    isPassword = true,
+                    keyboardType = KeyboardType.Password,
+                )
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
-                        Text(
-                            modifier = Modifier.clickable {  },
-                            text = "Recuperar contraseña >",
-                            color = Color.White
-                        )
-                    }
-                    CustomButtonText (
-                        onClick = { },
-                        text = "Iniciar sesión"
-                    )
-                }
+                CustomButtonText (
+                    onClick = { },
+                    text = "Crear cuenta"
+                )
             }
         }
     }
