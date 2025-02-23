@@ -4,6 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,14 +26,17 @@ fun CustomTextField (
     focusedTextColor: Color = Color(0xFFCDCDCD),
     unfocusedTextColor: Color = Color(0xFFCDCDCD),
     value: String,
+    textLabel: String,
     onValueChange: (String) -> Unit,
     isPassword: Boolean = false,
+    singleLine: Boolean = true,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField (
         modifier = modifier,
         shape = shape,
         value = value,
+        label = {Text(text = textLabel, color = Color.White)},
         colors = OutlinedTextFieldDefaults.colors (
             focusedBorderColor = focusedBorderColor,
             unfocusedBorderColor = unfocusedBorderColor,
@@ -42,7 +46,7 @@ fun CustomTextField (
             unfocusedTextColor = unfocusedTextColor
         ),
         onValueChange = onValueChange,
-        singleLine = true,
+        singleLine = singleLine,
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
