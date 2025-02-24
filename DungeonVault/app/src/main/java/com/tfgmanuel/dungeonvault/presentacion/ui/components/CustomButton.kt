@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.components
+package com.tfgmanuel.dungeonvault.presentacion.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

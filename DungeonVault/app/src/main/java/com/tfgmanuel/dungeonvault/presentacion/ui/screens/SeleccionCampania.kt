@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.screens
+package com.tfgmanuel.dungeonvault.presentacion.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

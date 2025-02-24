@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.theme
+package com.tfgmanuel.dungeonvault.presentacion.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

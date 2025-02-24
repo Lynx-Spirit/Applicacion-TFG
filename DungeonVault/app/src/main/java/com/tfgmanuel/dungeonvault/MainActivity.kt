@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import com.tfgmanuel.dungeonvault.ui.screens.PagInicio
-import com.tfgmanuel.dungeonvault.ui.theme.DungeonVaultTheme
+import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.PagInicio
+import com.tfgmanuel.dungeonvault.presentacion.theme.DungeonVaultTheme
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DungeonVaultTheme {
-                PagInicio(modifier = Modifier.fillMaxSize())
+                PagInicio(modifier = Modifier.fillMaxSize(), LoginViewModel())
             }
         }
     }

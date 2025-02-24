@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.theme
+package com.tfgmanuel.dungeonvault.presentacion.theme
 
 import androidx.compose.ui.graphics.Color
 

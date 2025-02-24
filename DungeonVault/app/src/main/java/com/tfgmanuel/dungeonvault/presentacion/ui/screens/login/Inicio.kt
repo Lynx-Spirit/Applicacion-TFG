@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.screens
+package com.tfgmanuel.dungeonvault.presentacion.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,16 +25,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.R
-import com.tfgmanuel.dungeonvault.ui.components.*
-import com.tfgmanuel.dungeonvault.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonImgText
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginViewModel
 
-@Preview
 @Composable
-fun PagInicio(modifier: Modifier = Modifier) {
+fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
+
+    val email: String by viewModel.email.observeAsState(initial = "")
+    val password: String by viewModel.password.observeAsState(initial = "")
+
     Box (
         modifier = Modifier.fillMaxSize()
     ) {
@@ -106,9 +112,9 @@ fun PagInicio(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(15.dp))
 
                 CustomTextField (
-                    value = "EMAIL",
+                    value = email,
                     textLabel = "EMAIL",
-                    onValueChange = {},
+                    onValueChange = {viewModel.onLoginChanged(it,password)},
                     isPassword = false,
                     keyboardType = KeyboardType.Email,
                 )
@@ -116,9 +122,9 @@ fun PagInicio(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(15.dp))
 
                 CustomTextField (
-                    value = "CONTRASEÑA",
+                    value = password,
                     textLabel = "CONTRASEÑA",
-                    onValueChange = {},
+                    onValueChange = {viewModel.onLoginChanged(email,it)},
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                 )

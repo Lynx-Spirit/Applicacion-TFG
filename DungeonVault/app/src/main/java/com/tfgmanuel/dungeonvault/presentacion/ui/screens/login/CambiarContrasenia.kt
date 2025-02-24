@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.ui.screens
+package com.tfgmanuel.dungeonvault.presentacion.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,12 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.R
-import com.tfgmanuel.dungeonvault.ui.components.*
-import com.tfgmanuel.dungeonvault.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonImgText
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
 
 @Preview
 @Composable
-fun CrearCuenta(modifier: Modifier = Modifier) {
+fun CambiarContrasenia(modifier: Modifier = Modifier) {
     Box (
         modifier = Modifier.fillMaxSize()
     ) {
@@ -62,7 +63,7 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
 
         Box (
             modifier = Modifier.fillMaxWidth(0.85f)
-                .height(430.dp)
+                .height(280.dp)
                 .align(Alignment.Center)
                 .background (
                     color = Color.Black.copy(alpha = 0.9f),
@@ -76,7 +77,7 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
             ) {
                 Text (
                     modifier = Modifier.align(Alignment.Start),
-                    text = "Crear cuenta",
+                    text = "Cambiar clave",
                     color = Color.White,
                     fontSize = 32.sp
                 )
@@ -95,7 +96,7 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
                 CustomButtonImgText (
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
-                        .fillMaxHeight(0.105f),
+                        .fillMaxHeight(0.19f),
                     onClick = { /*TODO*/},
                     painter = painterResource(id = R.drawable.googlelogo),
                     contentDescription = "Logo google",
@@ -122,29 +123,9 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = "CONTRASEÑA",
-                    textLabel = "CONTRASEÑA",
-                    onValueChange = {},
-                    isPassword = true,
-                    keyboardType = KeyboardType.Password,
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                CustomTextField (
-                    value = "CONTRASEÑA",
-                    textLabel = "REPETIR CONTRASEÑA",
-                    onValueChange = {},
-                    isPassword = true,
-                    keyboardType = KeyboardType.Password,
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
                 CustomButtonText (
                     onClick = { },
-                    text = "Crear cuenta"
+                    text = "Cambiar clave"
                 )
             }
         }
