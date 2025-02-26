@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 fun CustomButtonText(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     text: String,
     shape : Shape = RoundedCornerShape(8.dp),
     colorButton: Color = Color(0xFFFFA726),
@@ -35,6 +36,7 @@ fun CustomButtonText(
     Button (
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
         shape = shape,
         colors = ButtonColors (
             containerColor = colorButton,
@@ -50,6 +52,7 @@ fun CustomButtonText(
 fun CustomButtonImg(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     contentDescription: String,
     painter: Painter,
     shape : Shape = RoundedCornerShape(8.dp),
@@ -58,6 +61,7 @@ fun CustomButtonImg(
     Button (
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
         shape = shape,
         colors = ButtonColors (
             containerColor = colorButton,
@@ -78,6 +82,7 @@ fun CustomButtonImg(
 fun CustomButtonImgText (
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(8.dp),
     buttonColor: Color = Color(0xFF1C1C1F),
     textColor: Color = Color.White,
@@ -88,6 +93,7 @@ fun CustomButtonImgText (
     Button (
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
         shape = shape,
         colors = ButtonColors (
             containerColor = buttonColor,

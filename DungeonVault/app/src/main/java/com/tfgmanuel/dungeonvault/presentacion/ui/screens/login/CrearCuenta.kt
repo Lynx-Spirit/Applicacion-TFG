@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,37 +24,37 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonImgText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CrearCuentaViewModel
 
-@Preview
 @Composable
-fun CrearCuenta(modifier: Modifier = Modifier) {
-    Box (
+fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) {
+
+    val uiState by viewModel.uiState.collectAsState()
+
+    Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Image (
+        Image(
             painter = painterResource(id = R.drawable.fondoinicio),
             contentDescription = "Fondo pantalla inicio",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop
         )
 
-        Text(
-            modifier = Modifier
-                .clickable { /**/ }
-                .padding(horizontal = 10.dp),
+        Text(modifier = Modifier
+            .clickable { /**/ }
+            .padding(horizontal = 10.dp),
             text = "<",
             color = Color.White,
-            fontSize = 40.sp
-        )
+            fontSize = 40.sp)
 
-        Text (
+        Text(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(10.dp),
@@ -61,21 +64,21 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold
         )
 
-        Box (
-            modifier = Modifier.fillMaxWidth(0.85f)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
                 .height(430.dp)
                 .align(Alignment.Center)
-                .background (
-                    color = Color.Black.copy(alpha = 0.9f),
-                    shape = RoundedCornerShape(16.dp)
+                .background(
+                    color = Color.Black.copy(alpha = 0.9f), shape = RoundedCornerShape(16.dp)
                 )
                 .padding(12.dp)
         ) {
-            Column (
+            Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text (
+                Text(
                     modifier = Modifier.align(Alignment.Start),
                     text = "Crear cuenta",
                     color = Color.White,
@@ -84,8 +87,9 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                Box (
-                    modifier = Modifier.height(2.dp)
+                Box(
+                    modifier = Modifier
+                        .height(2.dp)
                         .fillMaxWidth(0.9f)
                         .background(Color(0xFFFFA726))
                         .align(Alignment.Start)
@@ -93,11 +97,11 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomButtonImgText (
+                CustomButtonImgText(
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .fillMaxHeight(0.105f),
-                    onClick = { /*TODO*/},
+                    onClick = { /*TODO*/ },
                     painter = painterResource(id = R.drawable.googlelogo),
                     contentDescription = "Logo google",
                     text = "Inicio sesion"
@@ -105,47 +109,53 @@ fun CrearCuenta(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                Box (
-                    modifier = Modifier.height(2.dp)
+                Box(
+                    modifier = Modifier
+                        .height(2.dp)
                         .fillMaxWidth(0.8f)
                         .background(Color.White)
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = "EMAIL",
+                CustomTextField(
+                    value = uiState.email,
                     textLabel = "EMAIL",
-                    onValueChange = {},
+                    onValueChange = { viewModel.onLoginChanged(it, uiState.password, uiState.password2) },
                     isPassword = false,
+                    isError = uiState.emailResult != null,
+                    textError = uiState.emailResult,
                     keyboardType = KeyboardType.Email,
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = "CONTRASEÑA",
+                CustomTextField(
+                    value = uiState.password,
                     textLabel = "CONTRASEÑA",
-                    onValueChange = {},
+                    onValueChange = { viewModel.onLoginChanged(uiState.email, it, uiState.password2) },
                     isPassword = true,
+                    isError = uiState.passwordResult != null,
+                    textError = uiState.passwordResult,
                     keyboardType = KeyboardType.Password,
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = "CONTRASEÑA",
+                CustomTextField(
+                    value = uiState.password2,
                     textLabel = "REPETIR CONTRASEÑA",
-                    onValueChange = {},
+                    onValueChange = { viewModel.onLoginChanged(uiState.email, uiState.password, it) },
                     isPassword = true,
+                    isError = uiState.confirmPasswordResult != null,
+                    textError = uiState.confirmPasswordResult,
                     keyboardType = KeyboardType.Password,
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomButtonText (
-                    onClick = { },
-                    text = "Crear cuenta"
+                CustomButtonText(
+                    onClick = { viewModel.registerUser() }, text = "Crear cuenta"
                 )
             }
         }

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,10 +30,14 @@ import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonImgText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CambiarPassViewModel
 
 @Preview
 @Composable
-fun CambiarContrasenia(modifier: Modifier = Modifier) {
+fun CambiarContrasenia(modifier: Modifier = Modifier, viewModel: CambiarPassViewModel) {
+
+    val uiState by viewModel.uiState.collectAsState()
+
     Box (
         modifier = Modifier.fillMaxSize()
     ) {
@@ -114,9 +120,11 @@ fun CambiarContrasenia(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(15.dp))
 
                 CustomTextField (
-                    value = "EMAIL",
+                    value = uiState.email,
                     textLabel = "EMAIL",
-                    onValueChange = {},
+                    onValueChange = {viewModel.onChangePassChanged(email = uiState.email)},
+                    isError = uiState.cambiarPassState != null,
+                    textError = uiState.cambiarPassState,
                     isPassword = false,
                     keyboardType = KeyboardType.Email,
                 )

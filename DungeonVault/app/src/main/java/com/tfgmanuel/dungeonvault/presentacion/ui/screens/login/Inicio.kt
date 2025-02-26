@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,20 +36,19 @@ import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginVie
 @Composable
 fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
 
-    val email: String by viewModel.email.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
+    val uiState by viewModel.uiState.collectAsState()
 
-    Box (
+    Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Image (
+        Image(
             painter = painterResource(id = R.drawable.fondoinicio),
             contentDescription = "Fondo pantalla inicio",
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop
         )
 
-        Text (
+        Text(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(10.dp),
@@ -59,21 +58,22 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
             fontWeight = FontWeight.Bold
         )
 
-        Box (
-            modifier = Modifier.fillMaxWidth(0.85f)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
                 .height(350.dp)
                 .align(Alignment.Center)
-                .background (
+                .background(
                     color = Color.Black.copy(alpha = 0.9f),
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(12.dp)
         ) {
-            Column (
+            Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text (
+                Text(
                     modifier = Modifier.align(Alignment.Start),
                     text = "Iniciar sesión",
                     color = Color.White,
@@ -82,8 +82,9 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                Box (
-                    modifier = Modifier.height(2.dp)
+                Box(
+                    modifier = Modifier
+                        .height(2.dp)
                         .fillMaxWidth(0.9f)
                         .background(Color(0xFFFFA726))
                         .align(Alignment.Start)
@@ -91,11 +92,11 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomButtonImgText (
+                CustomButtonImgText(
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .fillMaxHeight(0.13f),
-                    onClick = { /*TODO*/},
+                    onClick = { /*TODO*/ },
                     painter = painterResource(id = R.drawable.googlelogo),
                     contentDescription = "Logo google",
                     text = "Inicio sesion"
@@ -103,59 +104,65 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                Box (
-                    modifier = Modifier.height(2.dp)
+                Box(
+                    modifier = Modifier
+                        .height(2.dp)
                         .fillMaxWidth(0.8f)
                         .background(Color.White)
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = email,
+                CustomTextField(
+                    value = uiState.email,
                     textLabel = "EMAIL",
-                    onValueChange = {viewModel.onLoginChanged(it,password)},
+                    onValueChange = { viewModel.onLoginChanged(it, uiState.password) },
+                    isError = uiState.loginError != null,
+                    textError = uiState.loginError,
                     isPassword = false,
                     keyboardType = KeyboardType.Email,
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                CustomTextField (
-                    value = password,
+                CustomTextField(
+                    value = uiState.password,
                     textLabel = "CONTRASEÑA",
-                    onValueChange = {viewModel.onLoginChanged(email,it)},
+                    onValueChange = { viewModel.onLoginChanged(uiState.email, it) },
+                    isError = uiState.loginError != null,
+                    textError = uiState.loginError,
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                Row (
+                Row(
                     modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically){
-                    Column (
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
                         modifier = Modifier
                             .fillMaxHeight()
                             .fillMaxWidth(0.5f),
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            modifier = Modifier.clickable {  },
+                            modifier = Modifier.clickable { },
                             text = "Crear cuenta >",
                             color = Color.White,
-                            )
+                        )
 
                         Spacer(modifier = Modifier.height(10.dp))
 
                         Text(
-                            modifier = Modifier.clickable {  },
+                            modifier = Modifier.clickable { },
                             text = "Recuperar contraseña >",
                             color = Color.White
                         )
                     }
-                    CustomButtonText (
-                        onClick = { },
+                    CustomButtonText(
+                        onClick = { viewModel.lonIn() },
                         text = "Iniciar sesión"
                     )
                 }

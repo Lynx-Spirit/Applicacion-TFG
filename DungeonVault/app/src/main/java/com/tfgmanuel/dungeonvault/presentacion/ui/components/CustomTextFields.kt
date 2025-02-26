@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -30,6 +31,8 @@ fun CustomTextField (
     onValueChange: (String) -> Unit,
     isPassword: Boolean = false,
     singleLine: Boolean = true,
+    isError: Boolean = false,
+    textError: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     OutlinedTextField (
@@ -45,8 +48,14 @@ fun CustomTextField (
             focusedTextColor = focusedTextColor,
             unfocusedTextColor = unfocusedTextColor
         ),
+        supportingText = {
+            if (textError != null) {
+                Text(text = textError, fontSize = 6.sp)
+            }
+        },
         onValueChange = onValueChange,
         singleLine = singleLine,
+        isError = isError,
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
     )
