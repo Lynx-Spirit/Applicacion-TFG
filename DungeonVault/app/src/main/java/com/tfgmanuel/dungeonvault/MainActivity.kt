@@ -4,19 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.Modifier
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.PagInicio
+import com.tfgmanuel.dungeonvault.presentacion.navigation.NavManager
+import com.tfgmanuel.dungeonvault.presentacion.navigation.NavigationApp
 import com.tfgmanuel.dungeonvault.presentacion.theme.DungeonVaultTheme
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigationManager: NavManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DungeonVaultTheme {
-                PagInicio(modifier = Modifier.fillMaxSize(), LoginViewModel())
+                NavigationApp(navigationManager)
             }
         }
     }

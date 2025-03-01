@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +47,7 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
         )
 
         Text(modifier = Modifier
-            .clickable { /**/ }
+            .clickable { viewModel.goBack() }
             .padding(horizontal = 10.dp),
             text = "<",
             color = Color.White,
@@ -67,7 +66,7 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
-                .height(430.dp)
+                .height(450.dp)
                 .align(Alignment.Center)
                 .background(
                     color = Color.Black.copy(alpha = 0.9f), shape = RoundedCornerShape(16.dp)
@@ -107,7 +106,7 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
                     text = "Inicio sesion"
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Box(
                     modifier = Modifier
@@ -116,9 +115,10 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
                         .background(Color.White)
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     value = uiState.email,
                     textLabel = "EMAIL",
                     onValueChange = { viewModel.onLoginChanged(it, uiState.password, uiState.password2) },
@@ -128,9 +128,8 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
                     keyboardType = KeyboardType.Email,
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
-
                 CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     value = uiState.password,
                     textLabel = "CONTRASEÑA",
                     onValueChange = { viewModel.onLoginChanged(uiState.email, it, uiState.password2) },
@@ -140,9 +139,8 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
                     keyboardType = KeyboardType.Password,
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
-
                 CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     value = uiState.password2,
                     textLabel = "REPETIR CONTRASEÑA",
                     onValueChange = { viewModel.onLoginChanged(uiState.email, uiState.password, it) },
@@ -151,8 +149,6 @@ fun CrearCuenta(modifier: Modifier = Modifier, viewModel: CrearCuentaViewModel) 
                     textError = uiState.confirmPasswordResult,
                     keyboardType = KeyboardType.Password,
                 )
-
-                Spacer(modifier = Modifier.height(15.dp))
 
                 CustomButtonText(
                     onClick = { viewModel.registerUser() }, text = "Crear cuenta"

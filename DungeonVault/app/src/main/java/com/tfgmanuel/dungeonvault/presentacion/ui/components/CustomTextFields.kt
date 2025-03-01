@@ -50,7 +50,7 @@ fun CustomTextField (
         ),
         supportingText = {
             if (textError != null) {
-                Text(text = textError, fontSize = 6.sp)
+                Text(text = textError, fontSize = 10.sp)
             }
         },
         onValueChange = onValueChange,

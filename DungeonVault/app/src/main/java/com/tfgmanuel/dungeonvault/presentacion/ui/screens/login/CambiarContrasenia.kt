@@ -23,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.R
@@ -32,7 +31,6 @@ import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CambiarPassViewModel
 
-@Preview
 @Composable
 fun CambiarContrasenia(modifier: Modifier = Modifier, viewModel: CambiarPassViewModel) {
 
@@ -50,7 +48,7 @@ fun CambiarContrasenia(modifier: Modifier = Modifier, viewModel: CambiarPassView
 
         Text(
             modifier = Modifier
-                .clickable { /**/ }
+                .clickable { viewModel.goBack() }
                 .padding(horizontal = 10.dp),
             text = "<",
             color = Color.White,
@@ -129,7 +127,7 @@ fun CambiarContrasenia(modifier: Modifier = Modifier, viewModel: CambiarPassView
                     keyboardType = KeyboardType.Email,
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 CustomButtonText (
                     onClick = { },

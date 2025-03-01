@@ -2,12 +2,21 @@ package com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.presentacion.States.CrearCuentaState
+import com.tfgmanuel.dungeonvault.presentacion.navigation.NavManager
+import com.tfgmanuel.dungeonvault.presentacion.navigation.Screen
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CrearCuentaViewModel : ViewModel() {
+@HiltViewModel
+class CrearCuentaViewModel @Inject constructor(
+    private  val navigationManager: NavManager
+): ViewModel() {
     private var passwordPattern = Regex("\\b(?=\\w{9,})(?=\\w*[A-Z])(?=\\w*\\d)\\w+\\b")
 
     private val _uiState = MutableStateFlow(CrearCuentaState())
@@ -19,6 +28,8 @@ class CrearCuentaViewModel : ViewModel() {
     }
 
     fun registerUser() {
+
+        _uiState.value = _uiState.value.copy(emailResult = null, passwordResult = null, confirmPasswordResult = null)
 
         if (!Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()) {
             _uiState.value = _uiState.value.copy(emailResult = "Formato incorrecto de mail")
@@ -42,5 +53,11 @@ class CrearCuentaViewModel : ViewModel() {
         /**
          * Llamada a la API
          **/
+    }
+
+    fun goBack() {
+        viewModelScope.launch {
+            navigationManager.navigate(Screen.Inicio.route)
+        }
     }
 }

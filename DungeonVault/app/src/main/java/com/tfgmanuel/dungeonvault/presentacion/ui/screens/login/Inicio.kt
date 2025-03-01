@@ -61,7 +61,7 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
-                .height(350.dp)
+                .height(360.dp)
                 .align(Alignment.Center)
                 .background(
                     color = Color.Black.copy(alpha = 0.9f),
@@ -102,7 +102,7 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                     text = "Inicio sesion"
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Box(
                     modifier = Modifier
@@ -111,9 +111,10 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                         .background(Color.White)
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     value = uiState.email,
                     textLabel = "EMAIL",
                     onValueChange = { viewModel.onLoginChanged(it, uiState.password) },
@@ -123,9 +124,8 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                     keyboardType = KeyboardType.Email,
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
-
                 CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.9f),
                     value = uiState.password,
                     textLabel = "CONTRASEÑA",
                     onValueChange = { viewModel.onLoginChanged(uiState.email, it) },
@@ -134,8 +134,6 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                 )
-
-                Spacer(modifier = Modifier.height(15.dp))
 
                 Row(
                     modifier = Modifier.fillMaxSize(),
@@ -148,16 +146,18 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            modifier = Modifier.clickable { },
+                            modifier = Modifier.clickable { viewModel.goToCrearCuenta() },
                             text = "Crear cuenta >",
+                            fontSize = 13.sp,
                             color = Color.White,
                         )
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(5.dp))
 
                         Text(
-                            modifier = Modifier.clickable { },
+                            modifier = Modifier.clickable { viewModel.goToCambiarPass() },
                             text = "Recuperar contraseña >",
+                            fontSize = 13.sp,
                             color = Color.White
                         )
                     }
