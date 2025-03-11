@@ -1,5 +1,19 @@
 .env
 
+pgdata/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+venv/
+env/
+
+.docker/
+
+*.log
+
 # Compiled class file
 *.class
 

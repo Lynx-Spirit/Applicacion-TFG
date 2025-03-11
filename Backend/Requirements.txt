@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+alembic
+psycopg[binary]
+python-dotenv
+pyjwt[crypto]
+python-jose[cryptography]
+pydantic[email]
+passlib[bcrypt]
+pydantic
+pydantic-settings
+psycopg2-binary

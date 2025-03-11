@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 import os
 
-load_dotenv()
+load_dotenv(dotenv_path="./.env")
 
 class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL")

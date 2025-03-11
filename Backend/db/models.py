@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Integer, String, ForeignKey, Column, Table
 from sqlalchemy.orm import relationship
-from database import Base
+from db.database import Base
 
 campaign_invites = Table(
     "campaign_invites",

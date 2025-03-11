@@ -5,6 +5,7 @@ class User(BaseModel):
     password: str
 
 class ChangePasswordSchema(BaseModel):
+    email: EmailStr
     old_password: str
     new_password: str
 

@@ -7,4 +7,4 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-app.add_api_route(auth_router,prefix="/auth")
+app.include_router(auth_router, prefix="/auth")
