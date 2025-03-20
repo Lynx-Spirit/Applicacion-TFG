@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentacion.navigation
+package com.tfgmanuel.dungeonvault.navigation
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

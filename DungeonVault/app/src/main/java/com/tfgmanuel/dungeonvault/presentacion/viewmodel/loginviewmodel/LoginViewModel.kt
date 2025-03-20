@@ -2,9 +2,10 @@ package com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
+import com.tfgmanuel.dungeonvault.navigation.NavManager
+import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentacion.States.LoginState
-import com.tfgmanuel.dungeonvault.presentacion.navigation.NavManager
-import com.tfgmanuel.dungeonvault.presentacion.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val navigationManager: NavManager
+    private val navigationManager: NavManager,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
@@ -24,10 +26,16 @@ class LoginViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(email = email, password = password)
     }
 
-    fun lonIn() {
-        /**
-         * Llamada a la API
-         */
+    fun logIn() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(loginError = null)
+            val result = authRepository.login(_uiState.value.email,_uiState.value.password)
+            if(result.isSuccess) {
+                navigationManager.navigate(Screen.SeleccionCampania.route)
+            }else {
+                _uiState.value = _uiState.value.copy(loginError = result.getOrNull())
+            }
+        }
     }
 
     fun goToCrearCuenta() {

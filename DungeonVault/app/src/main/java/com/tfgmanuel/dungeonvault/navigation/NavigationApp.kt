@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentacion.navigation
+package com.tfgmanuel.dungeonvault.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,6 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tfgmanuel.dungeonvault.presentacion.ui.screens.SeleccionCampania
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CambiarContrasenia
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CrearCuenta
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.PagInicio
@@ -42,6 +43,9 @@ fun NavigationApp(navManager: NavManager) {
         composable(Screen.CambiarContrasenia.route) {
             val viewModel: CambiarPassViewModel = hiltViewModel<CambiarPassViewModel>()
             CambiarContrasenia(modifier = Modifier.fillMaxSize(),viewModel= viewModel)
+        }
+        composable(Screen.SeleccionCampania.route) {
+            SeleccionCampania(modifier = Modifier.fillMaxSize())
         }
     }
 }

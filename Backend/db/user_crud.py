@@ -17,7 +17,7 @@ def update_password(db: Session, user: User, new_password: str):
 
 def create_user(db: Session, email: str, password: str):
     hashed_pw = hash_password(password)
-    new_user = User(email=email, hashed_password=hashed_pw)
+    new_user = User(email=email, hashedPass=hashed_pw)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

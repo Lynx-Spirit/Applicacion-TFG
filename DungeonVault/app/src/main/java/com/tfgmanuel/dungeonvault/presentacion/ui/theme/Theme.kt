@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentacion.theme
+package com.tfgmanuel.dungeonvault.presentacion.ui.theme
 
 import android.app.Activity
 import android.os.Build

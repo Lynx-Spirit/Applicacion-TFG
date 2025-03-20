@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.tfgmanuel.dungeonvault.presentacion.navigation.NavManager
-import com.tfgmanuel.dungeonvault.presentacion.navigation.NavigationApp
-import com.tfgmanuel.dungeonvault.presentacion.theme.DungeonVaultTheme
+import com.tfgmanuel.dungeonvault.navigation.NavManager
+import com.tfgmanuel.dungeonvault.navigation.NavigationApp
+import com.tfgmanuel.dungeonvault.presentacion.ui.theme.DungeonVaultTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

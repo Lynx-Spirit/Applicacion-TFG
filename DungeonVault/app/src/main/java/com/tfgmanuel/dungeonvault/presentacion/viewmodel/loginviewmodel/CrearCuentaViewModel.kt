@@ -3,9 +3,10 @@ package com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
+import com.tfgmanuel.dungeonvault.navigation.NavManager
+import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentacion.States.CrearCuentaState
-import com.tfgmanuel.dungeonvault.presentacion.navigation.NavManager
-import com.tfgmanuel.dungeonvault.presentacion.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CrearCuentaViewModel @Inject constructor(
-    private  val navigationManager: NavManager
+    private  val navigationManager: NavManager,
+    private val authRepository: AuthRepository
 ): ViewModel() {
     private var passwordPattern = Regex("\\b(?=\\w{9,})(?=\\w*[A-Z])(?=\\w*\\d)\\w+\\b")
 
@@ -36,7 +38,7 @@ class CrearCuentaViewModel @Inject constructor(
             return
         }
 
-        if (passwordPattern.matches(_uiState.value.password)) {
+        if (!passwordPattern.matches(_uiState.value.password)) {
             _uiState.value = _uiState.value.copy(
                 passwordResult =
                 "Contraseña debe tener más de 8 caracteres, una mayúscula y un número"
@@ -50,9 +52,19 @@ class CrearCuentaViewModel @Inject constructor(
             return
         }
 
-        /**
-         * Llamada a la API
-         **/
+        register(_uiState.value.email,_uiState.value.password)
+
+    }
+
+    fun register(email: String, password: String) {
+        viewModelScope.launch {
+            val result = authRepository.register(email, password)
+            if(result.isSuccess) {
+                navigationManager.navigate(Screen.Inicio.route)
+            }else {
+                _uiState.value= _uiState.value.copy(emailResult = result.getOrNull())
+            }
+        }
     }
 
     fun goBack() {

@@ -119,7 +119,6 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                     textLabel = "EMAIL",
                     onValueChange = { viewModel.onLoginChanged(it, uiState.password) },
                     isError = uiState.loginError != null,
-                    textError = uiState.loginError,
                     isPassword = false,
                     keyboardType = KeyboardType.Email,
                 )
@@ -162,7 +161,7 @@ fun PagInicio(modifier: Modifier = Modifier, viewModel: LoginViewModel) {
                         )
                     }
                     CustomButtonText(
-                        onClick = { viewModel.lonIn() },
+                        onClick = { viewModel.logIn() },
                         text = "Iniciar sesión"
                     )
                 }

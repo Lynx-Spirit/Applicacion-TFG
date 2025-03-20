@@ -16,7 +16,7 @@ class User(Base):
     email = Column(String, index= True)
     hashedPass = Column(String)
 
-    campagins = relationship("User", secondary= campaign_invites, back_populates= "members")
+    campagins = relationship("Campaign", secondary= campaign_invites, back_populates= "members")
 
 class Campaign(Base):
     __tablename__ = "campaigns"
