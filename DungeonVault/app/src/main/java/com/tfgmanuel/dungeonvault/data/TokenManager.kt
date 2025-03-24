@@ -17,14 +17,34 @@ class TokenManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private val dataStore = context.dataStore
+    private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
+    private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+    private val TOKEN_TYPE = stringPreferencesKey("token_type")
 
-    companion object {
-        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
-        private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
-        private val TOKEN_TYPE = stringPreferencesKey("token_type")
+    private val accessToken: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[ACCESS_TOKEN_KEY]
     }
 
-    // Guardar los tokens
+    private val refreshToken: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[REFRESH_TOKEN_KEY]
+    }
+
+    private val tokenType: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[TOKEN_TYPE]
+    }
+
+    fun getAccessToken(): Flow<String?> {
+        return accessToken
+    }
+
+    fun getRefreshToken(): Flow<String?> {
+        return refreshToken
+    }
+
+    fun getTokenType(): Flow<String?> {
+        return tokenType
+    }
+
     suspend fun saveTokens(accessToken: String, refreshToken: String, tokenType: String) {
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN_KEY] = accessToken
@@ -33,21 +53,6 @@ class TokenManager @Inject constructor(
         }
     }
 
-
-    // Obtener los tokens
-    val accessToken: Flow<String?> = dataStore.data.map { preferences ->
-        preferences[ACCESS_TOKEN_KEY]
-    }
-
-    val refreshToken: Flow<String?> = dataStore.data.map { preferences ->
-        preferences[REFRESH_TOKEN_KEY]
-    }
-
-    val tokenRefresh: Flow<String?> = dataStore.data.map {  preferences ->
-        preferences[TOKEN_TYPE]
-    }
-
-    // Limpiar tokens (logout)
     suspend fun clearTokens() {
         dataStore.edit { preferences ->
             preferences.clear()

@@ -62,7 +62,7 @@ class CrearCuentaViewModel @Inject constructor(
             if(result.isSuccess) {
                 navigationManager.navigate(Screen.Inicio.route)
             }else {
-                _uiState.value= _uiState.value.copy(emailResult = result.getOrNull())
+                _uiState.value= _uiState.value.copy(emailResult = "El email ya está siendo usado por otro usuario")
             }
         }
     }

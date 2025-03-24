@@ -17,7 +17,7 @@ import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CrearCue
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginViewModel
 
 @Composable
-fun NavigationApp(navManager: NavManager) {
+fun NavigationApp(navManager: NavManager, start: String = Screen.Inicio.route) {
     //Sirve para guardar el historial de navegación
     val navController = rememberNavController()
 
@@ -31,7 +31,7 @@ fun NavigationApp(navManager: NavManager) {
         }
     }
 
-    NavHost(navController = navController, startDestination = Screen.Inicio.route) {
+    NavHost(navController = navController, startDestination = start) {
         composable(Screen.Inicio.route) {
             val viewModel = hiltViewModel<LoginViewModel>()
             PagInicio(modifier = Modifier.fillMaxSize(),viewModel = viewModel)

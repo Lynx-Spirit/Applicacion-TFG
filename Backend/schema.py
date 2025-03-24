@@ -18,3 +18,6 @@ class RefreshTokenRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
+
+class Token(BaseModel):
+     token: str

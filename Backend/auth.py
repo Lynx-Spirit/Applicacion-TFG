@@ -34,10 +34,12 @@ def verify_token(token: str):
     try:
         # try to decode the token, it will 
         # raise error if the token is not correct
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
+        payload = jwt.decode(token=token,key=SECRET_KEY, algorithms=[ALGORITHM])
+        expiration = payload.get("exp")
+
+        if expiration and datetime.utcfromtimestamp(expiration) < datetime.utcnow():
+            raise False
+
+        return True
     except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-        )
+        return False

@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
             if(result.isSuccess) {
                 navigationManager.navigate(Screen.SeleccionCampania.route)
             }else {
-                _uiState.value = _uiState.value.copy(loginError = result.getOrNull())
+                _uiState.value = _uiState.value.copy(loginError = "Usuario o contraseña incorrecta")
             }
         }
     }

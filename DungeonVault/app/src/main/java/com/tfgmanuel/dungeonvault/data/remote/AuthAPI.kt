@@ -2,6 +2,7 @@ package com.tfgmanuel.dungeonvault.data.remote
 
 import com.tfgmanuel.dungeonvault.data.model.RefreshTokenRequest
 import com.tfgmanuel.dungeonvault.data.model.RegisterResponse
+import com.tfgmanuel.dungeonvault.data.model.Token
 import com.tfgmanuel.dungeonvault.data.model.TokenResponse
 import com.tfgmanuel.dungeonvault.data.model.User
 import retrofit2.Response
@@ -18,4 +19,7 @@ interface AuthAPI {
 
     @POST("auth/refresh")
     suspend fun refresh(@Body tokenRequest: RefreshTokenRequest): Response<TokenResponse>
+
+    @POST("auth/verify")
+    suspend fun verify(@Body token: Token): Response<Boolean>
 }

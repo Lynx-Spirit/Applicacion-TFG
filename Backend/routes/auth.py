@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from db.database import get_db
 from db.user_crud import get_user_by_email, create_user, update_password
-from schema import User, ChangePasswordSchema, TokenResponse, RefreshTokenRequest
+from schema import User, ChangePasswordSchema, TokenResponse, RefreshTokenRequest, Token
 from auth import create_access_token, create_refresh_token, verify, verify_token
 
 
@@ -50,3 +50,7 @@ def refresh_token(request: RefreshTokenRequest):
     new_refresh_token = create_refresh_token({"sub": user_id})
 
     return {"access_token": new_access_token, "refresh_token": new_refresh_token, "token_type": "bearer"}
+
+@router.post("/verify")
+def verifyToken(request: Token):
+    return verify_token(request.token)
