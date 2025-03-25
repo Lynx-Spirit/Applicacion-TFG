@@ -43,7 +43,7 @@ def refresh_token(request: RefreshTokenRequest):
     if not payload:
         raise HTTPException(status_code=401, detail="Refresh token inválido o expirado")
 
-    user_id = payload.get("sub")  # Asumimos que el token tiene el campo 'sub' con el ID del usuario
+    user_id = payload.get("sub")
 
     # Generar nuevos tokens
     new_access_token = create_access_token({"sub": user_id})
@@ -53,4 +53,5 @@ def refresh_token(request: RefreshTokenRequest):
 
 @router.post("/verify")
 def verifyToken(request: Token):
-    return verify_token(request.token)
+    verify_token(request.token)
+    return True
