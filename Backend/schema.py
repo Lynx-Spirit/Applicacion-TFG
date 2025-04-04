@@ -21,3 +21,15 @@ class TokenResponse(BaseModel):
 
 class Token(BaseModel):
      token: str
+
+class Campaign(BaseModel):
+     title: str
+     description: str
+     img_url: str
+
+class CampaignResponse(BaseModel):
+     title: str
+     description: str
+     img_url: str
+     invite_code: str
+     creator_id: str
