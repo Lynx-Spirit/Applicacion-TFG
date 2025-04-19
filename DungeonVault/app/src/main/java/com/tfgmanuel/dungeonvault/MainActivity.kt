@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.ViewModelProvider
 import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.NavigationApp
@@ -26,10 +27,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val mainViewModel: MainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
             DungeonVaultTheme {
                 if(runBlocking{authRepository.userLoggedIn()}) {
                     NavigationApp(navigationManager, start = Screen.SeleccionCampania.route)
                 }else {
+                    mainViewModel.deleteAll()
                     NavigationApp(navigationManager)
                 }
             }

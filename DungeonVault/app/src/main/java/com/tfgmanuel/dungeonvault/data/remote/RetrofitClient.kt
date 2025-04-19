@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitInstance {
-    private const val BASE_URL = "http://172.17.192.1:8000/"
+    private const val BASE_URL = "http://172.24.0.1:8000/"
 
     @Provides
     @Singleton
@@ -26,5 +26,17 @@ object RetrofitInstance {
     @Singleton
     fun provideAuthAPI(retrofit: Retrofit): AuthAPI {
         return retrofit.create(AuthAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCampaignAPI(retrofit: Retrofit): CampaignAPI {
+        return retrofit.create(CampaignAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideImgAPI(retrofit: Retrofit): ImgAPI {
+        return retrofit.create(ImgAPI::class.java)
     }
 }

@@ -20,10 +20,11 @@ class AuthRepository @Inject constructor(
             val response = authAPI.login(User(email, password))
             if (response.isSuccessful) {
                 val authResponse = response.body()!!
-                tokenManager.saveTokens(
+                tokenManager.saveAll(
                     authResponse.access_token,
                     authResponse.refresh_token,
-                    authResponse.token_type
+                    authResponse.token_type,
+                    authResponse.user_id
                 )
                 Result.success("Login realizado con éxito")
             } else {
@@ -67,22 +68,23 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun userLoggedIn(): Boolean {
-        var resultado: Boolean
         val accessToken = tokenManager.getAccessToken().firstOrNull()
         val refreshToken = tokenManager.getRefreshToken().firstOrNull()
+
         if (accessToken.isNullOrEmpty() || refreshToken.isNullOrEmpty()) {
-            resultado = false
-        } else {
-            if (checkToken(accessToken)) {
-                resultado = true
-            } else if (checkToken(refreshToken)) {
-                val result = refresh(refreshToken)
-                resultado = result.isSuccess
-            } else {
-                resultado = false
-            }
+            return false
         }
-        return resultado
+
+        if (checkToken(accessToken)) {
+            return true
+        }
+
+        return if (checkToken(refreshToken)) {
+            val result = refresh(refreshToken)
+            result.isSuccess
+        } else {
+            false
+        }
     }
 
      suspend fun checkToken(token: String): Boolean {

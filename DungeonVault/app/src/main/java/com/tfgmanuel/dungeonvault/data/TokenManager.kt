@@ -2,6 +2,7 @@ package com.tfgmanuel.dungeonvault.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -20,6 +21,7 @@ class TokenManager @Inject constructor(
     private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
     private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     private val TOKEN_TYPE = stringPreferencesKey("token_type")
+    private val USER_ID = intPreferencesKey("user_id")
 
     private val accessToken: Flow<String?> = dataStore.data.map { preferences ->
         preferences[ACCESS_TOKEN_KEY]
@@ -31,6 +33,10 @@ class TokenManager @Inject constructor(
 
     private val tokenType: Flow<String?> = dataStore.data.map { preferences ->
         preferences[TOKEN_TYPE]
+    }
+
+    private val userID: Flow<Int?> = dataStore.data.map { preferences ->
+        preferences[USER_ID]
     }
 
     fun getAccessToken(): Flow<String?> {
@@ -45,11 +51,24 @@ class TokenManager @Inject constructor(
         return tokenType
     }
 
+    fun getUserID(): Flow<Int?> {
+        return userID
+    }
+
     suspend fun saveTokens(accessToken: String, refreshToken: String, tokenType: String) {
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN_KEY] = accessToken
             preferences[REFRESH_TOKEN_KEY] = refreshToken
             preferences[TOKEN_TYPE] = tokenType
+        }
+    }
+
+    suspend fun saveAll(accessToken: String, refreshToken: String, tokenType: String, userID: Int) {
+        dataStore.edit { preferences ->
+            preferences[ACCESS_TOKEN_KEY] = accessToken
+            preferences[REFRESH_TOKEN_KEY] = refreshToken
+            preferences[TOKEN_TYPE] = tokenType
+            preferences[USER_ID] = userID
         }
     }
 

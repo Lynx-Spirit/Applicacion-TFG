@@ -23,8 +23,8 @@ def login(user_data: User, db: Session = Depends(get_db)):
     if not user or not verify(user_data.password, user.hashedPass):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciales incorrectas")
 
-    access_token = create_access_token({"sub": user.id})
-    refresh_token = create_refresh_token({"sub": user.id})
+    access_token = create_access_token({"sub": str(user.id)})
+    refresh_token = create_refresh_token({"sub": str(user.id)})
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "user_id": user.id}
 
 @router.put("/change-password")

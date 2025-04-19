@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from typing import ClassVar
 from pydantic_settings import BaseSettings
 import os
 
@@ -9,7 +10,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("SECRET_KEY")
     ACCESS_TOKEN_EXPIRE_HOURS: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_HOURS",12))
     REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 7))
-    UPLOAD_FOLDER = "imagenes"
+    UPLOAD_FOLDER: ClassVar[str] = "imagenes"
 
 
     @property

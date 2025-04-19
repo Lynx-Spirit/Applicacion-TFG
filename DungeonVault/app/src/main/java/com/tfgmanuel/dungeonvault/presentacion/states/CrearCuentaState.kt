@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentacion.States
+package com.tfgmanuel.dungeonvault.presentacion.states
 
 data class CrearCuentaState(
     val email: String = "",

@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,14 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tfgmanuel.dungeonvault.R
 
 @Composable
 fun CustomContainer (
@@ -91,15 +92,26 @@ fun CustomContainer (
     }
 }
 
-@Preview
 @Composable
-fun PreviewContainer() {
-    CustomContainer (
-        modifier = Modifier.height(100.dp).fillMaxWidth(0.9f),
-        painter = painterResource(id = R.drawable.ic_launcher_background),
-        contentDescription = "M",
-        titulo = "Reinos olvidados",
-        descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt ...",
-        onClick = {}
+fun SheetOption(
+    icono: ImageVector,
+    titulo: String,
+    subtitulo: String,
+    contentColor: Color = Color.White,
+    onClick: () -> Unit,
+) {
+    ListItem(
+        colors = ListItemDefaults.colors(
+            containerColor = Color.Transparent,
+            headlineColor = contentColor,
+            supportingColor = contentColor,
+            leadingIconColor = contentColor
+        ),
+        headlineContent = { Text(titulo)},
+        supportingContent = {Text(subtitulo)},
+        leadingContent = {
+            Icon(icono, contentDescription = null)
+        },
+        modifier = Modifier.clickable( onClick = onClick )
     )
 }

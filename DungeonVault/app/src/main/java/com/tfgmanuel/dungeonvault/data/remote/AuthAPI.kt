@@ -1,7 +1,7 @@
 package com.tfgmanuel.dungeonvault.data.remote
 
+import com.tfgmanuel.dungeonvault.data.model.APIResponse
 import com.tfgmanuel.dungeonvault.data.model.RefreshTokenRequest
-import com.tfgmanuel.dungeonvault.data.model.RegisterResponse
 import com.tfgmanuel.dungeonvault.data.model.Token
 import com.tfgmanuel.dungeonvault.data.model.TokenResponse
 import com.tfgmanuel.dungeonvault.data.model.User
@@ -15,7 +15,7 @@ interface AuthAPI {
     suspend fun login(@Body user: User): Response<TokenResponse>
 
     @POST("auth/register")
-    suspend fun register(@Body user: User): Response<RegisterResponse>
+    suspend fun register(@Body user: User): Response<APIResponse>
 
     @POST("auth/refresh")
     suspend fun refresh(@Body tokenRequest: RefreshTokenRequest): Response<TokenResponse>

@@ -5,4 +5,7 @@ sealed class Screen(val route: String) {
     object CrearCuenta: Screen("CrearCuenta")
     object CambiarContrasenia: Screen("CambiarContrasenia")
     object SeleccionCampania: Screen("SeleccionCampania")
+    object DetalleCampania: Screen("DetalleCampania")
+    object CrearCampania: Screen("NuevaCampania")
+    object EntrarCampania: Screen("EntrarCampania")
 }

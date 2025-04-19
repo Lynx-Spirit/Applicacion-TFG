@@ -28,8 +28,9 @@ class Campaign(BaseModel):
      img_url: str
 
 class CampaignResponse(BaseModel):
+     id: int
      title: str
      description: str
      img_url: str
      invite_code: str
-     creator_id: str
+     creator_id: int

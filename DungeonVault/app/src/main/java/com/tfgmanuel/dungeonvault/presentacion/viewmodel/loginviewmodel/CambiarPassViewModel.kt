@@ -2,7 +2,7 @@ package com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tfgmanuel.dungeonvault.presentacion.States.CambiarPassState
+import com.tfgmanuel.dungeonvault.presentacion.states.CambiarPassState
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

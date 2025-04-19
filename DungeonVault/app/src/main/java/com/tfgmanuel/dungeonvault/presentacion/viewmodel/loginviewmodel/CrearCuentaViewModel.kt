@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.Screen
-import com.tfgmanuel.dungeonvault.presentacion.States.CrearCuentaState
+import com.tfgmanuel.dungeonvault.presentacion.states.CrearCuentaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

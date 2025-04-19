@@ -4,12 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,24 +29,25 @@ fun CustomButtonText(
     onClick: () -> Unit,
     enabled: Boolean = true,
     text: String,
-    shape : Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(8.dp),
     colorButton: Color = Color(0xFFFFA726),
     disableColorButton: Color = Color(0xFFFFD699),
     colorText: Color = Color.White,
-    disabledcolorText: Color = Color(0xFF757575 )
+    disabledcolorText: Color = Color(0xFF757575)
 ) {
-    Button (
+    Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
         shape = shape,
-        colors = ButtonColors (
+        colors = ButtonColors(
             containerColor = colorButton,
             contentColor = colorText,
             disabledContainerColor = disableColorButton,
-            disabledContentColor = disabledcolorText)
+            disabledContentColor = disabledcolorText
+        )
     ) {
-       Text(text = text)
+        Text(text = text)
     }
 }
 
@@ -55,31 +58,32 @@ fun CustomButtonImg(
     enabled: Boolean = true,
     contentDescription: String,
     painter: Painter,
-    shape : Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(8.dp),
     colorButton: Color = Color(0xFF1C1C1F),
 ) {
-    Button (
+    Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
         shape = shape,
-        colors = ButtonColors (
+        colors = ButtonColors(
             containerColor = colorButton,
             contentColor = colorButton,
             disabledContentColor = colorButton,
-            disabledContainerColor =  colorButton)
+            disabledContainerColor = colorButton
+        )
     ) {
-            Image (
-                modifier = Modifier.fillMaxHeight(0.95f),
-                alignment = Alignment.Center,
-                painter = painter,
-                contentDescription = contentDescription
-            )
+        Image(
+            modifier = Modifier.fillMaxHeight(0.95f),
+            alignment = Alignment.Center,
+            painter = painter,
+            contentDescription = contentDescription
+        )
     }
 }
 
 @Composable
-fun CustomButtonImgText (
+fun CustomButtonImgText(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -89,21 +93,23 @@ fun CustomButtonImgText (
     painter: Painter,
     contentDescription: String,
     text: String
-){
-    Button (
+) {
+    Button(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
         shape = shape,
-        colors = ButtonColors (
+        colors = ButtonColors(
             containerColor = buttonColor,
             contentColor = buttonColor,
             disabledContentColor = buttonColor,
-            disabledContainerColor =  buttonColor)
+            disabledContainerColor = buttonColor
+        )
     ) {
-        Row (
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically){
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
                 modifier = Modifier.fillMaxHeight(0.7f),
                 alignment = Alignment.Center,
@@ -117,7 +123,26 @@ fun CustomButtonImgText (
                 text = text,
                 color = textColor,
                 textAlign = TextAlign.Center,
-                fontSize = 12.sp)
+                fontSize = 12.sp
+            )
         }
+    }
+}
+
+@Composable
+fun customActionButton(
+    onClick: () -> Unit,
+    color: Color = Color(0XFFE69141),
+    colorTexto: Color = Color.White,
+    shape: Shape = CircleShape,
+    texto: String,
+    fontSize: TextUnit = 24.sp
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        containerColor = color,
+        shape = shape
+    ) {
+        Text(texto, color = colorTexto, fontSize = fontSize)
     }
 }
