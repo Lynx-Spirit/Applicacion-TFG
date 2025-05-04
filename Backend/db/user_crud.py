@@ -33,3 +33,10 @@ def create_user(db: Session, email: str, password: str):
     db.refresh(new_user)
 
     return new_user
+
+def delete_user(db: Session, user_id: int):
+    user = get_user_by_id(db, user_id)
+
+    if user:
+        db.delete(user)
+        db.commit()

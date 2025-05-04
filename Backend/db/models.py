@@ -16,7 +16,7 @@ class User(Base):
     email = Column(String, index=True)
     hashedPass = Column(String)
 
-    campaigns = relationship("Campaign", secondary=campaign_invites, back_populates="members")
+    campaigns = relationship("Campaign", cascade="all, delete", backref="creator", foreign_keys='Campaign.creator_id')
 
 class Campaign(Base):
     __tablename__ = "campaigns"
@@ -28,4 +28,4 @@ class Campaign(Base):
     invite_code = Column(String)
 
     creator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    members = relationship("User", secondary=campaign_invites, back_populates="campaigns")
+    members = relationship("User", secondary=campaign_invites, passive_deletes=True, back_populates="campaigns")

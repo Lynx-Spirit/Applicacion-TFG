@@ -24,6 +24,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun deleteAccount() {
+
+    }
+
     fun deleteAll() {
         viewModelScope.launch {
             tokenManager.clearTokens()
