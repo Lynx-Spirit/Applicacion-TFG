@@ -17,15 +17,16 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun CustomTextField (
+fun CustomTextField(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(8.dp),
     focusedBorderColor: Color = Color(0xFFFFA726),
-    unfocusedBorderColor : Color = Color(0xFF1A1A1A),
+    unfocusedBorderColor: Color = Color(0xFF1A1A1A),
     focusedLabelColor: Color = Color(0xFF1A1A1A),
     unfocusedLabelColor: Color = Color(0xFF1A1A1A),
     focusedTextColor: Color = Color(0xFFCDCDCD),
     unfocusedTextColor: Color = Color(0xFFCDCDCD),
+    minLines: Int = 1,
     value: String,
     textLabel: String,
     onValueChange: (String) -> Unit,
@@ -35,12 +36,12 @@ fun CustomTextField (
     textError: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
-    OutlinedTextField (
+    OutlinedTextField(
         modifier = modifier,
         shape = shape,
         value = value,
-        label = {Text(text = textLabel, color = Color.White)},
-        colors = OutlinedTextFieldDefaults.colors (
+        label = { Text(text = textLabel, color = Color.White) },
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = focusedBorderColor,
             unfocusedBorderColor = unfocusedBorderColor,
             focusedLabelColor = focusedLabelColor,
@@ -48,6 +49,7 @@ fun CustomTextField (
             focusedTextColor = focusedTextColor,
             unfocusedTextColor = unfocusedTextColor
         ),
+        minLines = minLines,
         supportingText = {
             if (textError != null) {
                 Text(text = textError, fontSize = 10.sp)

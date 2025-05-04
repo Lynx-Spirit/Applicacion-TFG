@@ -1,6 +1,7 @@
 package com.tfgmanuel.dungeonvault.presentacion.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,10 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomButtonText(
@@ -29,6 +31,7 @@ fun CustomButtonText(
     onClick: () -> Unit,
     enabled: Boolean = true,
     text: String,
+    fontSize: TextUnit = TextUnit.Unspecified,
     shape: Shape = RoundedCornerShape(8.dp),
     colorButton: Color = Color(0xFFFFA726),
     disableColorButton: Color = Color(0xFFFFD699),
@@ -47,7 +50,10 @@ fun CustomButtonText(
             disabledContentColor = disabledcolorText
         )
     ) {
-        Text(text = text)
+        Text(
+            text = text,
+            fontSize = fontSize
+        )
     }
 }
 
@@ -90,6 +96,7 @@ fun CustomButtonImgText(
     shape: Shape = RoundedCornerShape(8.dp),
     buttonColor: Color = Color(0xFF1C1C1F),
     textColor: Color = Color.White,
+    fontSize: TextUnit = TextUnit.Unspecified,
     painter: Painter,
     contentDescription: String,
     text: String
@@ -123,20 +130,56 @@ fun CustomButtonImgText(
                 text = text,
                 color = textColor,
                 textAlign = TextAlign.Center,
-                fontSize = 12.sp
+                fontSize = fontSize
             )
         }
     }
 }
 
 @Composable
-fun customActionButton(
+fun CustomIconButon(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    color: Color = Color(0XFFE69141),
+    fontSize: TextUnit = TextUnit.Unspecified,
+    color: Color = Color(0xFFFDA626),
+    colorTexto: Color = Color.White,
+    shape: Shape = RoundedCornerShape(8.dp),
+    text: String,
+    icono: ImageVector
+) {
+    Button(
+        modifier = modifier,
+        onClick = onClick,
+        shape = shape,
+        colors = ButtonColors(
+            containerColor = color,
+            contentColor = colorTexto,
+            disabledContainerColor = color,
+            disabledContentColor = colorTexto
+        )
+    ) {
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ){
+            Icon(imageVector = icono, contentDescription = null)
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = text,
+                fontSize = fontSize
+            )
+        }
+    }
+}
+
+@Composable
+fun CustomActionButton(
+    onClick: () -> Unit,
+    color: Color = Color(0xFFFDA626),
     colorTexto: Color = Color.White,
     shape: Shape = CircleShape,
     texto: String,
-    fontSize: TextUnit = 24.sp
+    fontSize: TextUnit = TextUnit.Unspecified
 ) {
     FloatingActionButton(
         onClick = onClick,

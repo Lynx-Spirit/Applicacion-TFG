@@ -20,8 +20,8 @@ class CampaniaRepository @Inject constructor(
 
     suspend fun create(title: String, description: String, imgUri: Uri, context: Context): Result<String> {
         try{
-            val url = imgRepository.uploadImage(imgUri, context)
-            val campaign = CreateCampaign(title, description, url)
+            val fileName = imgRepository.uploadImage(imgUri, context)
+            val campaign = CreateCampaign(title, description, fileName)
             var access = tokenManager.getAccessToken().first()
 
             var response = campaignAPI.createCampaign(campaign,"Bearer $access")
@@ -108,8 +108,8 @@ class CampaniaRepository @Inject constructor(
 
     suspend fun updateCamaign(id: Int, title: String = "", description: String = "", imgUri: Uri = Uri.EMPTY, context: Context): Result<String> {
         try {
-            val url = imgRepository.uploadImage(imgUri, context)
-            val campaign = CreateCampaign(title,description,url)
+            val fileName = imgRepository.uploadImage(imgUri, context)
+            val campaign = CreateCampaign(title,description,fileName)
             var access = tokenManager.getAccessToken().first()
 
             var response = campaignAPI.updateCampaign(id, campaign, "Bearer $access")

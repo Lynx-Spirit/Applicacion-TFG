@@ -8,10 +8,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.DetallesCampania
+import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.NuevaCampania
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.SeleccionCampania
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CambiarContrasenia
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CrearCuenta
 import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.PagInicio
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.DetallesCampaniaViewModel
+import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.NuevaCampaniaViewModel
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.SeleccionCampaniaViewModel
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CambiarPassViewModel
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CrearCuentaViewModel
@@ -49,6 +53,13 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Inicio.route) {
             val viewModel: SeleccionCampaniaViewModel = hiltViewModel<SeleccionCampaniaViewModel>()
             SeleccionCampania(modifier = Modifier.fillMaxSize(), viewModel)
         }
-
+        composable(Screen.CrearCampania.route) {
+            val viewModel: NuevaCampaniaViewModel = hiltViewModel<NuevaCampaniaViewModel>()
+            NuevaCampania(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+        }
+        composable("${Screen.DetalleCampania.route}/{campaignID}") {
+            val viewModel: DetallesCampaniaViewModel = hiltViewModel<DetallesCampaniaViewModel>()
+            DetallesCampania(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+        }
     }
 }

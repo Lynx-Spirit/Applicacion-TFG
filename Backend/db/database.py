@@ -20,5 +20,6 @@ def get_db():
     except SQLAlchemyError as e:
         print(f"Error de conexión a la base de datos: {e}")
         db.rollback()
+        raise
     finally:
         db.close()

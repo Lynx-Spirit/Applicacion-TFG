@@ -1,8 +1,10 @@
 package com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,12 +34,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.data.model.Campaign
+import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomContainer
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.DrawerAplicacion
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.ListaObjetos
@@ -51,7 +57,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SeleccionCampania(modifier: Modifier = Modifier, viewModel: SeleccionCampaniaViewModel) {
     val uistate by viewModel.uistate.collectAsState()
-    val drawerState = androidx.compose.material3.rememberDrawerState(initialValue = DrawerValue.Closed)
+    val drawerState =
+        androidx.compose.material3.rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     val isRefreshing = uistate.isLoading
@@ -60,10 +67,10 @@ fun SeleccionCampania(modifier: Modifier = Modifier, viewModel: SeleccionCampani
         onRefresh = { viewModel.loadCampaigns() }
     )
 
-    ModalNavigationDrawer (
+    ModalNavigationDrawer(
         drawerContent = { DrawerAplicacion() },
         drawerState = drawerState,
-    ){
+    ) {
         Scaffold(
             modifier = modifier,
             topBar = {
@@ -109,28 +116,36 @@ fun Contenido(
     paddingValues: PaddingValues,
     onClick: (campaignID: Int) -> Unit
 ) {
-    ListaObjetos(
+    Box(
         modifier = Modifier
+            .fillMaxSize()
             .padding(horizontal = 5.dp, vertical = 5.dp)
-            .pullRefresh(pullRefreshState),
-        elementos = elementos,
-        paddingValues = paddingValues,
-        texto = "No hay campañas, crea una o inserte una",
-        fontSize = 20.sp
-    ) { campania ->
-        CustomContainer(
-            painter = rememberAsyncImagePainter(
-                model = campania.img_url
-            ),
-            contentDescription = campania.title,
-            titulo = campania.title,
-            descripcion = campania.description,
-            onClick = { onClick(campania.id) }
-        )
-
+            .pullRefresh(pullRefreshState)
+    ) {
+        ListaObjetos(
+            modifier = Modifier
+                .fillMaxSize(),
+            elementos = elementos,
+            paddingValues = paddingValues,
+            texto = "Ups, no tienes campañas aún. ¡Crea o agrega una campaña!",
+            fontSize = 20.sp
+        ) { campania ->
+            CustomContainer(
+                painter = rememberAsyncImagePainter(
+                    model = "${BASE_URL}images/${campania.img_name}",
+                    error = painterResource(id = R.drawable.sinimg),
+                    placeholder = painterResource(id = R.drawable.sinimg)
+                ),
+                contentDescription = campania.title,
+                titulo = campania.title,
+                descripcion = campania.description,
+                onClick = { onClick(campania.id) }
+            )
+        }
         PullRefreshIndicator(
             refreshing = isRefreshing,
-            state = pullRefreshState
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
         )
     }
 }
@@ -144,7 +159,7 @@ fun FAB(onClickCreate: () -> Unit, onClickInvite: () -> Unit) {
     FloatingActionButton(
         onClick = { showBottomSheet = true },
         shape = CircleShape,
-        containerColor = Color(0xffe69141),
+        containerColor = Color(0xFFFDA626),
         contentColor = Color.White
     ) {
         Icon(Icons.Default.Add, contentDescription = null)
@@ -158,7 +173,7 @@ fun FAB(onClickCreate: () -> Unit, onClickInvite: () -> Unit) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(10.dp)
                     .fillMaxWidth()
             ) {
                 SheetOption(
@@ -171,7 +186,7 @@ fun FAB(onClickCreate: () -> Unit, onClickInvite: () -> Unit) {
                     }
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 SheetOption(
                     icono = Icons.Default.Email,

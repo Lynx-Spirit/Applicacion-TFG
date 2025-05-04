@@ -16,7 +16,7 @@ import retrofit2.http.Query
 
 interface CampaignAPI {
 
-    @POST("campaigns/")
+    @POST("campaigns/new")
     suspend fun createCampaign(
         @Body createCampaign: CreateCampaign,
         @Header("Authorization") token: String

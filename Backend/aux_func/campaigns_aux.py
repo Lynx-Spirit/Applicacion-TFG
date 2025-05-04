@@ -14,6 +14,6 @@ def generate_invite_code(db: Session) -> str:
 
     while not is_unique:
           code = ''.join(random.choices(CHARACTERS, k=CODE_LENGTH))
-          is_unique = get_campaign_by_code(db, code) is not None
+          is_unique = get_campaign_by_code(db, code) is None
 
     return code

@@ -2,19 +2,20 @@ package com.tfgmanuel.dungeonvault.presentacion.ui.screens.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Icon
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,111 +32,96 @@ import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonImgText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentacion.ui.components.CustomTextField
+import com.tfgmanuel.dungeonvault.presentacion.ui.components.TopBarInvitacion
 import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CambiarPassViewModel
 
 @Composable
 fun CambiarContrasenia(modifier: Modifier = Modifier, viewModel: CambiarPassViewModel) {
-
     val uiState by viewModel.uiState.collectAsState()
 
-    Box (
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image (
-            painter = painterResource(id = R.drawable.fondoinicio),
-            contentDescription = "Fondo pantalla inicio",
-            modifier = Modifier.matchParentSize(),
-            contentScale = ContentScale.Crop
-        )
-
-        Icon(
-            imageVector = Icons.Default.Home,
-            contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier
-                .clickable { viewModel.goBack() }
-                .padding(15.dp)
-        )
-
-        Text (
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(10.dp),
-            text = "Dungeon Vault",
-            color = Color.White,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Box (
-            modifier = Modifier.fillMaxWidth(0.85f)
-                .height(280.dp)
-                .align(Alignment.Center)
-                .background (
-                    color = Color.Black.copy(alpha = 0.9f),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .padding(12.dp)
-        ) {
-            Column (
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+    Scaffold(
+        topBar = {
+            TopBarInvitacion(
+                onBackClick = { viewModel.goBack() },
+                colorContanier = Color.Black
+            )
+        },
+        content = { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black)
+                    .padding(paddingValues)
+                    .padding(WindowInsets.systemBars.asPaddingValues())
             ) {
-                Text (
-                    modifier = Modifier.align(Alignment.Start),
-                    text = "Cambiar clave",
-                    color = Color.White,
-                    fontSize = 32.sp
+                Image(
+                    painter = painterResource(id = R.drawable.fondoinicio),
+                    contentDescription = "Fondo pantalla inicio",
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Box (
-                    modifier = Modifier.height(2.dp)
-                        .fillMaxWidth(0.9f)
-                        .background(Color(0xFFFFA726))
-                        .align(Alignment.Start)
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                CustomButtonImgText (
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .fillMaxHeight(0.19f),
-                    onClick = { /*TODO*/},
-                    painter = painterResource(id = R.drawable.googlelogo),
-                    contentDescription = "Logo google",
-                    text = "Inicio sesion"
-                )
+                        .fillMaxWidth(0.85f)
+                        .height(280.dp)
+                        .align(Alignment.Center)
+                        .background(
+                            color = Color.Black.copy(alpha = 0.9f),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(12.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Start),
+                            text = "Cambiar clave",
+                            color = Color.White,
+                            fontSize = 32.sp
+                        )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                        HorizontalDivider(color = Color(0xFFE69141))
 
-                Box (
-                    modifier = Modifier.height(2.dp)
-                        .fillMaxWidth(0.8f)
-                        .background(Color.White)
-                )
+                        Spacer(modifier = Modifier.height(15.dp))
 
-                Spacer(modifier = Modifier.height(15.dp))
+                        CustomButtonImgText(
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .fillMaxHeight(0.19f),
+                            onClick = { /*TODO*/ },
+                            painter = painterResource(id = R.drawable.googlelogo),
+                            contentDescription = "Logo google",
+                            text = "Inicio sesion"
+                        )
 
-                CustomTextField (
-                    value = uiState.email,
-                    textLabel = "EMAIL",
-                    onValueChange = {viewModel.onChangePassChanged(email = uiState.email)},
-                    isError = uiState.cambiarPassState != null,
-                    textError = uiState.cambiarPassState,
-                    isPassword = false,
-                    keyboardType = KeyboardType.Email,
-                )
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                Spacer(modifier = Modifier.height(5.dp))
+                        HorizontalDivider(modifier = Modifier.fillMaxWidth(0.8f))
 
-                CustomButtonText (
-                    onClick = { },
-                    text = "Cambiar clave"
-                )
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        CustomTextField(
+                            value = uiState.email,
+                            textLabel = "EMAIL",
+                            onValueChange = { viewModel.onChangePassChanged(email = uiState.email) },
+                            isError = uiState.cambiarPassState != null,
+                            textError = uiState.cambiarPassState,
+                            isPassword = false,
+                            keyboardType = KeyboardType.Email,
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        CustomButtonText(
+                            onClick = { },
+                            text = "Cambiar clave"
+                        )
+                    }
+                }
             }
         }
-    }
+    )
 }

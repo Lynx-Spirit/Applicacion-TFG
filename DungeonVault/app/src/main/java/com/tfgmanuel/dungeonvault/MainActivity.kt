@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel: MainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-            DungeonVaultTheme {
+            DungeonVaultTheme (darkTheme = true) {
                 if(runBlocking{authRepository.userLoggedIn()}) {
                     NavigationApp(navigationManager, start = Screen.SeleccionCampania.route)
                 }else {

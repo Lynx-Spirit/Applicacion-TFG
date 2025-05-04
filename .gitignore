@@ -1,5 +1,7 @@
 .env
 
+imagenes/
+
 pgdata/
 
 __pycache__/

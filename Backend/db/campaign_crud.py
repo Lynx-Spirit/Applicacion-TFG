@@ -5,13 +5,13 @@ from db.user_crud import get_user_by_id
 
 #Crear campaña, eliminar campaña, editar título o descripción, insertar más gente a la camapaña, quitar a gente de la campaña.
 
-def create_campaign(db: Session, title: str, description:str, img_url: str, invite_code:str, user_id: int):
+def create_campaign(db: Session, title: str, description:str, img_name: str, invite_code:str, user_id: int):
     campaign = Campaign(
         title= title,
         description= description,
-        imgURL= img_url,
+        img_name= img_name,
         invite_code = invite_code,
-        creatorID= user_id
+        creator_id= user_id
     )
 
     db.add(campaign)
@@ -39,7 +39,7 @@ def user_in_campaign(db: Session, campaign_id: int, user_id: int) -> bool:
     return user in campaign.members
  
 
-def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption: str= "", img_url: str= ""):
+def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption: str= "", img_name: str= ""):
     campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
     
     if title != "":
@@ -48,9 +48,9 @@ def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption:
     if desciption != "":
         campaign.description = desciption
     
-    if img_url != "":
-        delete(campaign.imgURL)
-        campaign.imgURL = img_url
+    if img_name != "":
+        delete(campaign.img_name)
+        campaign.img_name = img_name
 
     db.commit()
     db.refresh(campaign)
@@ -60,7 +60,7 @@ def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption:
 def delete_campaign(db: Session, id: int):
     campaign = get_campaign_by_id(db= db, campaign_id= id)
 
-    delete(campaign.imgURL)
+    delete(campaign.img_name)
     db.delete(campaign)
     db.commit()
 

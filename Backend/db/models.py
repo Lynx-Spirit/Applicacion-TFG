@@ -24,7 +24,7 @@ class Campaign(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String)
-    img_url = Column(String)
+    img_name = Column(String)
     invite_code = Column(String)
 
     creator_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))

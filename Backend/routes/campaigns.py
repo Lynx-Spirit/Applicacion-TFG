@@ -9,11 +9,11 @@ from aux_func.auth import get_current_user, get_user_id
 
 router = APIRouter()
 
-@router.post("/", response_model= CampaignResponse)
+@router.post("/new", response_model= CampaignResponse)
 def create(campaign: Campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     invite_code = generate_invite_code(db)
 
-    return create_campaign(db, campaign.title, campaign.description, campaign.img_url, invite_code, user_id)
+    return create_campaign(db, campaign.title, campaign.description, campaign.img_name, invite_code, user_id)
 
 @router.get("/{id}", response_model= CampaignResponse)
 def get_campaign(id: int, db: Session = Depends(get_db)):
@@ -35,7 +35,7 @@ def update(id: int, campaign: Campaign, user_id = Depends(get_current_user), db:
     campaign_creator = get_campaign_creator(db,id)
 
     if user_id == campaign_creator:
-        return update_campaign(db, id, campaign.title, campaign.description, campaign.img_url)
+        return update_campaign(db, id, campaign.title, campaign.description, campaign.img_name)
     else:
         raise HTTPException(status_code=403, detail= "You are not the owner of this campaign")
 

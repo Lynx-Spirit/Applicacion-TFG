@@ -25,12 +25,12 @@ class Token(BaseModel):
 class Campaign(BaseModel):
      title: str
      description: str
-     img_url: str
+     img_name: str
 
 class CampaignResponse(BaseModel):
      id: int
      title: str
      description: str
-     img_url: str
+     img_name: str
      invite_code: str
      creator_id: int

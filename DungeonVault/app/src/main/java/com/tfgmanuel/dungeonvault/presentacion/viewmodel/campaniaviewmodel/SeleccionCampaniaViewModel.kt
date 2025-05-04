@@ -31,11 +31,15 @@ class SeleccionCampaniaViewModel @Inject constructor(
         _uistate.value = _uistate.value.copy(error = null)
         viewModelScope.launch {
             try {
-                val resultado = campaniaRepository.getAllCampaigns()
-                if(resultado.isSuccess) {
-                    _uistate.value = _uistate.value.copy(campanias = campaignDAO.getAllCampaigns())
+                if(campaignDAO.getAllCampaigns().isEmpty()) {
+                    val resultado = campaniaRepository.getAllCampaigns()
+                    if(resultado.isSuccess) {
+                        _uistate.value = _uistate.value.copy(campanias = campaignDAO.getAllCampaigns())
+                    }else {
+                        _uistate.value = _uistate.value.copy(error = resultado.getOrNull())
+                    }
                 }else {
-                    _uistate.value = _uistate.value.copy(error = resultado.getOrNull())
+                    _uistate.value = _uistate.value.copy(campanias = campaignDAO.getAllCampaigns())
                 }
             } catch(e: Exception) {
                 _uistate.value = _uistate.value.copy(error = e.message)

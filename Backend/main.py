@@ -12,7 +12,7 @@ app = FastAPI()
 
 os.makedirs(settings.UPLOAD_FOLDER, exist_ok=True)
 
-app.mount("/images", StaticFiles(directory=settings.UPLOAD_FOLDER), name="images")
+app.mount("/static/images", StaticFiles(directory=settings.UPLOAD_FOLDER), name="images")
 
 Base.metadata.create_all(bind=engine)
 

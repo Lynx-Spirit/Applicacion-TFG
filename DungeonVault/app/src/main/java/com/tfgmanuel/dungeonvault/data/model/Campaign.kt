@@ -7,7 +7,7 @@ data class Campaign(
     @PrimaryKey val id: Int,
     val title: String,
     val description: String,
-    val img_url: String,
+    val img_name: String,
     val invite_code: String,
     val creator_id: Int
 )

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.tfgmanuel.dungeonvault.data.local.dao.CampaignDAO
 import com.tfgmanuel.dungeonvault.data.model.Campaign
 
-@Database(entities = [Campaign:: class], version = 1)
+@Database(entities = [Campaign:: class], version = 2)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun campaignDAO(): CampaignDAO
 }

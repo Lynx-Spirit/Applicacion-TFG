@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -31,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CustomContainer (
+fun CustomContainer(
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(8.dp),
     containterColor: Color = Color(0xFF1A1A1A),
@@ -45,22 +46,24 @@ fun CustomContainer (
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background (
+            .background(
                 color = containterColor,
                 shape = shape
             )
             .clickable(onClick = onClick)
     ) {
         Row {
-            Image (
-                modifier = Modifier.clip(
-                    shape = RoundedCornerShape(
-                        topStart = 8.dp,
-                        topEnd = 0.dp,
-                        bottomStart = 8.dp,
-                        bottomEnd = 0.dp,
-                    )
-                ),
+            Image(
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(
+                        shape = RoundedCornerShape(
+                            topStart = 8.dp,
+                            topEnd = 0.dp,
+                            bottomStart = 8.dp,
+                            bottomEnd = 0.dp,
+                        )
+                    ),
                 painter = painter,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop
@@ -68,8 +71,8 @@ fun CustomContainer (
 
             Spacer(modifier = Modifier.width(5.dp))
 
-            Column (modifier = Modifier.fillMaxSize()) {
-                Text (
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = titulo,
                     color = textColor,
@@ -80,11 +83,11 @@ fun CustomContainer (
 
                 Spacer(modifier = Modifier.height(5.dp))
 
-                Text (
+                Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = descripcion,
                     color = textColor,
-                    fontSize = 8.sp,
+                    fontSize = 10.sp,
                     textAlign = TextAlign.Left
                 )
             }
@@ -107,11 +110,11 @@ fun SheetOption(
             supportingColor = contentColor,
             leadingIconColor = contentColor
         ),
-        headlineContent = { Text(titulo)},
-        supportingContent = {Text(subtitulo)},
+        headlineContent = { Text(titulo) },
+        supportingContent = { Text(subtitulo) },
         leadingContent = {
             Icon(icono, contentDescription = null)
         },
-        modifier = Modifier.clickable( onClick = onClick )
+        modifier = Modifier.clickable(onClick = onClick)
     )
 }

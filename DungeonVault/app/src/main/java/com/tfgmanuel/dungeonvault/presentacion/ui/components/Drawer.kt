@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.HorizontalDivider
@@ -26,18 +26,27 @@ import com.tfgmanuel.dungeonvault.MainViewModel
 fun DrawerAplicacion() {
     val viewModel: MainViewModel = hiltViewModel()
 
-    ModalDrawerSheet (
+    ModalDrawerSheet(
         drawerContainerColor = Color(0xFF1A1A1A),
         drawerContentColor = Color.White
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier.padding(horizontal = 16.dp)
-        ){
+        ) {
             Spacer(Modifier.height(12.dp))
-            Text("Ajustes", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleLarge)
-            HorizontalDivider()
+            Text(
+                "Opciones",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineLarge
+            )
 
-            Text("Usuario", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleMedium)
+            HorizontalDivider(color = Color(0xFFE69141))
+
+            Text(
+                "Ajustes",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.titleLarge
+            )
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
                     unselectedContainerColor = Color(0xFF1A1A1A),
@@ -56,7 +65,12 @@ fun DrawerAplicacion() {
                     unselectedIconColor = Color.White,
                     unselectedTextColor = Color.White
                 ),
-                icon = { Icon(imageVector = Icons.Default.Close, contentDescription = null) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        contentDescription = null
+                    )
+                },
                 label = { Text("Logout") },
                 selected = false,
                 onClick = {
@@ -67,8 +81,8 @@ fun DrawerAplicacion() {
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
                     unselectedContainerColor = Color(0xFF1A1A1A),
-                    unselectedIconColor = Color.White,
-                    unselectedTextColor = Color.White
+                    unselectedIconColor = Color(0xFFF44336),
+                    unselectedTextColor = Color(0xFFF44336)
                 ),
                 icon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) },
                 label = { Text("Eliminar cuenta") },

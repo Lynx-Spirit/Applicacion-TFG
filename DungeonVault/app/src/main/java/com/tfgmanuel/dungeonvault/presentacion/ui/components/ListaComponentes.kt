@@ -41,7 +41,7 @@ fun <T> ListaObjetos(
             )
         }
     } else {
-        LazyColumn (
+        LazyColumn(
             modifier = modifier
                 .padding(paddingValues)
                 .fillMaxSize(),

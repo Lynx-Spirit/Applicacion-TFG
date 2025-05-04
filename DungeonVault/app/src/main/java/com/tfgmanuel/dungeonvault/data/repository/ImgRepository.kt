@@ -24,7 +24,7 @@ class ImgRepository @Inject constructor(
 
             if(result.isSuccessful) {
                 val imgResponse = result.body()!!
-                return imgResponse.url
+                return imgResponse.filename
             } else {
                 return ""
             }
