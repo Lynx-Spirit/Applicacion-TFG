@@ -7,6 +7,7 @@ import com.tfgmanuel.dungeonvault.data.model.Token
 import com.tfgmanuel.dungeonvault.data.model.TokenResponse
 import com.tfgmanuel.dungeonvault.data.model.User
 import com.tfgmanuel.dungeonvault.data.remote.AuthAPI
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
@@ -84,6 +85,45 @@ class AuthRepository @Inject constructor(
             result.isSuccess
         } else {
             false
+        }
+    }
+
+    suspend fun deleteUser(): Result<String> {
+        try {
+            var access = tokenManager.getAccessToken().first()
+            var response = authAPI.delete("Bearer $access")
+
+            if(response.isSuccessful) {
+                return Result.success(response.body()!!.message)
+            }
+
+            if(response.code() != 401) {
+                return Result.failure(Exception("Error al actualizar camapaña: ${response.message()}"))
+            }
+
+            val refresh = tokenManager.getRefreshToken().first()
+
+            if(refresh == null) {
+                return Result.failure(Exception("No hay token de refresco"))
+            }
+
+            val refreshSuccess = refresh(refresh)
+
+            if(refreshSuccess.isFailure) {
+                return Result.failure(Exception("Refresh fallido"))
+            }
+
+            access = tokenManager.getAccessToken().first()
+            response  = authAPI.delete("Bearer $access")
+
+            if(response.isSuccessful) {
+                return Result.success("Usuario eliminado de forma exitosa")
+            }
+
+            return Result.failure(Exception("El usuario no se ha podido eliminar"))
+
+        }catch (e: Exception) {
+            return Result.failure(Exception("Error inesperado: ${e.message}"))
         }
     }
 

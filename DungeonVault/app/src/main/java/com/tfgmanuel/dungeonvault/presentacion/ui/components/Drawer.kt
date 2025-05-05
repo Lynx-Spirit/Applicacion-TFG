@@ -16,6 +16,8 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -25,6 +27,7 @@ import com.tfgmanuel.dungeonvault.MainViewModel
 @Composable
 fun DrawerAplicacion() {
     val viewModel: MainViewModel = hiltViewModel()
+    val openAlertDialog = remember { mutableStateOf(false) }
 
     ModalDrawerSheet(
         drawerContainerColor = Color(0xFF1A1A1A),
@@ -87,10 +90,20 @@ fun DrawerAplicacion() {
                 icon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) },
                 label = { Text("Eliminar cuenta") },
                 selected = false,
-                onClick = {
-
-                }
+                onClick = { openAlertDialog.value = true }
             )
         }
+    }
+
+    if(openAlertDialog.value) {
+        DecisionDialog(
+            onDismissRequest = { openAlertDialog.value = false },
+            onConfirmation = {
+                viewModel.deleteAccount()
+                openAlertDialog.value = false
+            },
+            dialogTitle = "Eliminar cuenta",
+            dialogText = "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+        )
     }
 }

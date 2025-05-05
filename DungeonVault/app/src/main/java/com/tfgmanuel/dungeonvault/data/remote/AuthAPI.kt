@@ -7,6 +7,8 @@ import com.tfgmanuel.dungeonvault.data.model.TokenResponse
 import com.tfgmanuel.dungeonvault.data.model.User
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthAPI {
@@ -22,4 +24,7 @@ interface AuthAPI {
 
     @POST("auth/verify")
     suspend fun verify(@Body token: Token): Response<Boolean>
+
+    @DELETE("auth/delete")
+    suspend fun delete(@Header("Authorization") token: String): Response<APIResponse>
 }

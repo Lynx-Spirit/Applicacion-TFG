@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from db.database import get_db
-from db.user_crud import get_user_by_email, create_user, update_password, delete_user
+from db.user_crud import get_user_by_email, create_user, update_password, remove_user
 from schema import User, ChangePasswordSchema, TokenResponse, RefreshTokenRequest, Token
 from aux_func.auth import get_current_user
 from aux_func.auth import create_access_token, create_refresh_token, verify, verify_token
@@ -60,6 +60,8 @@ def verifyToken(request: Token):
 @router.delete("/delete")
 def delete_user(user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        delete_user(user_id, db)
+        remove_user(db, user_id)
+        return {"message": "Usuario eliminado correctamente"}
     except Exception as e:
+        print(e)
         raise HTTPException(status_code = 500, detail=str(e))
