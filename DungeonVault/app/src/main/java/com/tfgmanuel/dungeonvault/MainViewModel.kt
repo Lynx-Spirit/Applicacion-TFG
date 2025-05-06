@@ -1,5 +1,6 @@
 package com.tfgmanuel.dungeonvault
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.data.TokenManager
@@ -18,11 +19,20 @@ class MainViewModel @Inject constructor(
     private var campaignDAO: CampaignDAO,
     private var authRepository: AuthRepository
 ): ViewModel(){
+    val showDeleteDialog = mutableStateOf(false)
+
+    fun showDialog() {
+        showDeleteDialog.value = true
+    }
+
+    fun hideDialog() {
+        showDeleteDialog.value = false
+    }
 
     fun logOut() {
         viewModelScope.launch {
             deleteAll()
-            navManager.navigate(Screen.Inicio.route)
+            navManager.navigate(Screen.Login.route)
         }
     }
 

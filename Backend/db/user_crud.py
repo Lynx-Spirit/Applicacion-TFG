@@ -11,7 +11,7 @@ def get_user_by_email(db: Session, email: str):
 
 def get_users_campaigns(db: Session, user_id: int):
     user = get_user_by_id(db, user_id)
-    return user.campaigns
+    return user.joined_campaigns
 
 def update_password(db: Session, user_email: str, new_password: str):
     user = get_user_by_email(db= db, email= user_email)

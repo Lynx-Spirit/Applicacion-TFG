@@ -1,10 +1,8 @@
 package com.tfgmanuel.dungeonvault.data.repository
 
-import androidx.lifecycle.ViewModel
 import com.tfgmanuel.dungeonvault.data.TokenManager
 import com.tfgmanuel.dungeonvault.data.model.RefreshTokenRequest
 import com.tfgmanuel.dungeonvault.data.model.Token
-import com.tfgmanuel.dungeonvault.data.model.TokenResponse
 import com.tfgmanuel.dungeonvault.data.model.User
 import com.tfgmanuel.dungeonvault.data.remote.AuthAPI
 import kotlinx.coroutines.flow.first
@@ -14,7 +12,7 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authAPI: AuthAPI,
     private val tokenManager: TokenManager
-) : ViewModel() {
+) {
 
     suspend fun login(email: String, password: String): Result<String> {
         return try {
@@ -29,7 +27,8 @@ class AuthRepository @Inject constructor(
                 )
                 Result.success("Login realizado con éxito")
             } else {
-                Result.failure(Exception("Login failed: ${response.message()}"))
+                val detail = getErrorFromApi(response)
+                Result.failure(Exception(detail))
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -42,15 +41,19 @@ class AuthRepository @Inject constructor(
             if (response.isSuccessful) {
                 Result.success("Registro realizado con éxito")
             } else {
-                Result.failure(Exception("Registration failed: ${response.message()}"))
+                val detail = getErrorFromApi(response)
+                Result.failure(Exception(detail))
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun refresh(refreshToken: String): Result<TokenResponse> {
+    suspend fun refreshTokens(): Result<String> {
         return try {
+            val refreshToken = tokenManager.getRefreshToken().first()
+                ?: return Result.failure(Exception("No se puede refrescar el token"))
+
             val response = authAPI.refresh(RefreshTokenRequest(refreshToken))
             if (response.isSuccessful) {
                 val authResponse = response.body()!!
@@ -59,9 +62,10 @@ class AuthRepository @Inject constructor(
                     authResponse.refresh_token,
                     authResponse.token_type
                 )
-                Result.success(authResponse)
+                Result.success("Tokens refresacos de forma correcta")
             } else {
-                Result.failure(Exception("Refresh failed: ${response.message()}"))
+                val detail = getErrorFromApi(response)
+                Result.failure(Exception(detail))
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -81,7 +85,7 @@ class AuthRepository @Inject constructor(
         }
 
         return if (checkToken(refreshToken)) {
-            val result = refresh(refreshToken)
+            val result = refreshTokens()
             result.isSuccess
         } else {
             false
@@ -89,45 +93,40 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun deleteUser(): Result<String> {
-        try {
-            var access = tokenManager.getAccessToken().first()
-            var response = authAPI.delete("Bearer $access")
+       return firstAttemptDelete()
+           ?: refreshTokens()
+               .flatMap { secondAttemptDelete() }
+    }
 
-            if(response.isSuccessful) {
-                return Result.success(response.body()!!.message)
-            }
+    private suspend fun firstAttemptDelete(): Result<String>? {
+        val access = tokenManager.getAccessToken().first()
+        val response = authAPI.delete("Bearer $access")
 
-            if(response.code() != 401) {
-                return Result.failure(Exception("Error al actualizar camapaña: ${response.message()}"))
-            }
+        if (response.isSuccessful) {
+            return Result.success(response.body()!!.message)
+        }
 
-            val refresh = tokenManager.getRefreshToken().first()
+        if (response.code() != 401) {
+            val detail = getErrorFromApi(response)
+            return Result.failure(Exception(detail))
+        }
 
-            if(refresh == null) {
-                return Result.failure(Exception("No hay token de refresco"))
-            }
+        return null
+    }
 
-            val refreshSuccess = refresh(refresh)
+    private suspend fun secondAttemptDelete(): Result<String> {
+        val access = tokenManager.getAccessToken().first()
+        val response = authAPI.delete("Bearer $access")
 
-            if(refreshSuccess.isFailure) {
-                return Result.failure(Exception("Refresh fallido"))
-            }
-
-            access = tokenManager.getAccessToken().first()
-            response  = authAPI.delete("Bearer $access")
-
-            if(response.isSuccessful) {
-                return Result.success("Usuario eliminado de forma exitosa")
-            }
-
-            return Result.failure(Exception("El usuario no se ha podido eliminar"))
-
-        }catch (e: Exception) {
-            return Result.failure(Exception("Error inesperado: ${e.message}"))
+        if (response.isSuccessful) {
+            return Result.success("Usuario eliminado de forma exitosa")
+        } else {
+            val detail = getErrorFromApi(response)
+            return Result.failure(Exception(detail))
         }
     }
 
-     suspend fun checkToken(token: String): Boolean {
+    suspend fun checkToken(token: String): Boolean {
         val response = authAPI.verify(Token(token))
         return response.isSuccessful
     }

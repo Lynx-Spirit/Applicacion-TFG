@@ -12,17 +12,17 @@ import javax.inject.Inject
 
 class ImgRepository @Inject constructor(
     private val imgAPI: ImgAPI,
-){
+) {
     suspend fun uploadImage(imageUri: Uri, context: Context): String {
-        if(imageUri == Uri.EMPTY) {
+        if (imageUri == Uri.EMPTY) {
             return ""
-        }else {
+        } else {
             val imageFile = getFileFromUri(imageUri, context)
             val imagePart = prepareImageFile(imageFile)
 
             val result = imgAPI.uploadImg(imagePart)
 
-            if(result.isSuccessful) {
+            if (result.isSuccessful) {
                 val imgResponse = result.body()!!
                 return imgResponse.filename
             } else {

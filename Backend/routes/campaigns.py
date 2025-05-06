@@ -13,7 +13,9 @@ router = APIRouter()
 def create(campaign: Campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     invite_code = generate_invite_code(db)
 
-    return create_campaign(db, campaign.title, campaign.description, campaign.img_name, invite_code, user_id)
+    campaign = create_campaign(db, campaign.title, campaign.description, campaign.img_name, invite_code, user_id)
+
+    return campaign
 
 @router.get("/{id}", response_model= CampaignResponse)
 def get_campaign(id: int, db: Session = Depends(get_db)):
@@ -46,9 +48,17 @@ def new_user(invite_code: str, user_id = Depends(get_current_user), db: Session 
     if campaign is None:
         raise HTTPException(status_code=404, detail= "Campaign not found")
     
-    insert_user(db, campaign.id, user_id)
+    if campaign.creator_id == user_id:
+        raise HTTPException(status_code=400, detail="Creator cannot join the campaign")
+    
+    result = insert_user(db, campaign.id, user_id)
 
-    return campaign
+    if(result):
+        return campaign
+    else:
+        raise HTTPException(status_code=400, detail="User already in campaign")
+    
+
 
 @router.patch("/{id}/remove-user")
 def remove(id: int, user_id = Depends(get_current_user), db: Session = Depends(get_db)):

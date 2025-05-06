@@ -20,41 +20,41 @@ interface CampaignAPI {
     suspend fun createCampaign(
         @Body createCampaign: CreateCampaign,
         @Header("Authorization") token: String
-    ):Response<Campaign>
+    ): Response<Campaign>
 
     @GET("campaigns/{id}")
     suspend fun getCampaign(
         @Path("id") id: Int,
         @Header("Authorization") token: String
-    ):Response<Campaign>
+    ): Response<Campaign>
 
     @GET("campaigns/")
     suspend fun getCampaigns(
         @Header("Authorization") token: String
-    ):Response<List<Campaign>>
+    ): Response<List<Campaign>>
 
     @PUT("campaigns/{id}/update")
     suspend fun updateCampaign(
         @Path("id") id: Int,
         @Body createCampaign: CreateCampaign,
         @Header("Authorization") token: String
-    ):Response<Campaign>
+    ): Response<Campaign>
 
     @PATCH("campaigns/new-user")
     suspend fun addUser(
         @Query("invite_code") inviteCode: String,
         @Header("Authorization") token: String
-    ):Response<Campaign>
+    ): Response<Campaign>
 
     @PATCH("campaigns/{id}/remove-user")
     suspend fun removeUser(
         @Path("id") id: Int,
         @Header("Authorization") token: String
-    ):Response<APIResponse>
+    ): Response<APIResponse>
 
     @DELETE("campaigns/{id}")
     suspend fun deleteCampaign(
         @Path("id") id: Int,
         @Header("Authorization") token: String
-    ):Response<APIResponse>
+    ): Response<APIResponse>
 }

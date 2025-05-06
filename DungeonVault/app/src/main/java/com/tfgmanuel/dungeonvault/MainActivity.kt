@@ -9,7 +9,7 @@ import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.NavigationApp
 import com.tfgmanuel.dungeonvault.navigation.Screen
-import com.tfgmanuel.dungeonvault.presentacion.ui.theme.DungeonVaultTheme
+import com.tfgmanuel.dungeonvault.presentation.ui.theme.DungeonVaultTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
             DungeonVaultTheme (darkTheme = true) {
                 if(runBlocking{authRepository.userLoggedIn()}) {
-                    NavigationApp(navigationManager, start = Screen.SeleccionCampania.route)
+                    NavigationApp(navigationManager, start = Screen.SelectCampaign.route)
                 }else {
                     mainViewModel.deleteAll()
                     NavigationApp(navigationManager)

@@ -1,28 +1,28 @@
 package com.tfgmanuel.dungeonvault.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.DetallesCampania
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.NuevaCampania
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.campania.SeleccionCampania
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CambiarContrasenia
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.CrearCuenta
-import com.tfgmanuel.dungeonvault.presentacion.ui.screens.login.PagInicio
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.DetallesCampaniaViewModel
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.NuevaCampaniaViewModel
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.campaniaviewmodel.SeleccionCampaniaViewModel
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CambiarPassViewModel
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.CrearCuentaViewModel
-import com.tfgmanuel.dungeonvault.presentacion.viewmodel.loginviewmodel.LoginViewModel
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignDetails
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignSelection
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.EnterCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.NewCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignDetailsViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignSelectionViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.EnterCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.NewCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.ChangePasswordViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.CreateAccountViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.LoginViewModel
 
 @Composable
-fun NavigationApp(navManager: NavManager, start: String = Screen.Inicio.route) {
+fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
     //Sirve para guardar el historial de navegación
     val navController = rememberNavController()
 
@@ -37,29 +37,39 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Inicio.route) {
     }
 
     NavHost(navController = navController, startDestination = start) {
-        composable(Screen.Inicio.route) {
+        composable(Screen.Login.route) {
             val viewModel = hiltViewModel<LoginViewModel>()
-            PagInicio(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+            Login(viewModel = viewModel)
         }
-        composable(Screen.CrearCuenta.route) {
-            val viewModel: CrearCuentaViewModel = hiltViewModel<CrearCuentaViewModel>()
-            CrearCuenta(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+
+        composable(Screen.CreateAccount.route) {
+            val viewModel: CreateAccountViewModel = hiltViewModel<CreateAccountViewModel>()
+            CreateAccount(viewModel = viewModel)
         }
-        composable(Screen.CambiarContrasenia.route) {
-            val viewModel: CambiarPassViewModel = hiltViewModel<CambiarPassViewModel>()
-            CambiarContrasenia(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+
+        composable(Screen.ChangePassword.route) {
+            val viewModel: ChangePasswordViewModel = hiltViewModel<ChangePasswordViewModel>()
+            ChangePassword(viewModel = viewModel)
         }
-        composable(Screen.SeleccionCampania.route) {
-            val viewModel: SeleccionCampaniaViewModel = hiltViewModel<SeleccionCampaniaViewModel>()
-            SeleccionCampania(modifier = Modifier.fillMaxSize(), viewModel)
+
+        composable(Screen.SelectCampaign.route) {
+            val viewModel: CampaignSelectionViewModel = hiltViewModel<CampaignSelectionViewModel>()
+            CampaignSelection(viewModel = viewModel)
         }
-        composable(Screen.CrearCampania.route) {
-            val viewModel: NuevaCampaniaViewModel = hiltViewModel<NuevaCampaniaViewModel>()
-            NuevaCampania(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+
+        composable(Screen.CreateCampaign.route) {
+            val viewModel: NewCampaignViewModel = hiltViewModel<NewCampaignViewModel>()
+            NewCampaign(viewModel = viewModel)
         }
-        composable("${Screen.DetalleCampania.route}/{campaignID}") {
-            val viewModel: DetallesCampaniaViewModel = hiltViewModel<DetallesCampaniaViewModel>()
-            DetallesCampania(modifier = Modifier.fillMaxSize(), viewModel = viewModel)
+
+        composable(Screen.EnterCampaign.route) {
+            val viewModel: EnterCampaignViewModel = hiltViewModel<EnterCampaignViewModel>()
+            EnterCampaign(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignDetails.route}/{campaignID}") {
+            val viewModel: CampaignDetailsViewModel = hiltViewModel<CampaignDetailsViewModel>()
+            CampaignDetails(viewModel = viewModel)
         }
     }
 }

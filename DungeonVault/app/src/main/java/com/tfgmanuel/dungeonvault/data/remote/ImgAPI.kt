@@ -12,5 +12,5 @@ interface ImgAPI {
     @POST("images/upload")
     suspend fun uploadImg(
         @Part image: MultipartBody.Part
-    ):Response<ImgResponse>
+    ): Response<ImgResponse>
 }

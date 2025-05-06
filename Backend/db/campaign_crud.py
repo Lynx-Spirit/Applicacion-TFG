@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from aux_func.img_aux import delete, save
-from db.models import Campaign, User
+from db.models import Campaign, User, campaign_invites
 from db.user_crud import get_user_by_id
 
 #Crear campaña, eliminar campaña, editar título o descripción, insertar más gente a la camapaña, quitar a gente de la campaña.
@@ -33,10 +33,12 @@ def get_campaign_creator(db: Session, campaign_code: str):
     return campaign.creator_id
 
 def user_in_campaign(db: Session, campaign_id: int, user_id: int) -> bool:
-    campaign = get_campaign_by_id(db, campaign_id)
-    user = get_user_by_id(db, user_id)
+    exists = db.query(campaign_invites).filter_by(
+        campaign_id = campaign_id,
+        user_id = user_id
+    ).first()
 
-    return user in campaign.members
+    return exists is not None
  
 
 def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption: str= "", img_name: str= ""):
@@ -68,9 +70,12 @@ def insert_user(db: Session, campaign_id: int, user_id: int):
     campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
     user = get_user_by_id(db, user_id)
 
-    if user not in campaign.members:
+    if not user_in_campaign(db, campaign_id = campaign_id, user_id = user_id):
         campaign.members.append(user)
         db.commit()
+        db.refresh(user)
+        return True
+    return False
 
 def remove_user(db: Session, campaign_id: int, user_id: int):
     campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
