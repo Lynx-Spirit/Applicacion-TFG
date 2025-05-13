@@ -44,13 +44,13 @@ def user_in_campaign(db: Session, campaign_id: int, user_id: int) -> bool:
 def update_campaign(db: Session, campaign_id: int,  title: str = "", desciption: str= "", img_name: str= ""):
     campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
     
-    if title != "":
+    if title != "" and title != campaign.title:
         campaign.title = title
     
-    if desciption != "":
+    if desciption != "" and desciption != campaign.description:
         campaign.description = desciption
     
-    if img_name != "":
+    if img_name != "" and img_name != campaign.img_name:
         delete(campaign.img_name)
         campaign.img_name = img_name
 

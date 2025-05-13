@@ -40,7 +40,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomIconButon
 import com.tfgmanuel.dungeonvault.presentation.ui.components.DecisionDialog
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignDetailsViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignDetailsViewModel
 
 @Composable
 fun CampaignDetails(modifier: Modifier = Modifier, viewModel: CampaignDetailsViewModel) {

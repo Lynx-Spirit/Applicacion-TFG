@@ -23,7 +23,12 @@ class CampaignRepository @Inject constructor(
         imgUri: Uri,
         context: Context
     ): Result<String> {
-        val fileName = imgRepository.uploadImage(imgUri, context)
+        var fileName = ""
+
+        if (imgUri != Uri.EMPTY) {
+            fileName = imgRepository.uploadImage(imgUri, context)
+        }
+
         val campaign = CreateCampaign(title, description, fileName)
 
         return firstAttemptCreate(campaign)
@@ -102,10 +107,15 @@ class CampaignRepository @Inject constructor(
         id: Int,
         title: String = "",
         description: String = "",
+        originalFileName: String,
         imgUri: Uri = Uri.EMPTY,
         context: Context
     ): Result<String> {
-        val fileName = imgRepository.uploadImage(imgUri, context)
+        var fileName = originalFileName
+
+        if (imgUri != Uri.EMPTY) {
+            fileName = imgRepository.uploadImage(imgUri, context)
+        }
         val campaign = CreateCampaign(title, description, fileName)
 
         return firstAttemptUpdate(id = id, campaign = campaign)

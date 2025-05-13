@@ -21,12 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.tfgmanuel.dungeonvault.R
+import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 
 @Composable
 fun ImageSelector(
     uri: Uri?,
+    imageName: String = "",
     onImageSelected: (Uri?) -> Unit
 ) {
     val launcher =
@@ -39,17 +43,27 @@ fun ImageSelector(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .background(Color.DarkGray),
+            .height(200.dp),
         contentAlignment = Alignment.Center
     ) {
-        if (uri != null) {
+        if (uri != Uri.EMPTY) {
             Image(
                 modifier = Modifier.fillMaxSize(),
                 painter = rememberAsyncImagePainter(
                     model = uri
                 ),
                 contentDescription = "Imagen seleccionada",
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = rememberAsyncImagePainter(
+                    model = "${BASE_URL}images/${imageName}",
+                    error = painterResource(id = R.drawable.sinimg),
+                    placeholder = painterResource(id = R.drawable.sinimg)
+                ),
+                contentDescription = "Imagen base",
                 contentScale = ContentScale.Crop
             )
         }

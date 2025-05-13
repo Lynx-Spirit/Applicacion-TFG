@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,16 +27,16 @@ class CampaignSelectionViewModel @Inject constructor(
         loadCampaigns()
     }
 
-    fun loadCampaigns() {
+    fun loadCampaigns(forceUpdate: Boolean = false) {
         _uiState.value = _uiState.value.copy(error = null)
         viewModelScope.launch {
             try {
-                if(campaignDAO.getAllCampaigns().isEmpty()) {
-                    val resultado = campaignRepository.getAllCampaigns()
-                    if(resultado.isSuccess) {
+                if(campaignDAO.getAllCampaigns().isEmpty() || forceUpdate) {
+                    val result = campaignRepository.getAllCampaigns()
+                    if(result.isSuccess) {
                         _uiState.value = _uiState.value.copy(campaigns = campaignDAO.getAllCampaigns())
                     }else {
-                        _uiState.value = _uiState.value.copy(error = resultado.getOrNull())
+                        _uiState.value = _uiState.value.copy(error = result.getOrNull())
                     }
                 }else {
                     _uiState.value = _uiState.value.copy(campaigns = campaignDAO.getAllCampaigns())

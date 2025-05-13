@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -31,6 +31,10 @@ class CampaignDetailsViewModel @Inject constructor(
     private val campaignID: String? = savedStateHandle["campaignID"]
 
     init {
+        loadCampaign()
+    }
+
+    private fun loadCampaign() {
         viewModelScope.launch {
             if (campaignID != null) {
                 val campaign = campaignDAO.getCampaignById(campaignID.toInt())
@@ -53,23 +57,59 @@ class CampaignDetailsViewModel @Inject constructor(
 
     fun goBack() {
         viewModelScope.launch {
-            navManager.navigate(Screen.SelectCampaign.route)
+            navManager.navigate(
+                route = Screen.SelectCampaign.route,
+                popUpTo = Screen.SelectCampaign.route,
+                inclusive = true
+            )
         }
     }
 
     fun onStartClick() {
-
+        //Llamada al navManager
     }
 
     fun onEditClick() {
-
+        viewModelScope.launch {
+            navManager.navigate(Screen.UpdateCampaign.route + "/$campaignID")
+        }
     }
 
     fun onDeleteClick() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(error = null)
+            val result = campaignID?.let { campaignRepository.removeCampaign(it.toInt()) }
 
+            if (result != null) {
+                if (result.isSuccess) {
+                    navManager.navigate(
+                        route = Screen.SelectCampaign.route,
+                        popUpTo = Screen.SelectCampaign.route,
+                        inclusive = true
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
+                }
+            }
+        }
     }
 
     fun onAbandonClick() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(error = null)
+            val result = campaignID?.let { campaignRepository.removeUser(it.toInt()) }
 
+            if (result != null) {
+                if (result.isSuccess) {
+                    navManager.navigate(
+                        route = Screen.SelectCampaign.route,
+                        popUpTo = Screen.SelectCampaign.route,
+                        inclusive = true
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
+                }
+            }
+        }
     }
 }

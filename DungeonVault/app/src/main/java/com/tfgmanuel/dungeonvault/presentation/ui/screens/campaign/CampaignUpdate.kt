@@ -22,11 +22,10 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentation.ui.components.ImageSelector
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.NewCampaignViewModel
-
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.UpdateCampaignViewModel
 
 @Composable
-fun NewCampaign(modifier: Modifier = Modifier, viewModel: NewCampaignViewModel) {
+fun UpdateCampaign(modifier: Modifier = Modifier, viewModel: UpdateCampaignViewModel) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -51,7 +50,7 @@ fun NewCampaign(modifier: Modifier = Modifier, viewModel: NewCampaignViewModel) 
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Start),
-                        text = "Crear campaña",
+                        text = "Actualizar campaña",
                         color = Color.White,
                         fontSize = 32.sp
                     )
@@ -65,7 +64,7 @@ fun NewCampaign(modifier: Modifier = Modifier, viewModel: NewCampaignViewModel) 
                         value = uiState.title,
                         textLabel = "TÍTULO",
                         onValueChange = {
-                            viewModel.onCreateChanged(
+                            viewModel.onValueChange(
                                 it,
                                 uiState.description,
                                 uiState.imgUri
@@ -78,7 +77,7 @@ fun NewCampaign(modifier: Modifier = Modifier, viewModel: NewCampaignViewModel) 
                         value = uiState.description,
                         textLabel = "DESCRIPCIÓN",
                         onValueChange = {
-                            viewModel.onCreateChanged(
+                            viewModel.onValueChange(
                                 uiState.title,
                                 it,
                                 uiState.imgUri
@@ -91,20 +90,21 @@ fun NewCampaign(modifier: Modifier = Modifier, viewModel: NewCampaignViewModel) 
                         uri = uiState.imgUri,
                         onImageSelected = { uri ->
                             if (uri != null) {
-                                viewModel.onCreateChanged(
+                                viewModel.onValueChange(
                                     title = uiState.title,
                                     description = uiState.description,
-                                    uri = uri
+                                    imgUri = uri
                                 )
                             }
-                        }
+                        },
+                        imageName = uiState.imgName
                     )
 
                     Spacer(modifier = Modifier.height(10.dp))
 
                     CustomButtonText(
-                        onClick = { viewModel.createCampaign() },
-                        text = "Crear partida",
+                        onClick = { viewModel.onSaveClick() },
+                        text = "Actualizar partida",
                         enabled = uiState.isFormValid
                     )
                 }

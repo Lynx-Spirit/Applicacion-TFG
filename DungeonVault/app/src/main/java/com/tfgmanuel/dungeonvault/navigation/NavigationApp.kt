@@ -10,13 +10,15 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignDetai
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignSelection
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.EnterCampaign
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.NewCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.UpdateCampaign
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignDetailsViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignSelectionViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.EnterCampaignViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.NewCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignDetailsViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignSelectionViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.EnterCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.NewCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.UpdateCampaignViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.ChangePasswordViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.CreateAccountViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.LoginViewModel
@@ -30,8 +32,20 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
     //para luego navegar automáticamente entre pantallas.
     LaunchedEffect(navManager) {
         navManager.navigationFlow.collect { command ->
-            navController.navigate(command) {
-                launchSingleTop = true
+            when (command) {
+                is NavigationCommand.NavigateTo -> {
+                    navController.navigate(command.route) {
+                        command.popUpTo?.let { popUpToRoute ->
+                            popUpTo(popUpToRoute) {
+                                inclusive = command.inclusive
+                            }
+                        }
+                        launchSingleTop = true
+                    }
+                }
+                is NavigationCommand.GoBack -> {
+                    navController.popBackStack()
+                }
             }
         }
     }
@@ -70,6 +84,11 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         composable("${Screen.CampaignDetails.route}/{campaignID}") {
             val viewModel: CampaignDetailsViewModel = hiltViewModel<CampaignDetailsViewModel>()
             CampaignDetails(viewModel = viewModel)
+        }
+
+        composable("${Screen.UpdateCampaign.route}/{campaignID}") {
+            val viewModel: UpdateCampaignViewModel = hiltViewModel<UpdateCampaignViewModel>()
+            UpdateCampaign(viewModel = viewModel)
         }
     }
 }

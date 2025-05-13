@@ -3,7 +3,6 @@ package com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.navigation.NavManager
-import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.ChangePasswordState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +29,7 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun goBack() {
         viewModelScope.launch {
-            navigationManager.navigate(Screen.Login.route)
+            navigationManager.goBack()
         }
     }
 }

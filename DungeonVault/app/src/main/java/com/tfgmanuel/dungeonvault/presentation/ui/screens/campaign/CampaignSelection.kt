@@ -49,7 +49,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.DrawerApplication
 import com.tfgmanuel.dungeonvault.presentation.ui.components.ItemList
 import com.tfgmanuel.dungeonvault.presentation.ui.components.MainTopBar
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SheetOption
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.CampaignSelectionViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignSelectionViewModel
 import kotlinx.coroutines.launch
 
 
@@ -64,7 +64,7 @@ fun CampaignSelection(modifier: Modifier = Modifier, viewModel: CampaignSelectio
     val isRefreshing = uiState.isLoading
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
-        onRefresh = { viewModel.loadCampaigns() }
+        onRefresh = { viewModel.loadCampaigns(forceUpdate = true) }
     )
 
     ModalNavigationDrawer(

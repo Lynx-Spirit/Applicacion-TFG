@@ -29,10 +29,14 @@ class LoginViewModel @Inject constructor(
     fun logIn() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)
-            val result = authRepository.login(_uiState.value.email,_uiState.value.password)
-            if(result.isSuccess) {
-                navigationManager.navigate(Screen.SelectCampaign.route)
-            }else {
+            val result = authRepository.login(_uiState.value.email, _uiState.value.password)
+            if (result.isSuccess) {
+                navigationManager.navigate(
+                    route = Screen.SelectCampaign.route,
+                    popUpTo = Screen.SelectCampaign.route,
+                    inclusive = true
+                )
+            } else {
                 _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
             }
         }

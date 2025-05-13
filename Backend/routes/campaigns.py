@@ -36,7 +36,7 @@ def get_campaigns(user_id = Depends(get_current_user), db: Session = Depends(get
 def update(id: int, campaign: Campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaign_creator = get_campaign_creator(db,id)
 
-    if user_id == campaign_creator:
+    if int(user_id) == int(campaign_creator):
         return update_campaign(db, id, campaign.title, campaign.description, campaign.img_name)
     else:
         raise HTTPException(status_code=403, detail= "You are not the owner of this campaign")
@@ -64,18 +64,17 @@ def new_user(invite_code: str, user_id = Depends(get_current_user), db: Session 
 def remove(id: int, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaign_creator = get_campaign_creator(db,id)
 
-    if user_id == campaign_creator:
+    if int(user_id) == int(campaign_creator):
         delete_campaign(db, id)
         return {"message": "Camapaña eliminada correctamente"}
     else:
         remove_user(db, id, user_id)
         return {"message": "Usuario eliminado correctamente"}
 
-@router.delete("/{id}")
+@router.delete("/{id}/delete")
 def delete(id: int, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaign_creator = get_campaign_creator(db,id)
-
-    if user_id == campaign_creator:
+    if int(user_id) == int(campaign_creator):
         delete_campaign(db, id)
         return {"message": "Camapaña eliminada correctamente"}
     else:

@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,9 +22,11 @@ class EnterCampaignViewModel @Inject constructor(
     val uiState: StateFlow<EnterCampaignState> = _uiState.asStateFlow()
 
     fun onInviteChange(inviteCode: String) {
-        _uiState.value = _uiState.value.copy(
-            inviteCode = inviteCode.uppercase()
-        )
+        if(inviteCode.length <= 6) {
+            _uiState.value = _uiState.value.copy(
+                inviteCode = inviteCode.uppercase()
+            )
+        }
     }
 
     fun onInviteSelected() {
@@ -33,7 +35,11 @@ class EnterCampaignViewModel @Inject constructor(
             val result =
                 campaignRepository.insertUser(uiState.value.inviteCode.uppercase())
             if (result.isSuccess) {
-                goBack()
+                navManager.navigate(
+                    route = Screen.SelectCampaign.route,
+                    popUpTo = Screen.SelectCampaign.route,
+                    inclusive = true
+                )
             } else {
                 val errorMessage =
                     result.exceptionOrNull()?.message ?: "Error al unirse a la partida."
@@ -44,7 +50,7 @@ class EnterCampaignViewModel @Inject constructor(
 
     fun goBack() {
         viewModelScope.launch {
-            navManager.navigate(Screen.SelectCampaign.route)
+            navManager.goBack()
         }
     }
 }

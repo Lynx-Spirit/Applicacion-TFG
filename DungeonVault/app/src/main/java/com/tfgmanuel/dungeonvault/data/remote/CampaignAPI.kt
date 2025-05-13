@@ -52,7 +52,7 @@ interface CampaignAPI {
         @Header("Authorization") token: String
     ): Response<APIResponse>
 
-    @DELETE("campaigns/{id}")
+    @DELETE("campaigns/{id}/delete")
     suspend fun deleteCampaign(
         @Path("id") id: Int,
         @Header("Authorization") token: String

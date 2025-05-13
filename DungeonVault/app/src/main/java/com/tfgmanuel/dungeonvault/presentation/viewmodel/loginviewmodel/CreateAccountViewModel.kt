@@ -16,9 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateAccountViewModel @Inject constructor(
-    private  val navigationManager: NavManager,
+    private val navigationManager: NavManager,
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
     private var passwordPattern = Regex("\\b(?=\\w{9,})(?=\\w*[A-Z])(?=\\w*\\d)\\w+\\b")
 
     private val _uiState = MutableStateFlow(CreateAccountState())
@@ -31,7 +31,11 @@ class CreateAccountViewModel @Inject constructor(
 
     fun registerUser() {
 
-        _uiState.value = _uiState.value.copy(emailResult = null, passwordResult = null, confirmPasswordResult = null)
+        _uiState.value = _uiState.value.copy(
+            emailResult = null,
+            passwordResult = null,
+            confirmPasswordResult = null
+        )
 
         if (!Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()) {
             _uiState.value = _uiState.value.copy(emailResult = "Formato incorrecto de mail")
@@ -52,24 +56,29 @@ class CreateAccountViewModel @Inject constructor(
             return
         }
 
-        register(_uiState.value.email,_uiState.value.password)
+        register(_uiState.value.email, _uiState.value.password)
 
     }
 
     fun register(email: String, password: String) {
         viewModelScope.launch {
             val result = authRepository.register(email, password)
-            if(result.isSuccess) {
-                navigationManager.navigate(Screen.Login.route)
-            }else {
-                _uiState.value= _uiState.value.copy(emailResult = result.exceptionOrNull()?.message)
+            if (result.isSuccess) {
+                navigationManager.navigate(
+                    route = Screen.Login.route,
+                    popUpTo = Screen.Login.route,
+                    inclusive = true
+                )
+            } else {
+                _uiState.value =
+                    _uiState.value.copy(emailResult = result.exceptionOrNull()?.message)
             }
         }
     }
 
     fun goBack() {
         viewModelScope.launch {
-            navigationManager.navigate(Screen.Login.route)
+            navigationManager.goBack()
         }
     }
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel.EnterCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.EnterCampaignViewModel
 
 @Composable
 fun EnterCampaign(modifier : Modifier = Modifier, viewModel: EnterCampaignViewModel) {
@@ -78,6 +78,7 @@ fun EnterCampaign(modifier : Modifier = Modifier, viewModel: EnterCampaignViewMo
                     )
                 }
             }
-        }
+        },
+        containerColor = Color(0xFF131313)
     )
 }

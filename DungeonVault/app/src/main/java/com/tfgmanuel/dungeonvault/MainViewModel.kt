@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
     private var tokenManager: TokenManager,
     private var campaignDAO: CampaignDAO,
     private var authRepository: AuthRepository
-): ViewModel(){
+) : ViewModel() {
     val showDeleteDialog = mutableStateOf(false)
 
     fun showDialog() {
@@ -32,7 +32,11 @@ class MainViewModel @Inject constructor(
     fun logOut() {
         viewModelScope.launch {
             deleteAll()
-            navManager.navigate(Screen.Login.route)
+            navManager.navigate(
+                route = Screen.Login.route,
+                popUpTo = Screen.Login.route,
+                inclusive = true
+            )
         }
     }
 

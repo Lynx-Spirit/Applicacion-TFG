@@ -8,4 +8,5 @@ sealed class Screen(val route: String) {
     object CampaignDetails : Screen("CampaignDetails")
     object CreateCampaign : Screen("CreateCampaign")
     object EnterCampaign : Screen("EnterCampaign")
+    object UpdateCampaign : Screen("UpdateCampaign")
 }

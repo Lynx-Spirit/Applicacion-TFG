@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaniaviewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -20,7 +20,7 @@ class NewCampaignViewModel @Inject constructor(
     private val navManager: NavManager,
     private val campaignRepository: CampaignRepository,
     private val contextProvider: ContextProvider
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(CampaignState())
     val uiState: StateFlow<CampaignState> = _uiState.asStateFlow()
 
@@ -38,13 +38,17 @@ class NewCampaignViewModel @Inject constructor(
                 imgUri = _uiState.value.imgUri,
                 context = contextProvider.getContext()
             )
-            navManager.navigate(Screen.SelectCampaign.route)
+            navManager.navigate(
+                route = Screen.SelectCampaign.route,
+                popUpTo = Screen.SelectCampaign.route,
+                inclusive = true
+            )
         }
     }
 
     fun goBack() {
         viewModelScope.launch {
-            navManager.navigate(Screen.SelectCampaign.route)
+            navManager.goBack()
         }
     }
 }
