@@ -60,7 +60,7 @@ class CreateAccountViewModel @Inject constructor(
 
     }
 
-    fun register(email: String, password: String) {
+    private fun register(email: String, password: String) {
         viewModelScope.launch {
             val result = authRepository.register(email, password)
             if (result.isSuccess) {

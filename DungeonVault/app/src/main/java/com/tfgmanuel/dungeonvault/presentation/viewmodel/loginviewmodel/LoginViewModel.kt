@@ -1,5 +1,6 @@
 package com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
@@ -29,15 +30,19 @@ class LoginViewModel @Inject constructor(
     fun logIn() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)
-            val result = authRepository.login(_uiState.value.email, _uiState.value.password)
-            if (result.isSuccess) {
-                navigationManager.navigate(
-                    route = Screen.SelectCampaign.route,
-                    popUpTo = Screen.SelectCampaign.route,
-                    inclusive = true
-                )
+            if (!Patterns.EMAIL_ADDRESS.matcher(_uiState.value.email).matches()) {
+                _uiState.value = _uiState.value.copy(error = "Correo incorrecto")
             } else {
-                _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
+                val result = authRepository.login(_uiState.value.email, _uiState.value.password)
+                if (result.isSuccess) {
+                    navigationManager.navigate(
+                        route = Screen.SelectCampaign.route,
+                        popUpTo = Screen.SelectCampaign.route,
+                        inclusive = true
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
+                }
             }
         }
     }

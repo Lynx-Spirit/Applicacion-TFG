@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from aux_func.auth import hash_password
 from db.models import User
+from schema import user
 
 
 def get_user_by_id(db: Session, user_id: int):
@@ -23,10 +24,10 @@ def update_password(db: Session, user_email: str, new_password: str):
 
     return user
 
-def create_user(db: Session, email: str, password: str):
-    hashed_pw = hash_password(password)
+def create_user(db: Session, user: user):
+    hashed_pw = hash_password(user.password)
 
-    new_user = User(email=email, hashedPass=hashed_pw)
+    new_user = User(email= user.email, nickname= user.nickname, hashedPass= hashed_pw, avatar_file_name= user.avatar)
 
     db.add(new_user)
     db.commit()

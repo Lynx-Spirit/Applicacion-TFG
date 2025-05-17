@@ -3,21 +3,21 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.campaign_crud import *
 from db.user_crud import get_users_campaigns
-from schema import Campaign, CampaignResponse
+from schema import campaign, campaign_response
 from aux_func.campaigns_aux import generate_invite_code
 from aux_func.auth import get_current_user, get_user_id
 
 router = APIRouter()
 
-@router.post("/new", response_model= CampaignResponse)
-def create(campaign: Campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
+@router.post("/new", response_model= campaign_response)
+def create(campaign: campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     invite_code = generate_invite_code(db)
 
     campaign = create_campaign(db, campaign.title, campaign.description, campaign.img_name, invite_code, user_id)
 
     return campaign
 
-@router.get("/{id}", response_model= CampaignResponse)
+@router.get("/{id}", response_model= campaign_response)
 def get_campaign(id: int, db: Session = Depends(get_db)):
     campaign = get_campaign_by_id(db, id)
 
@@ -26,14 +26,14 @@ def get_campaign(id: int, db: Session = Depends(get_db)):
     
     return campaign
 
-@router.get("/", response_model=list[CampaignResponse])
+@router.get("/", response_model=list[campaign_response])
 def get_campaigns(user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaigns = get_users_campaigns(db, user_id)
 
     return campaigns
 
-@router.put("/{id}/update", response_model= CampaignResponse)
-def update(id: int, campaign: Campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
+@router.put("/{id}/update", response_model= campaign_response)
+def update(id: int, campaign: campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaign_creator = get_campaign_creator(db,id)
 
     if int(user_id) == int(campaign_creator):
@@ -41,7 +41,7 @@ def update(id: int, campaign: Campaign, user_id = Depends(get_current_user), db:
     else:
         raise HTTPException(status_code=403, detail= "You are not the owner of this campaign")
 
-@router.patch("/new-user", response_model= CampaignResponse)
+@router.patch("/new-user", response_model= campaign_response)
 def new_user(invite_code: str, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     campaign = get_campaign_by_code(db, invite_code)
     
@@ -57,8 +57,6 @@ def new_user(invite_code: str, user_id = Depends(get_current_user), db: Session 
         return campaign
     else:
         raise HTTPException(status_code=400, detail="User already in campaign")
-    
-
 
 @router.patch("/{id}/remove-user")
 def remove(id: int, user_id = Depends(get_current_user), db: Session = Depends(get_db)):

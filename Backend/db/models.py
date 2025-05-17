@@ -15,6 +15,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, index=True)
+    nickname = Column(String)
+    avatar_file_name = Column(String)
     hashedPass = Column(String)
 
     created_campaigns = relationship(
