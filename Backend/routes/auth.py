@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from db.database import get_db
-from db.user_crud import get_user_by_email, create_user, update_password, remove_user, get_user_by_id
-from schema import user, change_password_schema, token_response, refresh_token_request, token, login_info, user_response
+from db.user_crud import get_user_by_email, create_user, update_password, remove_user, get_user_by_id, update_user
+from schema import user, change_password_schema, token_response, refresh_token_request, token, login_info, user_response, user_update
 from aux_func.auth import get_current_user
 from aux_func.auth import create_access_token, create_refresh_token, verify, verify_token
 
@@ -31,6 +31,11 @@ def login(user_data: login_info, db: Session = Depends(get_db)):
 @router.get("/get", response_model= user_response)
 def get_user(user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     user = get_user_by_id(db, user_id)
+    return user
+
+@router.put("/update", response_model= user_response)
+def update(user_id = Depends(get_current_user), data = user_update, db: Session = Depends(get_db)):
+    user = update_user(db= db, user_id= user_id, user_nickname= data.nickname, user_new_avatar= data.avatar)
     return user
 
 @router.put("/change-password")

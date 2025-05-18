@@ -6,10 +6,13 @@ class user(BaseModel):
     avatar: str
     nickname: str
 
+class user_update(BaseModel):
+     nickname: str
+     avatar: str
+
 class user_response(BaseModel):
     id: int
     email: EmailStr
-    password: str
     avatar: str
     nickname: str
 
