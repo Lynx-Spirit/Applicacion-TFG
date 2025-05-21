@@ -14,14 +14,16 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.UpdateCampaig
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignDetailsViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignSelectionViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.EnterCampaignViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.NewCampaignViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.UpdateCampaignViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.ChangePasswordViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.CreateAccountViewModel
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.LoginViewModel
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.other.UpdateUserInfo
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignDetailsViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignSelectionViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.EnterCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.NewCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.UpdateCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.ChangePasswordViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.CreateAccountViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.LoginViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.UpdateUserInfoViewModel
 
 @Composable
 fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
@@ -64,6 +66,11 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         composable(Screen.ChangePassword.route) {
             val viewModel: ChangePasswordViewModel = hiltViewModel<ChangePasswordViewModel>()
             ChangePassword(viewModel = viewModel)
+        }
+
+        composable(Screen.UpdateUser.route) {
+            val viewModel: UpdateUserInfoViewModel = hiltViewModel<UpdateUserInfoViewModel>()
+            UpdateUserInfo(viewModel = viewModel)
         }
 
         composable(Screen.SelectCampaign.route) {

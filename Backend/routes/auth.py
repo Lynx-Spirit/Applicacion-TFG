@@ -34,7 +34,7 @@ def get_user(user_id = Depends(get_current_user), db: Session = Depends(get_db))
     return user
 
 @router.put("/update", response_model= user_response)
-def update(user_id = Depends(get_current_user), data = user_update, db: Session = Depends(get_db)):
+def update(data: user_update, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     user = update_user(db= db, user_id= user_id, user_nickname= data.nickname, user_new_avatar= data.avatar)
     return user
 

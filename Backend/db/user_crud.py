@@ -25,13 +25,14 @@ def update_password(db: Session, user_email: str, new_password: str):
 
     return user
 
-def update_user(db: Session, user_id: int, user_nickname: str = None, user_new_avatar: str = None):
+def update_user(db: Session, user_id: int, user_nickname: str = "", user_new_avatar: str = ""):
     user = get_user_by_id(db, user_id)
 
-    if user_nickname:
+    if user_nickname != "" and user.nickname != user_nickname:
         user.nickname = user_nickname
 
-    if user_new_avatar:
+    if user_new_avatar != "" and user.avatar != user_new_avatar:
+        delete(user.avatar)
         user.avatar = user_new_avatar
 
     db.commit()

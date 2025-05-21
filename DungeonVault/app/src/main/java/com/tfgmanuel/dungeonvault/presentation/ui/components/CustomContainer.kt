@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tfgmanuel.dungeonvault.trimPhrase
 
 @Composable
 fun CustomContainer(
@@ -85,7 +86,7 @@ fun CustomContainer(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = description,
+                    text = trimPhrase(description),
                     color = textColor,
                     fontSize = 10.sp,
                     textAlign = TextAlign.Left

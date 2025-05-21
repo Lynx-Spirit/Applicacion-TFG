@@ -10,6 +10,7 @@ import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.NavigationApp
 import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.ui.theme.DungeonVaultTheme
+import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject

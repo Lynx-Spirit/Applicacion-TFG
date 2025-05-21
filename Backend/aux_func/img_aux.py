@@ -14,7 +14,8 @@ async def save(file, upload_folder = settings.UPLOAD_FOLDER):
     return image_filename
 
 def delete(image_filename, upload_folder = settings.UPLOAD_FOLDER):
-    path = os.path.join(upload_folder,image_filename)
-    
-    if os.path.exists(path):
-        os.remove(path)
+    if(image_filename != ""):
+        path = os.path.join(upload_folder,image_filename)
+        
+        if os.path.exists(path):
+            os.remove(path)

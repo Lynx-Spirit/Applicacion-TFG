@@ -49,7 +49,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.DrawerApplication
 import com.tfgmanuel.dungeonvault.presentation.ui.components.ItemList
 import com.tfgmanuel.dungeonvault.presentation.ui.components.MainTopBar
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SheetOption
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.CampaignSelectionViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignSelectionViewModel
 import kotlinx.coroutines.launch
 
 

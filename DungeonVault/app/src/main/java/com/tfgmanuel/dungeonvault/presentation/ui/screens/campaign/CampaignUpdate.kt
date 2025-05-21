@@ -18,11 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentation.ui.components.ImageSelector
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel.UpdateCampaignViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.UpdateCampaignViewModel
 
 @Composable
 fun UpdateCampaign(modifier: Modifier = Modifier, viewModel: UpdateCampaignViewModel) {
@@ -87,7 +88,11 @@ fun UpdateCampaign(modifier: Modifier = Modifier, viewModel: UpdateCampaignViewM
                     )
 
                     ImageSelector(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
                         uri = uiState.imgUri,
+                        defaultImage = R.drawable.sinimg,
                         onImageSelected = { uri ->
                             if (uri != null) {
                                 viewModel.onValueChange(

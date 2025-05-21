@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
+package com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

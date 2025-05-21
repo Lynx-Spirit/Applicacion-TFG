@@ -41,16 +41,16 @@ def user_in_campaign(db: Session, campaign_id: int, user_id: int) -> bool:
     return exists is not None
  
 
-def update_campaign(db: Session, campaign_id: int,  title: str = None, description: str= None, img_name: str= None):
+def update_campaign(db: Session, campaign_id: int,  title: str = "", description: str= "", img_name: str= ""):
     campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
     
-    if title and title != campaign.title:
+    if title  != "" and title != campaign.title:
         campaign.title = title
     
-    if description and description != campaign.description:
+    if description != "" and description != campaign.description:
         campaign.description = description
     
-    if img_name and img_name != campaign.img_name:
+    if img_name != "" and img_name != campaign.img_name:
         delete(campaign.img_name)
         campaign.img_name = img_name
 

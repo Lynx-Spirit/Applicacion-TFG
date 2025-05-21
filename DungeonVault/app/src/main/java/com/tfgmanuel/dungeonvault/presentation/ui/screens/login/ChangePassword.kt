@@ -33,7 +33,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonImgText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.ChangePasswordViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.ChangePasswordViewModel
 
 @Composable
 fun ChangePassword(modifier: Modifier = Modifier, viewModel: ChangePasswordViewModel) {

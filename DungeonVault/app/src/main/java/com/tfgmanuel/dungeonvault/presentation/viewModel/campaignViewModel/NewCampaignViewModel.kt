@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.campaignViewModel
+package com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.tfgmanuel.dungeonvault.data.repository.CampaignRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.CampaignState
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.ContextProvider
+import com.tfgmanuel.dungeonvault.presentation.viewModel.ContextProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

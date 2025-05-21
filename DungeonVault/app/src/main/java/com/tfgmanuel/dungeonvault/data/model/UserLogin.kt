@@ -1,7 +1,6 @@
 package com.tfgmanuel.dungeonvault.data.model
 
-data class User(
+data class UserLogin(
     val email: String,
-    val avatar: String,
-    val nickname: String
+    val password: String
 )

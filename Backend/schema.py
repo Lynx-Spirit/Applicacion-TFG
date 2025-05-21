@@ -11,7 +11,6 @@ class user_update(BaseModel):
      avatar: str
 
 class user_response(BaseModel):
-    id: int
     email: EmailStr
     avatar: str
     nickname: str

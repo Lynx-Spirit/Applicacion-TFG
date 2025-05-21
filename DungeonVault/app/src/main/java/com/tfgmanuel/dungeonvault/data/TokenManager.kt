@@ -17,7 +17,7 @@ private val Context.dataStore by preferencesDataStore(name = "auth_prefs")
 class TokenManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val dataStore = context.dataStore
+    private  val dataStore = context.dataStore
     private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
     private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     private val TOKEN_TYPE = stringPreferencesKey("token_type")

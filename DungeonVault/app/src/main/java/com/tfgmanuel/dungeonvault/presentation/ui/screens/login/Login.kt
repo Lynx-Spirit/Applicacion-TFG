@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,7 +32,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonImgText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomTextField
 import com.tfgmanuel.dungeonvault.presentation.ui.components.TopBarLogin
-import com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel.LoginViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.LoginViewModel
 
 @Composable
 fun Login(modifier: Modifier = Modifier, viewModel: LoginViewModel) {

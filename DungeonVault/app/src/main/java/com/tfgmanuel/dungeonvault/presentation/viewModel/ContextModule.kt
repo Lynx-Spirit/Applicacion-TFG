@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewModel
 
 import android.app.Application
 import android.content.Context

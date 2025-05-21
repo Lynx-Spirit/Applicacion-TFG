@@ -1,4 +1,4 @@
-package com.tfgmanuel.dungeonvault.presentation.viewmodel.loginviewmodel
+package com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel

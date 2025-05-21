@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tfgmanuel.dungeonvault.MainViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.MainViewModel
 
 @Composable
 fun DrawerApplication() {
@@ -64,7 +64,9 @@ fun DrawerApplication() {
                 },
                 label = { Text("Modificar usuario") },
                 selected = false,
-                onClick = { /* Handle click */ }
+                onClick = {
+                    viewModel.modifyUser()
+                }
             )
 
             NavigationDrawerItem(
@@ -85,6 +87,8 @@ fun DrawerApplication() {
                     viewModel.logOut()
                 }
             )
+
+            Spacer(modifier = Modifier.weight(1f))
 
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
