@@ -129,17 +129,15 @@ fun Content(
             paddingValues = paddingValues,
             text = "Ups, no tienes campañas aún. ¡Crea o agrega una campaña!",
             fontSize = 20.sp
-        ) { campania ->
+        ) { campaign ->
             CustomContainer(
-                painter = rememberAsyncImagePainter(
-                    model = "${BASE_URL}images/${campania.img_name}",
-                    error = painterResource(id = R.drawable.sinimg),
-                    placeholder = painterResource(id = R.drawable.sinimg)
-                ),
-                contentDescription = campania.title,
-                title = campania.title,
-                description = campania.description,
-                onClick = { onClick(campania.id) }
+                imgName = campaign.img_name,
+                error = R.drawable.sinimg,
+                placeholder = R.drawable.sinimg,
+                contentDescription = campaign.title,
+                title = campaign.title,
+                description = campaign.description,
+                onClick = { onClick(campaign.id) }
             )
         }
         PullRefreshIndicator(

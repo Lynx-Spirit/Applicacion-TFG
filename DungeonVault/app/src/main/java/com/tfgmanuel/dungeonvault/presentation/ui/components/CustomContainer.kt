@@ -39,8 +39,10 @@ fun CustomContainer(
     shape: Shape = RoundedCornerShape(8.dp),
     containerColor: Color = Color(0xFF1A1A1A),
     textColor: Color = Color.White,
-    painter: Painter,
     contentDescription: String,
+    imgName: String,
+    error: Int,
+    placeholder: Int,
     title: String,
     description: String
 ) {
@@ -54,7 +56,7 @@ fun CustomContainer(
             .clickable(onClick = onClick)
     ) {
         Row {
-            Image(
+            CustomImage(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(
@@ -65,7 +67,9 @@ fun CustomContainer(
                             bottomEnd = 0.dp,
                         )
                     ),
-                painter = painter,
+                imgName = imgName,
+                error = error,
+                placeHolder = placeholder,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop
             )
