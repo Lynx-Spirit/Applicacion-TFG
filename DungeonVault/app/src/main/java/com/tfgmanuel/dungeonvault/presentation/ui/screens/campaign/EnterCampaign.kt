@@ -25,7 +25,7 @@ import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.Enter
 
 @Composable
 fun EnterCampaign(modifier : Modifier = Modifier, viewModel: EnterCampaignViewModel) {
-    val uistate by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold (
         modifier = modifier,
@@ -60,10 +60,10 @@ fun EnterCampaign(modifier : Modifier = Modifier, viewModel: EnterCampaignViewMo
 
                     CustomTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = uistate.inviteCode,
+                        value = uiState.inviteCode,
                         textLabel = "CODIGO INVITACIÓN",
-                        textError = uistate.error,
-                        isError = uistate.error != null,
+                        textError = uiState.error,
+                        isError = uiState.error != null,
                         onValueChange = {
                             viewModel.onInviteChange(it)
                         }
@@ -74,7 +74,7 @@ fun EnterCampaign(modifier : Modifier = Modifier, viewModel: EnterCampaignViewMo
                     CustomButtonText(
                         onClick = { viewModel.onInviteSelected() },
                         text = "Entrar a partida",
-                        enabled = uistate.isInviteValid
+                        enabled = uiState.isInviteValid
                     )
                 }
             }

@@ -58,13 +58,10 @@ fun ImageSelector(
                 contentScale = ContentScale.Crop
             )
         } else {
-            Image(
+            CustomImage(
                 modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(
-                    model = "${BASE_URL}images/${imageName}",
-                    error = painterResource(id = defaultImage),
-                    placeholder = painterResource(id = defaultImage)
-                ),
+                imgName = imageName,
+                placeHolder = defaultImage,
                 contentDescription = "Imagen base",
                 contentScale = ContentScale.Crop
             )
