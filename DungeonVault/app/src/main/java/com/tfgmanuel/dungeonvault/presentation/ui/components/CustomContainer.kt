@@ -68,7 +68,6 @@ fun CustomContainer(
                         )
                     ),
                 imgName = imgName,
-                error = error,
                 placeHolder = placeholder,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Crop

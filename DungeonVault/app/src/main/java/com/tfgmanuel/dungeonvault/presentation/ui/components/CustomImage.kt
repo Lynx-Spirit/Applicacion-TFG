@@ -1,7 +1,6 @@
 package com.tfgmanuel.dungeonvault.presentation.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,7 +17,6 @@ import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 fun CustomImage(
     modifier: Modifier = Modifier,
     imgName: String,
-    error: Int,
     placeHolder: Int,
     contentScale: ContentScale = ContentScale.Crop,
     contentDescription: String = ""
@@ -37,8 +35,7 @@ fun CustomImage(
         val painter = rememberAsyncImagePainter(
             model = "${BASE_URL}images/${imgName}",
             imageLoader = imageLoader,
-            placeholder = painterResource(placeHolder),
-            error = painterResource(error)
+            error = painterResource(placeHolder)
         )
 
         Image(

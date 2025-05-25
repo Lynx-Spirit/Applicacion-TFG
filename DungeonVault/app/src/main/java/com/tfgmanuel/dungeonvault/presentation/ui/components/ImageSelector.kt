@@ -61,7 +61,6 @@ fun ImageSelector(
             CustomImage(
                 modifier = Modifier.fillMaxSize(),
                 imgName = imageName,
-                error = defaultImage,
                 placeHolder = defaultImage,
                 contentDescription = "Imagen base",
                 contentScale = ContentScale.Crop
