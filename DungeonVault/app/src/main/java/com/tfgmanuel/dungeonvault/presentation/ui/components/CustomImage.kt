@@ -12,7 +12,15 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 
-
+/**
+ * Contenedor para imágenes. En caso no tener una imagen, muestra una por defecto.
+ *
+ * @param modifier Modificador para ajustar el diseño.
+ * @param imgName Nombre de la imagen a mostrar.
+ * @param placeHolder Imagen por defecto.
+ * @param contentScale  Cómo se va a escalar la imagen.
+ * @param contentDescription Descripción de la imagen (para accesibilidad).
+ */
 @Composable
 fun CustomImage(
     modifier: Modifier = Modifier,

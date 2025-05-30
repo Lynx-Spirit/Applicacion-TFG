@@ -15,7 +15,27 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
+/**
+ * Campo de texto custom para los formularios.
+ *
+ * @param modifier Modificador para ajustar el diseño del componente.
+ * @param shape Forma del borde del campo de texto (por defecto esquinas redondeadas).
+ * @param focusedBorderColor Color del borde cuando el campo está enfocado.
+ * @param unfocusedBorderColor Color del borde cuando el campo no está enfocado.
+ * @param focusedLabelColor Color de la etiqueta cuando el campo está enfocado.
+ * @param unfocusedLabelColor Color de la etiqueta cuando el campo no está enfocado.
+ * @param focusedTextColor Color del texto cuando el campo está enfocado.
+ * @param unfocusedTextColor Color del texto cuando el campo no está enfocado.
+ * @param minLines Número mínimo de líneas visibles.
+ * @param value Valor actual del campo de texto.
+ * @param textLabel Etiqueta (placeholder persistente) que describe el contenido esperado.
+ * @param onValueChange Función que se ejecuta al cambiar el valor del campo.
+ * @param isPassword Indica si el campo es para una contraseña (oculta el texto).
+ * @param singleLine Indica si el campo debe ocupar una sola línea.
+ * @param isError Indica si el campo está en estado de error (cambia estilos visuales).
+ * @param textError Texto de error que se muestra debajo del campo si [isError] es true.
+ * @param keyboardType Tipo de teclado a mostrar (texto, número, email, etc.).
+ */
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,

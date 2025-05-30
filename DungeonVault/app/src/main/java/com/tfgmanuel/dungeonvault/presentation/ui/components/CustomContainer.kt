@@ -1,7 +1,5 @@
 package com.tfgmanuel.dungeonvault.presentation.ui.components
 
-
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +28,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tfgmanuel.dungeonvault.trimPhrase
-
+/**
+ * Contenedor personalizado que muestra una imagen, un título y una descripción.
+ *
+ * @param modifier Modificador para ajustar el diseño.
+ * @param onClick Acción a ejecutar al hacer clic.
+ * @param shape Forma del contenedor (por defecto esquinas redondeadas).
+ * @param containerColor Color de fondo del contenedor.
+ * @param textColor Color del texto.
+ * @param contentDescription Descripción de la imagen (para accesibilidad).
+ * @param imgName Nombre o ruta de la imagen a mostrar.
+ * @param error Recurso para imagen de error (por si falla la carga).
+ * @param placeholder Recurso para imagen placeholder mientras se carga.
+ * @param title Título a mostrar en el contenedor.
+ * @param description Descripción o subtítulo.
+ */
 @Composable
 fun CustomContainer(
     modifier: Modifier = Modifier,
@@ -99,6 +110,15 @@ fun CustomContainer(
     }
 }
 
+/**
+ * Opción de bottom sheet con ícono, título y subtítulo.
+ *
+ * @param onClick Acción que se ejecuta al seleccionar la opción.
+ * @param icon Ícono que se mostrará al principio de la fila.
+ * @param title Título principal de la opción.
+ * @param subtitle Texto secundario (subtítulo).
+ * @param contentColor Color aplicado al ícono, título y subtítulo.
+ */
 @Composable
 fun SheetOption(
     onClick: () -> Unit,

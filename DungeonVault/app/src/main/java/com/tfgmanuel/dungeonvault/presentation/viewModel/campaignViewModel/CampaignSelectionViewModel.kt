@@ -14,6 +14,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsable de gestionar la lógica de la pantalla de selección de campaña.
+ *
+ * Funcionalidades clave:
+ * - Carga las campañas desde la base de datos local o desde el repositorio remoto si es necesario.
+ * - Gestiona la navegación a otras pantallas como detalles, creación o unión a una campaña.
+ *
+ * @param navigationManager Controlador de navegación utilizado para moverse entre pantallas.
+ * @param campaignRepository Fuente de datos remota para obtener campañas del servidor.
+ * @param campaignDAO Acceso a campañas almacenadas localmente en la base de datos.
+ */
 @HiltViewModel
 class CampaignSelectionViewModel @Inject constructor(
     private val navigationManager: NavManager,
@@ -27,6 +38,12 @@ class CampaignSelectionViewModel @Inject constructor(
         loadCampaigns()
     }
 
+    /**
+     * Carga la lista de campañas.
+     * Si no hay campañas locales o se fuerza la actualización, intenta recuperar las campañas del servidor.
+     *
+     * @param forceUpdate Si es true, siempre consulta al servidor, ignorando los datos locales.
+     */
     fun loadCampaigns(forceUpdate: Boolean = false) {
         _uiState.value = _uiState.value.copy(error = null)
         viewModelScope.launch {
@@ -47,18 +64,30 @@ class CampaignSelectionViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Maneja la acción cuando el usuario selecciona una campaña de la lista.
+     * Navega a la pantalla de detalles de la campaña.
+     *
+     * @param campaignID ID de la campaña seleccionada.
+     */
     fun onCampaignSelected(campaignID: Int) {
         viewModelScope.launch {
             navigationManager.navigate(Screen.CampaignDetails.route + "/$campaignID")
         }
     }
 
+    /**
+     * Navega a la pantalla de creación de una nueva campaña.
+     */
     fun onCreateSelected() {
         viewModelScope.launch {
             navigationManager.navigate(Screen.CreateCampaign.route)
         }
     }
 
+    /**
+     * Navega a la pantalla para unirse a una campaña mediante un código de invitación.
+     */
     fun onInviteSelected() {
         viewModelScope.launch {
             navigationManager.navigate(Screen.EnterCampaign.route)

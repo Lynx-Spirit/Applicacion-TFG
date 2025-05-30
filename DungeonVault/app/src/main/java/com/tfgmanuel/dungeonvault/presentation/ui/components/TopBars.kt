@@ -22,6 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
+private const val APP_TITLE = "Dungeon Vault"
+
+/**
+ * Barra superior principal que muestra el icono de menú en la navegación y el título de la aplicación.
+ *
+ * @param onMenuClick Función llamada cuando el usuario hace clic en el icono del menú.
+ * @param titleColor Color del texto del título de la barra superior (por defecto blanco).
+ * @param containerColor Color del fondo del contenedor de la barra superior (por defecto un gris oscuro).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar(
@@ -58,6 +67,14 @@ fun MainTopBar(
 
 }
 
+/**
+ * Barra superior secundaria, generalmente usada con un icono de "volver".
+ *
+ * @param titleColor Color del texto del título de la barra superior.
+ * @param containerColor Color del fondo del contenedor de la barra superior.
+ * @param buttonColor Color del fondo del botón de navegación.
+ * @param onBackClick Función llamada cuando el usuario hace clic en el botón de "volver".
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecondaryTopBar(
@@ -92,6 +109,12 @@ fun SecondaryTopBar(
     )
 }
 
+/**
+ * Barra superior para la pantalla de inicio de sesión, que solo muestra el título.
+ *
+ * @param titleColor Color del texto del título de la barra superior.
+ * @param containerColor Color del fondo del contenedor de la barra superior.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarLogin(
@@ -104,8 +127,11 @@ fun TopBarLogin(
     )
 }
 
-private const val APP_TITLE = "Dungeon Vault"
-
+/**
+ * Título que se muestra en las barras superiores.
+ *
+ * @param titleColor Color del texto del título de la barra superior.
+ */
 @Composable
 fun TopBarTitle(titleColor: Color) {
     Text(

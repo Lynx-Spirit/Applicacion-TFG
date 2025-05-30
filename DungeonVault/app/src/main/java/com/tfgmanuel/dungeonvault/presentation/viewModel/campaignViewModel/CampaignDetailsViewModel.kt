@@ -17,6 +17,21 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsable de gestionar el estado de la vista de detalles de una campaña.
+ *
+ * Se encarga de:
+ * - Cargar la información de la campaña desde la base de datos local.
+ * - Verificar los permisos del usuario autenticado.
+ * - Gestionar la navegación entre pantallas.
+ * - Ejecutar acciones como editar, eliminar o abandonar una campaña.
+ *
+ * @param savedStateHandle Proporciona acceso a los argumentos de navegación (ej. el ID de la campaña).
+ * @param campaignDAO Acceso a las campañas almacenadas localmente.
+ * @param navManager Utilidad para controlar la navegación entre pantallas.
+ * @param tokenManager Maneja y proporciona información sobre el usuario autenticado.
+ * @param campaignRepository Repositorio que gestiona las operaciones de red y persistencia relacionadas con campañas.
+ */
 @HiltViewModel
 class CampaignDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -34,6 +49,10 @@ class CampaignDetailsViewModel @Inject constructor(
         loadCampaign()
     }
 
+    /**
+     * Carga los detalles de la campaña desde la base de datos local.
+     * También verifica si el usuario autenticado tiene permisos de edición (es el creador).
+     */
     private fun loadCampaign() {
         viewModelScope.launch {
             if (campaignID != null) {
@@ -47,14 +66,23 @@ class CampaignDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Muestra el cuadro de diálogo de confirmación.
+     */
     fun showDialog() {
         _uiState.value = _uiState.value.copy(showDialog = true)
     }
 
+    /**
+     * Oculta el cuadro de diálogo de confirmación.
+     */
     fun hideDialog() {
         _uiState.value = _uiState.value.copy(showDialog = false)
     }
 
+    /**
+     * Navega de regreso a la pantalla de selección de campaña.
+     */
     fun goBack() {
         viewModelScope.launch {
             navManager.navigate(
@@ -65,16 +93,26 @@ class CampaignDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Acción para iniciar la campaña.
+     */
     fun onStartClick() {
         //Llamada al navManager
     }
 
+    /**
+     * Navega a la pantalla de edición de campaña.
+     */
     fun onEditClick() {
         viewModelScope.launch {
             navManager.navigate(Screen.UpdateCampaign.route + "/$campaignID")
         }
     }
 
+    /**
+     * Elimina la campaña actual si el usuario tiene permiso.
+     * Navega de regreso tras la eliminación o muestra un mensaje de error.
+     */
     fun onDeleteClick() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)
@@ -94,6 +132,10 @@ class CampaignDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Permite al usuario abandonar la campaña actual.
+     * Navega de regreso tras el abandono o muestra un mensaje de error.
+     */
     fun onAbandonClick() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)

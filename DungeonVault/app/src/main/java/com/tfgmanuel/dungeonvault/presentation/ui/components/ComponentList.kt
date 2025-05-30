@@ -17,6 +17,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Componente reutilizable que muestra una lista de elementos usando un [LazyColumn].
+ * Si la lista está vacía, muestra un mensaje personalizado en su lugar.
+ *
+ * @param modifier Modificador para aplicar al contenedor principal.
+ * @param paddingValues Relleno externo aplicado tanto en la vista vacía como en la lista.
+ * @param tList Lista de elementos a renderizar.
+ * @param text Texto que se muestra cuando la lista está vacía.
+ * @param fontSize Tamaño de fuente para el texto de lista vacía. Por defecto es 24sp.
+ * @param itemContent Función que define cómo se debe renderizar cada elemento de la lista.
+ */
 @Composable
 fun <T> ItemList(
     modifier: Modifier = Modifier,
