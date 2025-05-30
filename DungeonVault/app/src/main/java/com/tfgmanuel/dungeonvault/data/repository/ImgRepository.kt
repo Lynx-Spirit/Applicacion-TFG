@@ -13,6 +13,14 @@ import javax.inject.Inject
 class ImgRepository @Inject constructor(
     private val imgAPI: ImgAPI,
 ) {
+    /**
+     * Subida de una imagen seleccionada al servidor.
+     *
+     * @param imageUri Referencia de la imagen que quiere subirse.
+     *
+     * @return [String] que contiene el nombre del archivo de imagen en el servidor.
+     * Si no se proporciona una URI, devuelve una cadena vacía.
+     */
     suspend fun uploadImage(imageUri: Uri, context: Context): String {
         if (imageUri == Uri.EMPTY) {
             return ""
@@ -31,6 +39,14 @@ class ImgRepository @Inject constructor(
         }
     }
 
+    /**
+     * Convierte un URI en un archivo físico temporal almacenado en el directorio de caché de la app.
+     *
+     * @param uri El URI del recurso que se desea convertir en archivo.
+     * @param context El contexto necesario para acceder al content resolver y al directorio de caché.
+     *
+     * @return Un archivo temporal creado a partir del contenido del URI.
+     */
     private fun getFileFromUri(uri: Uri, context: Context): File {
         val file = File(context.cacheDir, "image_${System.currentTimeMillis()}.jpg")
         val inputStream = context.contentResolver.openInputStream(uri)
@@ -48,6 +64,13 @@ class ImgRepository @Inject constructor(
         return file
     }
 
+    /**
+     * Prepara un archivo de imagen para ser enviado en una solicitud HTTP como parte de un formulario multipart.
+     *
+     * @param file El archivo de imagen que se desea enviar.
+     *
+     * @return Un objeto MultipartBody.Part listo para ser incluido en una solicitud HTTP.
+     */
     private fun prepareImageFile(file: File): MultipartBody.Part {
         val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestBody)

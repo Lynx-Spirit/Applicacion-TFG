@@ -15,6 +15,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsable de gestionar la creación de una nueva campaña.
+ *
+ * Funcionalidades:
+ * - Mantiene el estado de los datos del formulario de creación.
+ * - Interactúa con el repositorio para crear una nueva campaña.
+ * - Controla la navegación posterior a la creación.
+ *
+ * @param navManager Encargado de la navegación entre pantallas.
+ * @param campaignRepository Repositorio que gestiona las operaciones relacionadas con campañas.
+ * @param contextProvider Proveedor de contexto para acceder a recursos como imágenes.
+ */
 @HiltViewModel
 class NewCampaignViewModel @Inject constructor(
     private val navManager: NavManager,
@@ -24,12 +36,23 @@ class NewCampaignViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CampaignState())
     val uiState: StateFlow<CampaignState> = _uiState.asStateFlow()
 
+    /**
+     * Actualiza los valores del estado de la campaña conforme el usuario los introduce.
+     *
+     * @param title Título de la campaña introducido por el usuario.
+     * @param description Descripción de la campaña.
+     * @param uri URI de la imagen seleccionada para la campaña.
+     */
     fun onCreateChanged(title: String, description: String, uri: Uri) {
         _uiState.value = _uiState.value.copy(
             title = title, description = description, imgUri = uri
         )
     }
 
+    /**
+     * Llama al repositorio para crear una nueva campaña usando los datos actuales del estado.
+     * Si se crea correctamente, redirige al usuario a la pantalla de selección de campañas.
+     */
     fun createCampaign() {
         viewModelScope.launch {
             campaignRepository.createCampaign(
@@ -46,6 +69,9 @@ class NewCampaignViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Acción para volver a la pantalla anterior.
+     */
     fun goBack() {
         viewModelScope.launch {
             navManager.goBack()

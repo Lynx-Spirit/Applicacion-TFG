@@ -5,6 +5,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
+/**
+ * Cuadro de diálogo de confirmación modal.
+ *
+ * @param onDismissRequest Función llamada cuando se cancela o se cierra el diálogo.
+ * @param onConfirmation Función llamada cuando el usuario confirma la acción.
+ * @param dialogTitle Título mostrado en el diálogo.
+ * @param dialogText Texto descriptivo del propósito del diálogo.
+ * @param confirmText Texto del botón de confirmación (por defecto "Aceptar").
+ * @param dismissText Texto del botón de cancelación (por defecto "Cancelar").
+ */
 @Composable
 fun DecisionDialog(
     onDismissRequest: () -> Unit,

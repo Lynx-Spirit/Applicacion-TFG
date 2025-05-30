@@ -16,6 +16,19 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsable de gestionar el estado y la lógica de la pantalla
+ * de actualización de la información del usuario.
+ *
+ * Esta clase se encarga de obtener los datos actuales del usuario,
+ * actualizar el nombre de usuario y el avatar, y manejar la navegación
+ * de regreso después de guardar los cambios.
+ *
+ * @property userDataStore Almacenamiento local para datos persistentes del usuario.
+ * @property authRepository Repositorio para operaciones de autenticación con backend.
+ * @property navManager Administrador de navegación de pantallas.
+ * @property contextProvider Proveedor de contexto para operaciones como carga de imágenes.
+ */
 @HiltViewModel
 class UpdateUserInfoViewModel @Inject constructor(
     private val userDataStore: UserDataStore,
@@ -40,6 +53,12 @@ class UpdateUserInfoViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Actualiza los valores del estado con el nuevo apodo y avatar seleccionados.
+     *
+     * @param nickname Nuevo nombre del usuario.
+     * @param avatarUri URI del nuevo avatar.
+     */
     fun onUpdateChanged(nickname: String, avatarUri: Uri) {
         _uiState.value = _uiState.value.copy(
             nickname = nickname,
@@ -47,6 +66,12 @@ class UpdateUserInfoViewModel @Inject constructor(
         )
     }
 
+    /**
+     * Guarda los cambios realizados por el usuario y regresa a la pantalla anterior.
+     *
+     * Llama al repositorio para aplicar la actualización en el backend. Si es exitoso,
+     * se ejecuta la navegación hacia atrás.
+     */
     fun onSaveClick() {
         viewModelScope.launch {
             val result = authRepository.update(
@@ -61,6 +86,9 @@ class UpdateUserInfoViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Regresa a la pantalla anterior mediante el administrador de navegación.
+     */
     fun goBack() {
         viewModelScope.launch {
             navManager.goBack()

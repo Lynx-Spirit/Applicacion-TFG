@@ -29,6 +29,15 @@ import coil.compose.rememberAsyncImagePainter
 import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 
+/**
+ * Componente de selección de imagen que permite al usuario visualizar y cambiar una imagen.
+ *
+ * @param modifier Modificador para personalizar el contenedor del componente.
+ * @param uri URI de la imagen seleccionada. Si es null o vacía, se muestra la imagen por defecto.
+ * @param imageName Nombre de la imagen (usado en caso de carga desde red/local).
+ * @param defaultImage ID del recurso drawable usado como imagen por defecto.
+ * @param onImageSelected Callback llamado con la nueva URI seleccionada por el usuario.
+ */
 @Composable
 fun ImageSelector(
     modifier: Modifier = Modifier,

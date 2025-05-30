@@ -3,6 +3,16 @@ package com.tfgmanuel.dungeonvault.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Representa una campaña dentro de la aplicación.
+ *
+ * @property id Identificador único de campaña (clave primaria).
+ * @property title Título de la campaña.
+ * @property description Descripción de la campaña.
+ * @property img_name Nombre del archivo de imagen asociada a la campaña.
+ * @property invite_code Código único de invitacíon de campaña. Permite a otros jugadores unirse a la campaña.
+ * @property creator_id Identificador del usuario que creó la campaña.
+ */
 @Entity(tableName = "Campaigns")
 data class Campaign(
     @PrimaryKey val id: Int,

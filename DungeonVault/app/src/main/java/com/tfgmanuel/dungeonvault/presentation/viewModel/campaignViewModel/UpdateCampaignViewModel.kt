@@ -17,6 +17,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsable de gestionar la lógica de actualización de campañas existentes.
+ *
+ * Funcionalidades principales:
+ * - Carga los datos de una campaña seleccionada para edición.
+ * - Permite al usuario modificar título, descripción e imagen.
+ * - Llama al repositorio para persistir los cambios.
+ * - Controla la navegación al finalizar o cancelar la edición.
+ *
+ * @param savedStateHandle Contiene el ID de la campaña recibido desde la navegación.
+ * @param campaignDAO Acceso local a los datos de la campaña.
+ * @param campaignRepository Repositorio para operaciones remotas o persistentes de campaña.
+ * @param navManager Gestor de navegación de pantallas.
+ * @param contextProvider Proveedor del contexto de aplicación para operaciones que lo requieren.
+ */
 @HiltViewModel
 class UpdateCampaignViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -47,6 +62,13 @@ class UpdateCampaignViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Actualiza el estado de la campaña cuando el usuario cambia los datos en el formulario.
+     *
+     * @param title Nuevo título de la campaña.
+     * @param description Nueva descripción de la campaña.
+     * @param imgUri URI de la nueva imagen seleccionada por el usuario.
+     */
     fun onValueChange(title: String, description: String, imgUri: Uri) {
         _uiState.value = _uiState.value.copy(
             title = title,
@@ -55,6 +77,13 @@ class UpdateCampaignViewModel @Inject constructor(
         )
     }
 
+    /**
+     * Guarda los cambios realizados en la campaña.
+     *
+     * - Llama al repositorio para persistir los nuevos datos.
+     * - Si la operación es exitosa, redirige a los detalles de la campaña.
+     * - En caso de error, actualiza el estado con el mensaje de error.
+     */
     fun onSaveClick() {
         viewModelScope.launch {
             campaignID?.let {
@@ -80,6 +109,9 @@ class UpdateCampaignViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Acción para regresar a la pantalla anterior sin guardar los cambios.
+     */
     fun goBack() {
         viewModelScope.launch {
             navManager.goBack()

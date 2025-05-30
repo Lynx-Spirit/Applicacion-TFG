@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.MainViewModel
 
+/**
+ * Menú hamburguesa de la aplicación.
+ */
 @Composable
 fun DrawerApplication() {
     val viewModel: MainViewModel = hiltViewModel()

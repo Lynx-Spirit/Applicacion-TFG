@@ -25,6 +25,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+/**
+ * Botón personalizado con solo texto.
+ *
+ * @param modifier Modificador para el botón.
+ * @param onClick Acción a ejecutar al hacer clic.
+ * @param enabled Indica si el botón está habilitado.
+ * @param shape Forma del botón (por defecto esquinas redondeadas).
+ * @param buttonColor Color del fondo cuando está habilitado.
+ * @param disabledButtonColor Color del fondo cuando está deshabilitado.
+ * @param textColor Color del texto cuando está habilitado.
+ * @param disabledTextColor Color del texto cuando está deshabilitado.
+ * @param text Texto a mostrar en el botón.
+ * @param fontSize Tamaño del texto.
+ */
 @Composable
 fun CustomButtonText(
     modifier: Modifier = Modifier,
@@ -57,6 +71,17 @@ fun CustomButtonText(
     }
 }
 
+/**
+ * Botón personalizado con una imagen.
+ *
+ * @param modifier Modificador para el botón.
+ * @param onClick Acción a ejecutar al hacer clic.
+ * @param enabled Indica si el botón está habilitado.
+ * @param shape Forma del botón.
+ * @param buttonColor Color de fondo del botón.
+ * @param contentDescription Descripción accesible de la imagen.
+ * @param painter Imagen a mostrar dentro del botón.
+ */
 @Composable
 fun CustomButtonImg(
     modifier: Modifier = Modifier,
@@ -88,6 +113,20 @@ fun CustomButtonImg(
     }
 }
 
+/**
+ * Botón personalizado con una imagen y un texto alineados horizontalmente.
+ *
+ * @param modifier Modificador para el botón.
+ * @param onClick Acción al hacer clic.
+ * @param enabled Si el botón está habilitado o no.
+ * @param shape Forma del botón.
+ * @param buttonColor Color de fondo del botón.
+ * @param textColor Color del texto.
+ * @param fontSize Tamaño del texto.
+ * @param painter Imagen a mostrar.
+ * @param contentDescription Descripción de la imagen.
+ * @param text Texto a mostrar.
+ */
 @Composable
 fun CustomButtonImgText(
     modifier: Modifier = Modifier,
@@ -136,6 +175,21 @@ fun CustomButtonImgText(
     }
 }
 
+/**
+ * Botón con ícono y texto alineados horizontalmente.
+ *
+ * @param modifier Modificador para el botón.
+ * @param onClick Acción a ejecutar al hacer clic.
+ * @param enabled Si el botón está habilitado.
+ * @param shape Forma del botón.
+ * @param buttonColor Color de fondo del botón habilitado.
+ * @param disabledButtonColor Color de fondo del botón deshabilitado.
+ * @param textColor Color del texto habilitado.
+ * @param disabledTextColor Color del texto deshabilitado.
+ * @param text Texto a mostrar.
+ * @param fontSize Tamaño del texto.
+ * @param icon Ícono a mostrar junto al texto.
+ */
 @Composable
 fun CustomIconButon(
     modifier: Modifier = Modifier,
@@ -176,6 +230,16 @@ fun CustomIconButon(
     }
 }
 
+/**
+ * Botón de acción flotante personalizado con texto.
+ *
+ * @param onClick Acción a ejecutar.
+ * @param shape Forma del botón (por defecto circular).
+ * @param buttonColor Color del botón.
+ * @param textColor Color del texto.
+ * @param text Texto que se mostrará en el botón.
+ * @param fontSize Tamaño del texto.
+ */
 @Composable
 fun CustomActionButton(
     onClick: () -> Unit,

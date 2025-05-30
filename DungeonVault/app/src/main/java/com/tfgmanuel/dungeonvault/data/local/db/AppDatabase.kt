@@ -7,5 +7,8 @@ import com.tfgmanuel.dungeonvault.data.model.Campaign
 
 @Database(entities = [Campaign::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
+    /**
+     * Proporciona el DAO para acceder a la tabla de campañas.
+     */
     abstract fun campaignDAO(): CampaignDAO
 }
