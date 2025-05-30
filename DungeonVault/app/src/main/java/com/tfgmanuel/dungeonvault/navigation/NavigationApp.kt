@@ -25,13 +25,19 @@ import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.CreateAc
 import com.tfgmanuel.dungeonvault.presentation.viewModel.loginViewModel.LoginViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.UpdateUserInfoViewModel
 
+/**
+ * Se encarga de la navegación de la aplicación.
+ *
+ * @param navManager Gestor de la navegación
+ * @param start Primera pantalla en la que la aplicacóin iniciará.
+ */
 @Composable
 fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
-    //Sirve para guardar el historial de navegación
+    // Sirve para guardar el historial de navegación
     val navController = rememberNavController()
 
-    //Se encarga de escuchar los eventos de navegación que envían los ViewModels
-    //para luego navegar automáticamente entre pantallas.
+    // Se encarga de escuchar los eventos de navegación que envían los ViewModels
+    // para luego navegar automáticamente entre pantallas.
     LaunchedEffect(navManager) {
         navManager.navigationFlow.collect { command ->
             when (command) {
@@ -52,6 +58,7 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         }
     }
 
+    // Direcciones a las que la aplicación puede navegar.
     NavHost(navController = navController, startDestination = start) {
         composable(Screen.Login.route) {
             val viewModel = hiltViewModel<LoginViewModel>()

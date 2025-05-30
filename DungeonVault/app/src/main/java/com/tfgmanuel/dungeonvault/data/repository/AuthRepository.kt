@@ -22,6 +22,16 @@ class AuthRepository @Inject constructor(
     private val userDataStore: UserDataStore
 ) {
 
+    /**
+     * Inicio de sesión del usuario con sus credenciales.
+     *
+     * @param email Email del usuario.
+     * @param password Contraseña del usuario.
+     *
+     * @return [Result] con el resultado del login.
+     *
+     * @throws exception En caso de haber un error desconocido, se lanza un mensaje con el error concreto.
+     */
     suspend fun login(email: String, password: String): Result<String> {
         return try {
             val response = authAPI.login(UserLogin(email, password))
@@ -43,6 +53,19 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Regristro de un nuevo usuario en la aplicación.
+     *
+     * @param email Correo electrónico del nuevo usuario.
+     * @param password Contraseña del usuario.
+     * @param nickname Apodo del nuevo usaurio.
+     * @param avatarUri Nombre del fichero de imagen del avatar del nuevo usuario.
+     * @param context Contexto de la aplicación.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     *
+     * @throws exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
+     */
     suspend fun register(
         email: String,
         password: String,
@@ -76,12 +99,23 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Obtanción de la información del usuario.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     suspend fun getUser(): Result<String> {
         return firstAttemptGet()
             ?: refreshTokens()
                 .flatMap { secondAttemptGet() }
     }
 
+    /**
+     * Primer intento de obtención de la información del usuario.
+     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun firstAttemptGet(): Result<String>? {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.getUser("Bearer $access")
@@ -98,6 +132,11 @@ class AuthRepository @Inject constructor(
         return null
     }
 
+    /**
+     * Segundo y último intento de obtención de la información del usuario tras haber refrescado los tokens.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun secondAttemptGet(): Result<String> {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.getUser("Bearer $access")
@@ -109,6 +148,15 @@ class AuthRepository @Inject constructor(
         return Result.failure(Exception("No se ha podido obtener el usuario"))
     }
 
+    /**
+     * Actualización de la información de un usuario autenticado.
+     *
+     * @param nickname Nuevo apodo del usuario.
+     * @param avatarUri Nuevo fichero de imagen del avatar del usuario.
+     * @param context Contexto de la aplicación.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     suspend fun update(
         nickname: String = "",
         avatarUri: Uri = Uri.EMPTY,
@@ -127,6 +175,14 @@ class AuthRepository @Inject constructor(
                 .flatMap { secondAttemptUpdate(updateInfo) }
     }
 
+    /**
+     * Primer intento de actualización de la información del usuario.
+     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     *
+     * @param updateInfo Objeto que engloba toda la información para actualizar los datos del usuario.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun firstAttemptUpdate(updateInfo: UserUpdateInfo): Result<String>? {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.updateUser(updateInfo = updateInfo, token = "Bearer $access")
@@ -143,6 +199,13 @@ class AuthRepository @Inject constructor(
         return null
     }
 
+    /**
+     * Segundo y último intento de actualizar la información del usuario tras haber refrescado los tokens.
+     *
+     * @param updateInfo Objeto que engloba toda la información para actualizar los datos del usuario.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun secondAttemptUpdate(updateInfo: UserUpdateInfo): Result<String> {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.updateUser(updateInfo = updateInfo, token = "Bearer $access")
@@ -154,6 +217,14 @@ class AuthRepository @Inject constructor(
         return Result.failure(Exception("No se ha podido actualizar el usuario"))
     }
 
+    /**
+     * Almacenaje de la informacíon del usuario en [userDataStore]
+     *
+     * @param user Objeto [User] que contiene la información para almacenar.
+     * @param message Mensaje en caso de ser correcta la ejecución.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun saveUser(user: User, message: String): Result<String> {
         userDataStore.saveInformation(
             email = user.email,
@@ -164,6 +235,13 @@ class AuthRepository @Inject constructor(
         return Result.success(message)
     }
 
+    /**
+     * Refresco y almacenaje de los tokens a partir del token de refresco.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     *
+     * @throws exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
+     */
     suspend fun refreshTokens(): Result<String> {
         return try {
             val refreshToken = tokenManager.getRefreshToken().first()
@@ -187,6 +265,11 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Checkea si el usuario ha iniciado sesión en la aplicación o no.
+     *
+     * @return [Boolean] que devuelve True si tiene la sesión iniciada y False en caso contrario.
+     */
     suspend fun userLoggedIn(): Boolean {
         val accessToken = tokenManager.getAccessToken().firstOrNull()
         val refreshToken = tokenManager.getRefreshToken().firstOrNull()
@@ -207,12 +290,23 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Elimina los datos del usuario de la aplicación.
+     *
+     * @return Devuelve un [Result] con un [String] indicando el resultado de la ejecución.
+     */
     suspend fun deleteUser(): Result<String> {
         return firstAttemptDelete()
             ?: refreshTokens()
                 .flatMap { secondAttemptDelete() }
     }
 
+    /**
+     * Primer intento de eliminación de la información del usuario.
+     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun firstAttemptDelete(): Result<String>? {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.delete("Bearer $access")
@@ -229,6 +323,11 @@ class AuthRepository @Inject constructor(
         return null
     }
 
+    /**
+     * Segundo y último intento de eliminación de la información del usuario tras haber refrescado los tokens.
+     *
+     * @return [Result] que contiene un [String] con el resultado de la ejecución.
+     */
     private suspend fun secondAttemptDelete(): Result<String> {
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.delete("Bearer $access")
@@ -241,6 +340,13 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Checkeo de la validez del token pasado como parámetro.
+     *
+     * @param token Token a verificar.
+     *
+     * @return [Boolean] que devuelve True en caso de de ser válido y False en caso contrario
+     */
     suspend fun checkToken(token: String): Boolean {
         val response = authAPI.verify(Token(token))
         return response.isSuccessful

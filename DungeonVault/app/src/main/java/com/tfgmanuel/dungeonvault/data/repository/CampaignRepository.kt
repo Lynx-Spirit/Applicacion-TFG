@@ -17,6 +17,14 @@ class CampaignRepository @Inject constructor(
     private val campaignDAO: CampaignDAO
 ) {
 
+    /**
+     * Creación de una nueva campaña por parte de un usuario autenticado.
+     *
+     * @param title Titulo de la nueva campaña.
+     * @param description Descripción de la nueva campoña.
+     * @param imgUri Identificador de la imagen de la campaña.
+     * @param context Contexto de la aplicación.
+     */
     suspend fun createCampaign(
         title: String,
         description: String,
@@ -36,6 +44,12 @@ class CampaignRepository @Inject constructor(
                 .flatMap { secondAttemptCreate(campaign) }
     }
 
+    /**
+     * Primer intento de creación de la campaña.
+     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     *
+     * @param campaign Objeto
+     */
     private suspend fun firstAttemptCreate(campaign: CreateCampaign): Result<String>? {
         val access = tokenManager.getAccessToken().first()
         val response = campaignAPI.createCampaign(campaign, "Bearer $access")

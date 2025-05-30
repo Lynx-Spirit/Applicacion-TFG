@@ -14,6 +14,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    /**
+     * Proporciona una instancia singleton de la base de datos, construida con Room.
+     *
+     * @param context Contexto de la aplicación, utilizado para construir la base de datos.
+     * @return Una instancia de [AppDatabase].
+     *
+     * En caso de no proporcionarse una estrategia de migración, se eliminan todos los datos existentes.
+     */
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
@@ -26,6 +34,12 @@ object DatabaseModule {
             .build()
     }
 
+    /**
+     * Proporciona una instancia de [CampaignDAO] para acceder a la tabla de campañas.
+     *
+     * @param database La base de datos a partir de la cual se obtiene el DAO.
+     * @return Una instancia de [CampaignDAO].
+     */
     @Provides
     fun provideCampaignDao(database: AppDatabase): CampaignDAO {
         return database.campaignDAO()

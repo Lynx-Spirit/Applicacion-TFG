@@ -14,6 +14,11 @@ const val BASE_URL = "http://192.168.1.148:8000/"
 @InstallIn(SingletonComponent::class)
 object RetrofitInstance {
 
+    /**
+     * Proporciona una instancia de Retrofit configurada con la URL base.
+     *
+     * @return Instancia de [Retrofit]
+     */
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
@@ -23,18 +28,39 @@ object RetrofitInstance {
             .build()
     }
 
+    /**
+     * Proporciona una instancia de [AuthAPI] generada por Retrofit.
+     *
+     * @param retrofit Instancia de retrofit
+     *
+     * @return Instancia de [AuthAPI]
+     */
     @Provides
     @Singleton
     fun provideAuthAPI(retrofit: Retrofit): AuthAPI {
         return retrofit.create(AuthAPI::class.java)
     }
 
+    /**
+     * Proporciona una instancia de [CampaignAPI] generada por Retrofit.
+     *
+     * @param retrofit Instancia de retrofit
+     *
+     * @return Instancia de [CampaignAPI]
+     */
     @Provides
     @Singleton
     fun provideCampaignAPI(retrofit: Retrofit): CampaignAPI {
         return retrofit.create(CampaignAPI::class.java)
     }
 
+    /**
+     * Proporciona una instancia de [ImgAPI] generada por Retrofit.
+     *
+     * @param retrofit Instancia de retrofit
+     *
+     * @return Instancia de [ImgAPI]
+     */
     @Provides
     @Singleton
     fun provideImgAPI(retrofit: Retrofit): ImgAPI {
