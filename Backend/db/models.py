@@ -57,6 +57,10 @@ class Campaign(Base):
         description (str): Descripción de la campaña.
         img_name (str): Nombre de archivo de imagen de la campaña.
         invite_code (str): Código de invitación de la campaña.
+
+    Relaciones:
+        creator_id (int): Identificador del creador de la campaña.
+        members: Miembros de la campaña.
     """
     __tablename__ = "campaigns"
 
