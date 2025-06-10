@@ -12,11 +12,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -35,16 +44,25 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.tfgmanuel.dungeonvault.R
 import com.tfgmanuel.dungeonvault.data.model.Campaign
+import com.tfgmanuel.dungeonvault.data.model.User
 import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomIconButon
 import com.tfgmanuel.dungeonvault.presentation.ui.components.DecisionDialog
+import com.tfgmanuel.dungeonvault.presentation.ui.components.ItemList
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SecondaryTopBar
+import com.tfgmanuel.dungeonvault.presentation.ui.components.SimpleCustomContainer
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignDetailsViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CampaignDetails(modifier: Modifier = Modifier, viewModel: CampaignDetailsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
+    val isRefreshing = uiState.isLoading
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = { viewModel.forceUpdate() }
+    )
     uiState.campaign?.let { campaign ->
         Scaffold(
             modifier = modifier,
@@ -61,14 +79,18 @@ fun CampaignDetails(modifier: Modifier = Modifier, viewModel: CampaignDetailsVie
                 Content(
                     paddingValues = paddingValues,
                     campaign = campaign,
+                    members = uiState.members,
                     permission = uiState.hasPermission,
+                    creatorId = uiState.creatorId,
                     dialog = uiState.showDialog,
                     showDialog = { viewModel.showDialog() },
                     hideDialog = { viewModel.hideDialog() },
                     onStartClick = { viewModel.onStartClick() },
                     onEditClick = { viewModel.onEditClick() },
                     onDeleteClick = { viewModel.onDeleteClick() },
-                    onAbandonClick = { viewModel.onAbandonClick() }
+                    onKickClick = { userId: Int -> viewModel.onKickClick(userId) },
+                    isRefreshing = isRefreshing,
+                    pullRefreshState = pullRefreshState
                 )
             }
         )
@@ -91,10 +113,13 @@ fun BackgroundImage(paddingValues: PaddingValues, imgName: String) {
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Content(
     paddingValues: PaddingValues,
     campaign: Campaign,
+    creatorId: Int,
+    members: List<User>,
     permission: Boolean,
     dialog: Boolean,
     showDialog: () -> Unit,
@@ -102,40 +127,63 @@ fun Content(
     onEditClick: () -> Unit,
     onStartClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onAbandonClick: () -> Unit
+    onKickClick: (userId: Int) -> Unit,
+    isRefreshing: Boolean,
+    pullRefreshState: PullRefreshState
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = paddingValues.calculateTopPadding())
+            .pullRefresh(pullRefreshState)
             .background(Color.Black.copy(alpha = 0.9f)),
         contentAlignment = Alignment.Center
     ) {
-        Column {
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = campaign.title,
-                fontSize = 34.sp,
-                fontWeight = FontWeight.Bold,
-            )
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Text(
+                    text = campaign.title,
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold,
+                )
 
-            CampaignButtons(
-                permission = permission,
-                dialog = dialog,
-                showDialog = { showDialog() },
-                hideDialog = { hideDialog() },
-                onStartClick = { onStartClick() },
-                onEditClick = { onEditClick() },
-                onDeleteClick = { onDeleteClick() },
-                onAbandonClick = { onAbandonClick() }
-            )
+                CampaignButtons(
+                    permission = permission,
+                    dialog = dialog,
+                    showDialog = { showDialog() },
+                    hideDialog = { hideDialog() },
+                    onStartClick = { onStartClick() },
+                    onEditClick = { onEditClick() },
+                    onDeleteClick = { onDeleteClick() }
+                )
 
-            InviteCodeBox(inviteCode = campaign.invite_code)
+                InviteCodeBox(inviteCode = campaign.invite_code)
 
-            Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-            CampaignInformation(description = campaign.description)
+                CampaignInformation(description = campaign.description)
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                MemberList(
+                    members = members,
+                    onKickClick = { userId: Int -> onKickClick(userId) },
+                    permission = permission,
+                    creatorId = creatorId,
+                    dialog = dialog,
+                    hideDialog = { hideDialog() },
+                    showDialog = { showDialog() }
+                )
+            }
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }
 
@@ -147,8 +195,7 @@ fun CampaignButtons(
     hideDialog: () -> Unit,
     onStartClick: () -> Unit,
     onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-    onAbandonClick: () -> Unit
+    onDeleteClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -228,6 +275,71 @@ fun CampaignButtons(
                         },
                         dialogTitle = "Abandonar campaña",
                         dialogText = "¿Estás seguro de que quieres abandonar esta camapaña? Esta acción no se puede deshacer."
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MemberList(
+    members: List<User>,
+    permission: Boolean,
+    dialog: Boolean,
+    creatorId: Int,
+    showDialog: () -> Unit,
+    hideDialog: () -> Unit,
+    onKickClick: (userId: Int) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .height(200.dp)
+            .background(
+                color = Color(0xFF131313),
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text(
+                text = "Miembros de la partida",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(3.dp))
+
+            ItemList(
+                modifier = Modifier.fillMaxSize(),
+                tList = members,
+                text = "Error al mostrar los usuarios",
+                fontSize = 20.sp
+            ) { user: User ->
+                SimpleCustomContainer(
+                    modifier = Modifier
+                        .height(50.dp),
+                    title = user.nickname,
+                    imgName = user.avatar,
+                    placeholder = R.drawable.default_avatar,
+                    contentDescription = "Avatar usuario",
+                    onClick = { showDialog() },
+                    permission = creatorId != user.id  && permission
+                )
+
+                if (dialog) {
+                    DecisionDialog(
+                        onConfirmation = {
+                            hideDialog()
+                            onKickClick(user.id)
+                        },
+                        onDismissRequest = {
+                            hideDialog()
+                        },
+                        dialogTitle = "Echar usuario?",
+                        dialogText = "¿Estás seguro de que quieres echar a ${user.nickname} de esta camapaña? Esta acción no se puede deshacer."
                     )
                 }
             }

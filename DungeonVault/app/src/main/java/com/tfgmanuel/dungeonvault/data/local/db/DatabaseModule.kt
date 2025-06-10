@@ -3,6 +3,7 @@ package com.tfgmanuel.dungeonvault.data.local.db
 import android.content.Context
 import androidx.room.Room
 import com.tfgmanuel.dungeonvault.data.local.dao.CampaignDAO
+import com.tfgmanuel.dungeonvault.data.local.dao.UserDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +44,16 @@ object DatabaseModule {
     @Provides
     fun provideCampaignDao(database: AppDatabase): CampaignDAO {
         return database.campaignDAO()
+    }
+
+    /**
+     * Proporciona una instancia de [UserDAO] para acceder a la tabla de usuarios
+     *
+     * @param database La base de datos a partir de la cual se obtiene el DAO.
+     * @return Una instancia de [UserDAO].
+     */
+    @Provides
+    fun provideUserDAO(database: AppDatabase): UserDAO {
+        return database.userDAO()
     }
 }

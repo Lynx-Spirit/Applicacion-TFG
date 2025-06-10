@@ -27,7 +27,7 @@ async def save(file, upload_folder = settings.UPLOAD_FOLDER) -> str:
 
     return image_filename
 
-def delete(image_filename, upload_folder = settings.UPLOAD_FOLDER):
+def delete(image_filename: str, upload_folder = settings.UPLOAD_FOLDER):
     """
     Elimina un archivo (por ejemplo, una imagen) del servidor si existe.
 
@@ -39,7 +39,7 @@ def delete(image_filename, upload_folder = settings.UPLOAD_FOLDER):
     Retorna:
         None
     """
-    if(image_filename != ""):
+    if(image_filename.strip() != ""):
         path = os.path.join(upload_folder,image_filename)
         
         if os.path.exists(path):

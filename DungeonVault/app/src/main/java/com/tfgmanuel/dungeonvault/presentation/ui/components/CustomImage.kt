@@ -29,7 +29,7 @@ fun CustomImage(
     contentScale: ContentScale = ContentScale.Crop,
     contentDescription: String = ""
 ) {
-    if (imgName != "") {
+    if (imgName.trim() != "") {
         val context = LocalContext.current
 
         val imageLoader = remember {

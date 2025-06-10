@@ -130,6 +130,6 @@ def remove_user(db: Session, user_id: int):
     user = get_user_by_id(db, user_id)
 
     if user:
-        delete(user.avatar_file_name)
+        delete(user.avatar)
         db.delete(user)
         db.commit()

@@ -117,7 +117,7 @@ fun CreateAccount(modifier: Modifier = Modifier, viewModel: CreateAccountViewMod
                             ImageSelector(
                                 modifier = Modifier
                                     .weight(0.5f)
-                                    .size(55.dp)
+                                    .size(70.dp)
                                     .clip(CircleShape),
                                 uri = uiState.avatarUri,
                                 defaultImage = R.drawable.default_avatar,

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db.campaign_crud import *
 from db.user_crud import get_users_campaigns
-from schema import campaign, campaign_response
+from schema import campaign, campaign_response, user_response, kick_info
 from aux_func.campaigns_aux import generate_invite_code
 from aux_func.auth import get_current_user
 
@@ -69,6 +69,29 @@ def get_campaigns(user_id = Depends(get_current_user), db: Session = Depends(get
     campaigns = get_users_campaigns(db, user_id)
 
     return campaigns
+
+@router.get("/{id}/members", response_model=list[user_response])
+def get_campaign_members(id: int, user_id = Depends(get_current_user), db:Session = Depends(get_db)):
+    """
+    Enpoint que permite a un usuario siempre y cuando esté metido en la campaña, poder ver los usuarios que tiene esta
+
+    Parámetros:
+        id (int): Identificador de la campaña.
+        user_id (int): Es inyectado automáticamente por 'Depends(get_current_user)', y del cual se obtiene el identificador del usuario.
+        db (Session): Sesión de SQLAlchemy para acceder a la base de datos.
+
+    Retorna:
+        List[user_response]: Listado de todos los usaurios de la campaña.
+
+    Lanza:
+        HTTPException: Se lanza en caso de que el usuario no forme parte de la campaña.
+    """
+    campaign = get_campaign_by_id(db=db, campaign_id=id)
+
+    if int(user_id) not in [int(member.id) for member in campaign.members]:
+        raise HTTPException(status_code=403, detail="Not authorized to view members of this campaign")
+    
+    return campaign.members
 
 @router.put("/{id}/update", response_model= campaign_response)
 def update(id: int, campaign: campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -150,6 +173,33 @@ def remove(id: int, user_id = Depends(get_current_user), db: Session = Depends(g
         remove_user(db, id, user_id)
         return {"message": "Usuario eliminado correctamente"}
 
+@router.patch("/{id}/kick-user")
+def kick(kick_info: kick_info, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
+    """
+    Endpoint que permite echar a un usuario seleccionado de una campaña específica.
+
+    Parámetros:
+        kick_info (kick_info): Objeto que contiene toda la información necesaria para poder echar al usuario de la partida.
+            Contiene: email del usuario y el id de la campaña.
+        user_id (int): Es inyectado automáticamente por 'Depends(get_current_user)', y del cual se obtiene el identificador del usuario.
+        db (Session): Sesión de SQLAlchemy para acceder a la base de datos
+
+    Retorna:
+        dict: En caso de eliminarse correctamente, se lanzará el siguiente mensaje:
+            {"message": "Usuario eliminado correctamente"}
+    
+    Lanza:
+        HTTPException: Se lanza en el caso de no ser el creador de la campaña.
+    """
+    campaign = get_campaign(id=kick_info.id, db=db)
+    
+    if campaign.creator_id != int(user_id):
+        raise HTTPException(status_code=403, detail="No eres el creador de esta camapaña")
+    
+    remove_user(db=db, campaign_id=kick_info.id, user_id=kick_info.user)
+
+    return {"message": "Usuario eliminado correctamente"}
+
 @router.delete("/{id}/delete")
 def delete(id: int, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
@@ -172,4 +222,4 @@ def delete(id: int, user_id = Depends(get_current_user), db: Session = Depends(g
         delete_campaign(db, id)
         return {"message": "Camapaña eliminada correctamente"}
     else:
-        raise HTTPException(status_code=401, detail="No eres el creador de esta camapaña")
+        raise HTTPException(status_code=403, detail="No eres el creador de esta camapaña")

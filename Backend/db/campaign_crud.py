@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from aux_func.img_aux import delete
 from db.models import Campaign, User, campaign_invites
-from db.user_crud import get_user_by_id
+from db.user_crud import get_user_by_id, get_user_by_email
 
 # CRUD de campaña
 
@@ -47,7 +47,7 @@ def get_campaign_by_id(db: Session, campaign_id: int) -> Campaign:
     Retorna:
         Campaign: Campaña que tenga el identificador pasado como parámetro.
     """
-    return db.query(Campaign).filter(Campaign.id == campaign_id).first()
+    return db.query(Campaign).options(selectinload(Campaign.members)).filter(Campaign.id == campaign_id).first()
 
 def get_campaign_by_code(db: Session, campaign_code: str) -> Campaign:
     """
@@ -179,7 +179,7 @@ def remove_user(db: Session, campaign_id: int, user_id: int):
     Retorna:
         None
     """
-    campaign = get_campaign_by_id(db= db, campaign_id= campaign_id)
+    campaign = get_campaign_by_id(db=db, campaign_id=campaign_id)
     user = get_user_by_id(db, user_id)
 
     campaign.members.remove(user)

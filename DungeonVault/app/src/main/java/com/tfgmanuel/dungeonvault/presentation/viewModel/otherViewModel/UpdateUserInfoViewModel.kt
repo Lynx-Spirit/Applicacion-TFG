@@ -3,7 +3,8 @@ package com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tfgmanuel.dungeonvault.data.UserDataStore
+import com.tfgmanuel.dungeonvault.data.TokenManager
+import com.tfgmanuel.dungeonvault.data.local.dao.UserDAO
 import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.presentation.states.UpdateUserState
@@ -31,10 +32,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class UpdateUserInfoViewModel @Inject constructor(
-    private val userDataStore: UserDataStore,
     private val authRepository: AuthRepository,
-    val navManager: NavManager,
-    private val contextProvider: ContextProvider
+    private val navManager: NavManager,
+    private val contextProvider: ContextProvider,
+    private val tokenManager: TokenManager,
+    private val userDAO: UserDAO
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UpdateUserState())
     val uiState: StateFlow<UpdateUserState> = _uiState.asStateFlow()
@@ -44,11 +46,14 @@ class UpdateUserInfoViewModel @Inject constructor(
             val result = authRepository.getUser()
 
             if (result.isSuccess) {
-                _uiState.value = _uiState.value.copy(
-                    originalNickname = userDataStore.getNickname().first()!!,
-                    nickname = userDataStore.getNickname().first()!!,
-                    originalAvatar = userDataStore.getAvatar().first()!!
-                )
+                val user = userDAO.getUser(tokenManager.getUserID().first()!!)
+                if (user != null) {
+                    _uiState.value = _uiState.value.copy(
+                        originalNickname = user.nickname,
+                        nickname = user.nickname,
+                        originalAvatar = user.avatar
+                    )
+                }
             }
         }
     }

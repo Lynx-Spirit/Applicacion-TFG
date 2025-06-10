@@ -3,6 +3,8 @@ package com.tfgmanuel.dungeonvault.data.remote
 import com.tfgmanuel.dungeonvault.data.model.APIResponse
 import com.tfgmanuel.dungeonvault.data.model.Campaign
 import com.tfgmanuel.dungeonvault.data.model.CreateCampaign
+import com.tfgmanuel.dungeonvault.data.model.KickInformation
+import com.tfgmanuel.dungeonvault.data.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -47,6 +49,20 @@ interface CampaignAPI {
         @Path("id") id: Int,
         @Header("Authorization") token: String
     ): Response<Campaign>
+
+    /**
+     * Obtiene todos los usuarios de una campaña específica por su ID.
+     *
+     * @param id Identificador de la campaña.
+     * @param token Token de autorización del usuario.
+     *
+     * @return [Response] que contiene un [List] de [User] de la campaña.
+     */
+    @GET("campaigns/{id}/members")
+    suspend fun getMembers(
+        @Path("id") id: Int,
+        @Header("Authorization") token: String
+    ): Response<List<User>>
 
     /**
      * Obtiene todas las campañas asociadas al usuario autenticado.
@@ -101,6 +117,22 @@ interface CampaignAPI {
     @PATCH("campaigns/{id}/remove-user")
     suspend fun removeUser(
         @Path("id") id: Int,
+        @Header("Authorization") token: String
+    ): Response<APIResponse>
+
+    /**
+     * Echa a un usuario específico de una campaña.
+     *
+     * @param id Identificador de la campaña.
+     * @param kickInformation Objeto que contiene toda la informacíon relativa para echar al usaurio.
+     * @param token Token de autorización del usuario.
+     *
+     * @return [Response] con el mensaje de respuesta de la API.
+     */
+    @PATCH("campaigns/{id}/kick-user")
+    suspend fun kickUSer(
+        @Path("id") id: Int,
+        @Body kickInformation: KickInformation,
         @Header("Authorization") token: String
     ): Response<APIResponse>
 

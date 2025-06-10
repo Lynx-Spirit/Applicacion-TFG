@@ -37,10 +37,12 @@ class user_response(BaseModel):
     Modelo de respuesta con los datos públicos del usuario de la aplicación.
 
     Atributos:
+        id (int): Identificador del usuario.
         email (EmailStr): Correo elecrónico del usuario.
         avatar (str): Nombre del archivo del avatar actual del usuario.
         nickname (str): Apodo actual del usuario.
     """
+    id: int
     email: EmailStr
     avatar: str
     nickname: str
@@ -128,3 +130,14 @@ class campaign_response(BaseModel):
      img_name: str
      invite_code: str
      creator_id: int
+
+class kick_info(BaseModel):
+    """
+    Modelo de entrada para poder eliminar a un usuaio de la campaña.
+
+    Atributos:
+        user (int): Id del usuario a eliminar de la campaña.
+        id (int): Identificador de la campaña.
+    """
+    user : int
+    id: int

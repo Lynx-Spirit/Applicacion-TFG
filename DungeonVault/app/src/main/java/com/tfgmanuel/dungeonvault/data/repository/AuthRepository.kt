@@ -3,7 +3,7 @@ package com.tfgmanuel.dungeonvault.data.repository
 import android.content.Context
 import android.net.Uri
 import com.tfgmanuel.dungeonvault.data.TokenManager
-import com.tfgmanuel.dungeonvault.data.UserDataStore
+import com.tfgmanuel.dungeonvault.data.local.dao.UserDAO
 import com.tfgmanuel.dungeonvault.data.model.RefreshTokenRequest
 import com.tfgmanuel.dungeonvault.data.model.Token
 import com.tfgmanuel.dungeonvault.data.model.User
@@ -17,9 +17,9 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val authAPI: AuthAPI,
+    private val userDAO: UserDAO,
     private val imgRepository: ImgRepository,
-    private val tokenManager: TokenManager,
-    private val userDataStore: UserDataStore
+    private val tokenManager: TokenManager
 ) {
 
     /**
@@ -30,7 +30,7 @@ class AuthRepository @Inject constructor(
      *
      * @return [Result] con el resultado del login.
      *
-     * @throws exception En caso de haber un error desconocido, se lanza un mensaje con el error concreto.
+     * @throws Exception En caso de haber un error desconocido, se lanza un mensaje con el error concreto.
      */
     suspend fun login(email: String, password: String): Result<String> {
         return try {
@@ -64,7 +64,7 @@ class AuthRepository @Inject constructor(
      *
      * @return [Result] que contiene un [String] con el resultado de la ejecución.
      *
-     * @throws exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
+     * @throws Exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
      */
     suspend fun register(
         email: String,
@@ -112,7 +112,7 @@ class AuthRepository @Inject constructor(
 
     /**
      * Primer intento de obtención de la información del usuario.
-     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     * En caso de que devuelva la API un 401, retorna null para poder refrescar los tokens.
      *
      * @return [Result] que contiene un [String] con el resultado de la ejecución.
      */
@@ -120,7 +120,7 @@ class AuthRepository @Inject constructor(
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.getUser("Bearer $access")
 
-        if(response.isSuccessful) {
+        if (response.isSuccessful) {
             return saveUser(response.body()!!, "Usuario obtenido correctamente")
         }
 
@@ -141,7 +141,7 @@ class AuthRepository @Inject constructor(
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.getUser("Bearer $access")
 
-        if(response.isSuccessful) {
+        if (response.isSuccessful) {
             return saveUser(response.body()!!, "Usuario obtenido correctamente")
         }
 
@@ -177,7 +177,7 @@ class AuthRepository @Inject constructor(
 
     /**
      * Primer intento de actualización de la información del usuario.
-     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     * En caso de que devuelva la API un 401, retorna null para poder refrescar los tokens.
      *
      * @param updateInfo Objeto que engloba toda la información para actualizar los datos del usuario.
      *
@@ -188,7 +188,7 @@ class AuthRepository @Inject constructor(
         val response = authAPI.updateUser(updateInfo = updateInfo, token = "Bearer $access")
 
         if (response.isSuccessful) {
-           return saveUser(response.body()!!, "Usuario actualizado de forma correcta")
+            return saveUser(response.body()!!, "Usuario actualizado de forma correcta")
         }
 
         if (response.code() != 401) {
@@ -210,7 +210,7 @@ class AuthRepository @Inject constructor(
         val access = tokenManager.getAccessToken().first()
         val response = authAPI.updateUser(updateInfo = updateInfo, token = "Bearer $access")
 
-        if(response.isSuccessful) {
+        if (response.isSuccessful) {
             return saveUser(response.body()!!, "Usuario actualizado de forma correcta")
         }
 
@@ -218,7 +218,7 @@ class AuthRepository @Inject constructor(
     }
 
     /**
-     * Almacenaje de la informacíon del usuario en [userDataStore]
+     * Almacenaje de la informacíon del usuario
      *
      * @param user Objeto [User] que contiene la información para almacenar.
      * @param message Mensaje en caso de ser correcta la ejecución.
@@ -226,11 +226,7 @@ class AuthRepository @Inject constructor(
      * @return [Result] que contiene un [String] con el resultado de la ejecución.
      */
     private suspend fun saveUser(user: User, message: String): Result<String> {
-        userDataStore.saveInformation(
-            email = user.email,
-            avatar = user.avatar,
-            nickname = user.nickname
-        )
+        userDAO.insertUser(user)
 
         return Result.success(message)
     }
@@ -240,7 +236,7 @@ class AuthRepository @Inject constructor(
      *
      * @return [Result] que contiene un [String] con el resultado de la ejecución.
      *
-     * @throws exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
+     * @throws Exception En caso de haber un error desconocido, se lanza un mesnaje con el error conreto.
      */
     suspend fun refreshTokens(): Result<String> {
         return try {
@@ -303,7 +299,7 @@ class AuthRepository @Inject constructor(
 
     /**
      * Primer intento de eliminación de la información del usuario.
-     * En caso de quedevuelva la API un 401, retorna null para poder refrescar los tokens.
+     * En caso de que devuelva la API un 401, retorna null para poder refrescar los tokens.
      *
      * @return [Result] que contiene un [String] con el resultado de la ejecución.
      */

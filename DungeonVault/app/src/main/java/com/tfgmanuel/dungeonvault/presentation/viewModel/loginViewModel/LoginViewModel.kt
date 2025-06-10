@@ -58,6 +58,7 @@ class LoginViewModel @Inject constructor(
             } else {
                 val result = authRepository.login(_uiState.value.email, _uiState.value.password)
                 if (result.isSuccess) {
+                    authRepository.getUser()
                     navigationManager.navigate(
                         route = Screen.SelectCampaign.route,
                         popUpTo = Screen.SelectCampaign.route,

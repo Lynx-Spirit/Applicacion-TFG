@@ -9,10 +9,12 @@ import com.tfgmanuel.dungeonvault.data.repository.CampaignRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
 import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.CampaignDetailsState
+import com.tfgmanuel.dungeonvault.timeStampValid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,9 +59,41 @@ class CampaignDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             if (campaignID != null) {
                 val campaign = campaignDAO.getCampaignById(campaignID.toInt())
+                if (timeStampValid(campaign!!.lastUpdated)) {
+                    forceUpdate()
+                } else {
+                    val members = campaignDAO.getUsersByCampaign(campaignID.toInt())
+
+                    val userId = tokenManager.getUserID().firstOrNull()
+                    _uiState.value = _uiState.value.copy(
+                        campaign = campaign,
+                        creatorId = tokenManager.getUserID().first()!!,
+                        members = members,
+                        hasPermission = campaign.creator_id == userId
+                    )
+                }
+            }
+        }
+    }
+
+    /**
+     * Fuerza la actualización de la campaña.
+     */
+    fun forceUpdate() {
+        viewModelScope.launch {
+            if (campaignID != null) {
+                val result = campaignRepository.getCampaign(campaignID.toInt())
+                if (result.isSuccess) {
+                    campaignRepository.getUsers(campaignID.toInt())
+                }
+                val campaign = campaignDAO.getCampaignById(campaignID.toInt())
+                val members = campaignDAO.getUsersByCampaign(campaignID.toInt())
+
                 val userId = tokenManager.getUserID().firstOrNull()
                 _uiState.value = _uiState.value.copy(
                     campaign = campaign,
+                    creatorId = tokenManager.getUserID().first()!!,
+                    members = members,
                     hasPermission = campaign?.creator_id == userId
                 )
             }
@@ -149,6 +183,19 @@ class CampaignDetailsViewModel @Inject constructor(
                         inclusive = true
                     )
                 } else {
+                    _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
+                }
+            }
+        }
+    }
+
+    fun onKickClick(userId: Int) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(error = null)
+            val result = campaignID?.let { campaignRepository.kickUser(campaignID.toInt(), userId) }
+
+            if (result != null) {
+                if (!result.isSuccess) {
                     _uiState.value = _uiState.value.copy(error = result.exceptionOrNull()?.message)
                 }
             }

@@ -44,6 +44,7 @@ class User(Base):
     joined_campaigns = relationship(
         "Campaign",
         secondary=campaign_invites,
+        passive_deletes=True,
         back_populates="members"
     )
     
