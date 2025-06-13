@@ -81,7 +81,7 @@ def get_user(user_id = Depends(get_current_user), db: Session = Depends(get_db))
     user = get_user_by_id(db, user_id)
     return user
 
-@router.put("/update", response_model= user_response)
+@router.put("/update", response_model=user_response)
 def update(data: user_update, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Endpoint para actualizar tanto el avatar como el apodo (nickname) de un usuario autenticado.

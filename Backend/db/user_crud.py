@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from aux_func.img_aux import delete
+from aux_func.files_aux import delete
 from aux_func.auth import hash_password
 from typing import List
 from db.models import User
@@ -91,7 +91,7 @@ def update_password(db: Session, user_email: str, new_password: str) -> User:
 
 def update_user(db: Session, user_id: int, user_nickname: str = "", user_new_avatar: str = "") -> User:
     """
-    Actualiza de la inforamción pública del usuario en aquellos campos que sean distintos a los actuales.
+    Actualiza de la información pública del usuario en aquellos campos que sean distintos a los actuales.
 
     Parámetros:
         db (Session): Sesión e SQLAlchemy para acceder a la base de datos.

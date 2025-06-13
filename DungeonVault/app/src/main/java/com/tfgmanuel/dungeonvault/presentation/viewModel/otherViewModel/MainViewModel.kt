@@ -50,6 +50,12 @@ class MainViewModel @Inject constructor(
         showDeleteDialog.value = false
     }
 
+    fun selectCampaign() {
+        viewModelScope.launch {
+            navManager.navigate(Screen.SelectCampaign.route)
+        }
+    }
+
     /**
      * Oculta el diálogo de confirmación para eliminar cuenta.
      */

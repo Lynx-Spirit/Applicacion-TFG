@@ -1,3 +1,4 @@
+from datetime import date
 from pydantic import BaseModel, EmailStr
 
 class Config:
@@ -141,3 +142,114 @@ class kick_info(BaseModel):
     """
     user : int
     id: int
+
+class note(BaseModel):
+    """
+    Modelo de entrada para la creación de las notas.
+
+    Atributos:
+        campaign_id (int): Identificador de la campaña
+        title (str): Título de la nota.
+        file_name (str): Nombre del fichero de la nota.
+        visibility (bool): Visibilidad de la nueva nota
+    """
+    campaign_id: int
+    title: str
+    file_name: str
+    visibility: bool
+
+class note_update(BaseModel):
+    """
+    Modelo de entrada para actualizar las notas.
+
+    Atributos:
+        title (str): Título de la nota.
+        file_name (str): Nombre del fichero de la nota.
+        visibility (bool): Visibilidad de la nueva nota
+    """
+    title: str
+    file_name: str
+    visibility: bool
+
+class note_response(BaseModel):
+    """
+    Modelo de respuesta para la creación o actualización de una nota o transcripción.
+
+    Atributos:
+        id (int): Identificador de la nota.
+        campaign_id (int): Identificador de la partida a la que pertenece.
+        user_id (int): Ideniticador del usuario que lo ha creado.
+        creation_date (date): Fecha de creaión de la nota.
+        title (str): Título de la nota.
+        file_name (str): Nombre del archivo que contiene toda la info de la nota.
+        visibility (bool): Indica si la nota es visible o no al resto de usuarios.
+    """
+    id: int
+    campaign_id: int
+    user_id: int
+    creation_date: date
+    title: str
+    file_name: str
+    visibility: bool
+ 
+
+class character(BaseModel):
+    """
+    Modelo de entrada para la creación de las notas.
+
+    Atributos:
+        campaign_id (int): Identificador de la campaña.
+        user_id (int): Identificador del usuario que ha creado el personaje.
+        name (str): Nombre del personaje.
+        description (str): Descripción general del personaje
+        filename_backstory (str): Nombre del archivo del backstory.
+        img_name (str): Nombre del archivo de imagen del personaje.
+        visibility (bool): Indica si el personaje está visible al resto de usuarios o no.
+    """
+    campaign_id: int
+    user_id: int
+    name: str
+    description: str
+    filename_backstory: str
+    img_name: str
+    visibility: bool
+
+class character_update(BaseModel):
+    """
+    Modelo de entrada para la actualización de las notas.
+
+    Atributos:
+        name (str): Nombre del personaje.
+        description (str): Descripción general del personaje
+        filename_backstory (str): Nombre del archivo del backstory.
+        img_name (str): Nombre del archivo de imagen del personaje.
+        visibility (bool): Indica si el personaje está visible al resto de usuarios o no.
+    """
+    name: str
+    description: str
+    filename_backstory: str
+    img_name: str
+    visibility: bool
+
+class character_response(BaseModel):
+    """
+    Modelo de respuesta para las notas
+
+    Atributos:
+        id (int): Identificador interno de las notas.
+        campaign_id (int): Identificador de la campaña.
+        user_id (int): Identificador del usuario que ha creado el personaje.
+        name (str): Nombre del personaje.
+        description (str): Descripción general del personaje
+        filename_backstory (str): Nombre del archivo del backstory.
+        img_name (str): Nombre del archivo de imagen del personaje.
+        visibility (bool): Indica si el personaje está visible al resto de usuarios o no.
+    """
+    id: int
+    campaign_id: int
+    user_id: int
+    name: str
+    description: str
+    filename_backstory: str
+    img_name: str
+    visibility: bool

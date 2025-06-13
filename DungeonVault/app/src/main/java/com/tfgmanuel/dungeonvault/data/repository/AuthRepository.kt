@@ -18,7 +18,7 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val authAPI: AuthAPI,
     private val userDAO: UserDAO,
-    private val imgRepository: ImgRepository,
+    private val fileRepository: FileRepository,
     private val tokenManager: TokenManager
 ) {
 
@@ -77,7 +77,7 @@ class AuthRepository @Inject constructor(
             var avatar = ""
 
             if (avatarUri != Uri.EMPTY) {
-                avatar = imgRepository.uploadImage(avatarUri, context)
+                avatar = fileRepository.uploadImage(avatarUri, context)
             }
 
             val user = UserRegister(
@@ -165,7 +165,7 @@ class AuthRepository @Inject constructor(
         var avatar = ""
 
         if (avatarUri != Uri.EMPTY) {
-            avatar = imgRepository.uploadImage(avatarUri, context)
+            avatar = fileRepository.uploadImage(avatarUri, context)
         }
 
         val updateInfo = UserUpdateInfo(nickname = nickname, avatar = avatar)

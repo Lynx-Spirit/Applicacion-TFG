@@ -55,15 +55,15 @@ object RetrofitInstance {
     }
 
     /**
-     * Proporciona una instancia de [ImgAPI] generada por Retrofit.
+     * Proporciona una instancia de [FilesAPI] generada por Retrofit.
      *
      * @param retrofit Instancia de retrofit
      *
-     * @return Instancia de [ImgAPI]
+     * @return Instancia de [FilesAPI]
      */
     @Provides
     @Singleton
-    fun provideImgAPI(retrofit: Retrofit): ImgAPI {
-        return retrofit.create(ImgAPI::class.java)
+    fun provideFileAPI(retrofit: Retrofit): FilesAPI {
+        return retrofit.create(FilesAPI::class.java)
     }
 }

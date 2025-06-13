@@ -11,10 +11,18 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignSelec
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.EnterCampaign
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.NewCampaign
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.UpdateCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignCharacters
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignChat
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignMainScreen
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignNotes
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.other.UpdateUserInfo
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignCharactersViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignChatViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignMainViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignNotesViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignDetailsViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignSelectionViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.EnterCampaignViewModel
@@ -103,6 +111,26 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         composable("${Screen.UpdateCampaign.route}/{campaignID}") {
             val viewModel: UpdateCampaignViewModel = hiltViewModel<UpdateCampaignViewModel>()
             UpdateCampaign(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignMainScreen.route}/{campaignID}") {
+            val viewModel: CampaignMainViewModel = hiltViewModel<CampaignMainViewModel>()
+            CampaignMainScreen(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignCharactersScreen.route}/{campaignID}") {
+            val viewModel: CampaignCharactersViewModel = hiltViewModel<CampaignCharactersViewModel>()
+            CampaignCharacters(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignNotesScreen.route}/{campaignID}") {
+            val viewModel: CampaignNotesViewModel = hiltViewModel<CampaignNotesViewModel>()
+            CampaignNotes(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignChatScreen.route}/{campaignID}") {
+            val viewModel: CampaignChatViewModel = hiltViewModel<CampaignChatViewModel>()
+            CampaignChat(viewModel = viewModel)
         }
     }
 }

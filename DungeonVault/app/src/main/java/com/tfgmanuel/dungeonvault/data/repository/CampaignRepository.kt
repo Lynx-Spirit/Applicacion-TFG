@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class CampaignRepository @Inject constructor(
-    private val imgRepository: ImgRepository,
+    private val fileRepository: FileRepository,
     private val campaignAPI: CampaignAPI,
     private val authRepository: AuthRepository,
     private val tokenManager: TokenManager,
@@ -38,7 +38,7 @@ class CampaignRepository @Inject constructor(
         var fileName = ""
 
         if (imgUri != Uri.EMPTY) {
-            fileName = imgRepository.uploadImage(imgUri, context)
+            fileName = fileRepository.uploadImage(imgUri, context)
         }
 
         val campaign = CreateCampaign(title, description, fileName)
@@ -300,7 +300,7 @@ class CampaignRepository @Inject constructor(
         var fileName = originalFileName
 
         if (imgUri != Uri.EMPTY) {
-            fileName = imgRepository.uploadImage(imgUri, context)
+            fileName = fileRepository.uploadImage(imgUri, context)
         }
         val campaign = CreateCampaign(title, description, fileName)
 

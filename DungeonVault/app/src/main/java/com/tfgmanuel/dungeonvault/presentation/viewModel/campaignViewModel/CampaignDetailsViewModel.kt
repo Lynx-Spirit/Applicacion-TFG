@@ -131,7 +131,13 @@ class CampaignDetailsViewModel @Inject constructor(
      * Acción para iniciar la campaña.
      */
     fun onStartClick() {
-        //Llamada al navManager
+        viewModelScope.launch {
+            navManager.navigate(
+                route = Screen.CampaignMainScreen.route + "/${campaignID}",
+                popUpTo = Screen.CampaignMainScreen.route + "/${campaignID}",
+                inclusive = true
+            )
+        }
     }
 
     /**

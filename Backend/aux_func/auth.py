@@ -145,4 +145,4 @@ def get_current_user(token: str = Security(oauth2_scheme)) -> int:
     if not user_id:
         raise HTTPException(status_code=401, detail="Token inválido o expirado")
     
-    return user_id
+    return int(user_id)

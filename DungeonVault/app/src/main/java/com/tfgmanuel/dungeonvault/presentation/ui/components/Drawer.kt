@@ -8,6 +8,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,20 +19,25 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.otherViewModel.MainViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Menú hamburguesa de la aplicación.
+ *
+ * @param drawerState Estado del menú hamburguesa para cerrarlo una vez seleccionado
+ * @param campaignSelectionEnable [Boolean] que indica si está habilitado o no el regresar a la selección de campañas.
  */
 @Composable
-fun DrawerApplication() {
+fun DrawerApplication(drawerState: DrawerState, campaignSelectionEnable: Boolean = false) {
     val viewModel: MainViewModel = hiltViewModel()
     val showDialog by viewModel.showDeleteDialog
-
+    val scope = rememberCoroutineScope()
 
     ModalDrawerSheet(
         drawerContainerColor = Color(0xFF1A1A1A),
@@ -53,6 +60,31 @@ fun DrawerApplication() {
                 text = "Ajustes",
                 style = MaterialTheme.typography.titleLarge
             )
+
+            NavigationDrawerItem(
+                colors = NavigationDrawerItemDefaults.colors(
+                    unselectedContainerColor = Color(0xFF1A1A1A),
+                    unselectedIconColor = if (campaignSelectionEnable) Color.White else Color.Gray,
+                    unselectedTextColor = if (campaignSelectionEnable) Color.White else Color.Gray,
+                ),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = null
+                    )
+                },
+                label = { Text("Cambiar campaña") },
+                selected = false,
+                onClick = {
+                    if(campaignSelectionEnable) {
+                        viewModel.selectCampaign()
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                }
+            )
+
             NavigationDrawerItem(
                 colors = NavigationDrawerItemDefaults.colors(
                     unselectedContainerColor = Color(0xFF1A1A1A),
@@ -68,7 +100,10 @@ fun DrawerApplication() {
                 label = { Text("Modificar usuario") },
                 selected = false,
                 onClick = {
-                    viewModel.modifyUser()
+                    scope.launch {
+                        drawerState.close()
+                        viewModel.modifyUser()
+                    }
                 }
             )
 

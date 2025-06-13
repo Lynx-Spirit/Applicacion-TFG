@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +47,8 @@ import com.tfgmanuel.dungeonvault.data.model.Campaign
 import com.tfgmanuel.dungeonvault.data.remote.BASE_URL
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomContainer
 import com.tfgmanuel.dungeonvault.presentation.ui.components.DrawerApplication
+import com.tfgmanuel.dungeonvault.presentation.ui.components.FAB
+import com.tfgmanuel.dungeonvault.presentation.ui.components.FabSheetOption
 import com.tfgmanuel.dungeonvault.presentation.ui.components.ItemList
 import com.tfgmanuel.dungeonvault.presentation.ui.components.MainTopBar
 import com.tfgmanuel.dungeonvault.presentation.ui.components.SheetOption
@@ -68,7 +71,11 @@ fun CampaignSelection(modifier: Modifier = Modifier, viewModel: CampaignSelectio
     )
 
     ModalNavigationDrawer(
-        drawerContent = { DrawerApplication() },
+        drawerContent = {
+            DrawerApplication(
+                drawerState = drawerState
+            )
+        },
         drawerState = drawerState,
     ) {
         Scaffold(
@@ -96,8 +103,20 @@ fun CampaignSelection(modifier: Modifier = Modifier, viewModel: CampaignSelectio
             },
             floatingActionButton = {
                 FAB(
-                    onClickCreate = { viewModel.onCreateSelected() },
-                    onClickInvite = { viewModel.onInviteSelected() }
+                    listOf(
+                        FabSheetOption(
+                            icon = Icons.Default.Create,
+                            title = "Crear Campaña",
+                            subtitle = "Inicia una nueva aventura como Game Master",
+                            onClick = {  viewModel.onCreateSelected() }
+                        ),
+                        FabSheetOption(
+                            icon = Icons.Default.Email,
+                            title = "Unirse por invicación",
+                            subtitle = "Participa en una campaña ya existente",
+                            onClick = { viewModel.onInviteSelected() }
+                        )
+                    )
                 )
             },
             floatingActionButtonPosition = FabPosition.End,
@@ -145,57 +164,5 @@ fun Content(
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FAB(onClickCreate: () -> Unit, onClickInvite: () -> Unit) {
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    FloatingActionButton(
-        onClick = { showBottomSheet = true },
-        shape = CircleShape,
-        containerColor = Color(0xFFFDA626),
-        contentColor = Color.White
-    ) {
-        Icon(Icons.Default.Add, contentDescription = null)
-    }
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
-            sheetState = bottomSheetState,
-            containerColor = Color(0xff1a1a1a)
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth()
-            ) {
-                SheetOption(
-                    icon = Icons.Default.Create,
-                    title = "Crear campaña",
-                    subtitle = "Inicia una nueva aventura como Game Master",
-                    onClick = {
-                        showBottomSheet = false
-                        onClickCreate()
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                SheetOption(
-                    icon = Icons.Default.Email,
-                    title = "Unirse por invitación",
-                    subtitle = "Participa en una campaña ya existente",
-                    onClick = {
-                        showBottomSheet = false
-                        onClickInvite()
-                    }
-                )
-            }
-        }
     }
 }

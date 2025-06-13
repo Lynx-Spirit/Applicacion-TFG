@@ -2,15 +2,15 @@ import os
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from config import settings
-from aux_func.img_aux import save
+from aux_func.files_aux import save
 
-# Inicializa un enrutador para agrupar las rutas relacionadas con las imágenes.
+# Inicializa un enrutador para agrupar las rutas relacionadas con los ficheros.
 router = APIRouter()
 
 @router.post("/upload")
 async def upload(file: UploadFile = File(...)):
     """
-    Enpoint para la subida de las imágenes.
+    Enpoint para la subida de los archivos.
 
     Parámetros:
         file (UploadFile): Imagen que quiere almacenarse.
@@ -32,7 +32,7 @@ async def upload(file: UploadFile = File(...)):
 @router.get("/{file_name}")
 async def obtener_imagen(file_name: str):
     """
-    Endpoint para para obtener una imágen concreta
+    Endpoint para para obtener un archivo concreto.
 
     Parámetros:
         file_name (str): Nombre del archivo de imagen que se quiere obtener.

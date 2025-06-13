@@ -10,7 +10,7 @@ from aux_func.auth import get_current_user
 # Inicializa un enrutador para agrupar las rutas relacionadas con las campañas.
 router = APIRouter()
 
-@router.post("/new", response_model= campaign_response)
+@router.post("/new", response_model=campaign_response)
 def create(campaign: campaign, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Endpoint que permite a un usuario autenticado crear una nueva campaña.
@@ -30,7 +30,7 @@ def create(campaign: campaign, user_id = Depends(get_current_user), db: Session 
 
     return campaign
 
-@router.get("/{id}", response_model= campaign_response)
+@router.get("/{id}", response_model=campaign_response)
 def get_campaign(id: int, db: Session = Depends(get_db)):
     """
     Endpoint para obtener información concreta de una campaña.
@@ -117,7 +117,7 @@ def update(id: int, campaign: campaign, user_id = Depends(get_current_user), db:
     else:
         raise HTTPException(status_code=403, detail= "You are not the owner of this campaign")
 
-@router.patch("/new-user", response_model= campaign_response)
+@router.patch("/new-user", response_model=campaign_response)
 def new_user(invite_code: str, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Endpoint que permite a un usuario unirse a una partida nueva como jugador, usando un código de invitación.

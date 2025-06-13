@@ -2,7 +2,7 @@ package com.tfgmanuel.dungeonvault.data.repository
 
 import android.content.Context
 import android.net.Uri
-import com.tfgmanuel.dungeonvault.data.remote.ImgAPI
+import com.tfgmanuel.dungeonvault.data.remote.FilesAPI
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -10,8 +10,8 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-class ImgRepository @Inject constructor(
-    private val imgAPI: ImgAPI,
+class FileRepository @Inject constructor(
+    private val filesAPI: FilesAPI,
 ) {
     /**
      * Subida de una imagen seleccionada al servidor.
@@ -28,7 +28,7 @@ class ImgRepository @Inject constructor(
             val imageFile = getFileFromUri(imageUri, context)
             val imagePart = prepareImageFile(imageFile)
 
-            val result = imgAPI.uploadImg(imagePart)
+            val result = filesAPI.uploadFile(imagePart)
 
             if (result.isSuccessful) {
                 val imgResponse = result.body()!!

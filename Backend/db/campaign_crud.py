@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, selectinload
-from aux_func.img_aux import delete
+from aux_func.files_aux import delete
 from db.models import Campaign, User, campaign_invites
 from db.user_crud import get_user_by_id, get_user_by_email
 
@@ -119,7 +119,7 @@ def update_campaign(db: Session, campaign_id: int,  title: str = "", description
         campaign.description = description
     
     if img_name != "" and img_name != campaign.img_name:
-        delete(image_filename=campaign.img_name)
+        delete(filename=campaign.img_name)
         campaign.img_name = img_name
 
     db.commit()

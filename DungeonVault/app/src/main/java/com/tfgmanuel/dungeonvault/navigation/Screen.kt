@@ -45,4 +45,24 @@ sealed class Screen(val route: String) {
      * Ruta de la pantalla para actualizar los detalles de una campaña existente.
      */
     object UpdateCampaign : Screen("UpdateCampaign")
+
+    /**
+     * Ruta de la pantalla para principal de la campaña.
+     */
+    object CampaignMainScreen: Screen("CampaignMainScreen")
+
+    /**
+     * Ruta de la pantala de los personajes que están en la pantalla
+     */
+    object CampaignCharactersScreen: Screen("CampaignCharacters")
+
+    /**
+     * Ruta de la pantalla de notas
+     */
+    object  CampaignNotesScreen: Screen("CampaignNotes")
+
+    /**
+     * Ruta de la pantalla del chatbot
+     */
+    object  CampaignChatScreen: Screen("CampaignChat")
 }
