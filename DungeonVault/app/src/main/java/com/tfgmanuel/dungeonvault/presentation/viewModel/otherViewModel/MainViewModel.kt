@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.data.TokenManager
 import com.tfgmanuel.dungeonvault.data.local.dao.CampaignDAO
+import com.tfgmanuel.dungeonvault.data.local.dao.CharacterDAO
+import com.tfgmanuel.dungeonvault.data.local.dao.NoteDAO
 import com.tfgmanuel.dungeonvault.data.local.dao.UserDAO
 import com.tfgmanuel.dungeonvault.data.repository.AuthRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
@@ -32,6 +34,8 @@ class MainViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     private val campaignDAO: CampaignDAO,
     private val authRepository: AuthRepository,
+    private val characterDAO: CharacterDAO,
+    private val noteDAO: NoteDAO,
     private val userDAO: UserDAO
 ) : ViewModel() {
     val showDeleteDialog = mutableStateOf(false)
@@ -98,6 +102,8 @@ class MainViewModel @Inject constructor(
     fun deleteAll() {
         viewModelScope.launch {
             tokenManager.clearTokens()
+            noteDAO.deleteAllNotes()
+            characterDAO.deleteAllCharacters()
             campaignDAO.deleteAll()
             userDAO.deleteAllUsers()
         }

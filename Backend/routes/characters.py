@@ -34,7 +34,7 @@ def create(character: character, user_id = Depends(get_current_user), db: Sessio
     character = create_character(
         db=db,
         campaign_id=character.campaign_id,
-        user_id=character.user_id,
+        user_id=user_id,
         name=character.name,
         filename_backstory=character.filename_backstory,
         img_name=character.img_name,
@@ -136,7 +136,7 @@ def delete_note(id: int, user_id = Depends(get_current_user), db: Session = Depe
         db (Session): Sesión de SQLAlchemy para acceder a la base de datos.
 
     Retorna:
-        None
+        {"message": "Personaje eliminado correctamente"}
     
     Lanza:
         HTTPException: Si el usuario que quiere eliminar un personaje del cual no es el creador de esta, lanza un error.
@@ -148,3 +148,5 @@ def delete_note(id: int, user_id = Depends(get_current_user), db: Session = Depe
         raise HTTPException(status_code=403, detail="You are not allowed to delete this character")
     
     remove_character(db=db, character_id=id)
+
+    return {"message": "Personaje eliminado correctamente"}

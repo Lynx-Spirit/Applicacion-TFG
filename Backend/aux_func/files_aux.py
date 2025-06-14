@@ -44,3 +44,15 @@ def delete(filename: str, upload_folder = settings.UPLOAD_FOLDER):
         
         if os.path.exists(path):
             os.remove(path)
+
+async def update(file_path: str, file):
+    """
+    Actualiza el fichero concreto.
+
+    Parámetros:
+        file (UploadFile): Archivo recibido por parte de la aplicación.
+        file_path (str): Ruta donde se almacena el archivo.
+    """
+    with open(file_path,"wb") as f:
+        content = await file.read()
+        f.write(content)

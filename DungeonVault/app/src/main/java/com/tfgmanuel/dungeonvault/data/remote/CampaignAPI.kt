@@ -42,7 +42,7 @@ interface CampaignAPI {
      * @param id Identificador de la campaña.
      * @param token Token de autorización del usuario.
      *
-     * @return [Response] que contiene la campaña creada ([Campaign])
+     * @return [Response] que contiene la campaña obtenida ([Campaign])
      */
     @GET("campaigns/{id}")
     suspend fun getCampaign(

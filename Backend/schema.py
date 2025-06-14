@@ -199,7 +199,6 @@ class character(BaseModel):
 
     Atributos:
         campaign_id (int): Identificador de la campaña.
-        user_id (int): Identificador del usuario que ha creado el personaje.
         name (str): Nombre del personaje.
         description (str): Descripción general del personaje
         filename_backstory (str): Nombre del archivo del backstory.
@@ -207,7 +206,6 @@ class character(BaseModel):
         visibility (bool): Indica si el personaje está visible al resto de usuarios o no.
     """
     campaign_id: int
-    user_id: int
     name: str
     description: str
     filename_backstory: str

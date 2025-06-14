@@ -2,7 +2,7 @@ import os
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from config import settings
-from aux_func.files_aux import save
+from aux_func.files_aux import save, update
 
 # Inicializa un enrutador para agrupar las rutas relacionadas con los ficheros.
 router = APIRouter()
@@ -30,7 +30,7 @@ async def upload(file: UploadFile = File(...)):
         raise HTTPException(status_code= 500, detail= "Error al subir el archivo")
     
 @router.get("/{file_name}")
-async def obtener_imagen(file_name: str):
+async def get_file(file_name: str):
     """
     Endpoint para para obtener un archivo concreto.
 
@@ -48,3 +48,26 @@ async def obtener_imagen(file_name: str):
         return FileResponse(route)
     else:
         raise HTTPException(status_code = 404, detail= "Fichero no encontrado")
+    
+@router.put("/{name}/update")
+def update_file(name: str, file: UploadFile = File(...)):
+    """
+    Endpoint para actualizar los ficheros.
+    
+    Parámetros:
+        name (str): Nombre del fichero.
+        file (UploadFile): Fichero con datos actualizados.
+
+    Retorna:
+        None
+
+    Lanza:
+        HTTPException: Se lanza en caso de que el fichero que se quiere actualizar no exista.    
+    """
+    route = os.path.join(settings.UPLOAD_FOLDER, name)
+    if not os.path.exists(route):
+        raise HTTPException(status_code = 404, detail= "Fichero no encontrado")
+    
+    update(route, file)
+
+    return {"message": "Información actualizada correctamente"}

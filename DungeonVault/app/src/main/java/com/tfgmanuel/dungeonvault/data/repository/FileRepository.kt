@@ -3,16 +3,39 @@ package com.tfgmanuel.dungeonvault.data.repository
 import android.content.Context
 import android.net.Uri
 import com.tfgmanuel.dungeonvault.data.remote.FilesAPI
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
+import java.util.UUID
 import javax.inject.Inject
 
 class FileRepository @Inject constructor(
     private val filesAPI: FilesAPI,
 ) {
+    /**
+     * Obtención del contenido de un fichero de texto determiando
+     *
+     * @param fileName Nombre del fichero del que se quiere obtener la información.
+     *
+     * @return
+     */
+    suspend fun readTextFile(fileName: String): String {
+        return try {
+            val response = filesAPI.getFile(fileName)
+
+            if (response.isSuccessful) {
+                response.body()!!.string()
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            e.message!!
+        }
+    }
+
     /**
      * Subida de una imagen seleccionada al servidor.
      *
@@ -74,5 +97,56 @@ class FileRepository @Inject constructor(
     private fun prepareImageFile(file: File): MultipartBody.Part {
         val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestBody)
+    }
+
+    /**
+     * Subida de un texto a la API como un fichero de texto.
+     *
+     * @param text Texto que se quiere almacenar en el servidor.
+     * @param context Contexto de la aplicación.
+     *
+     * @return Nombre del fichero de texto que está almacenado en el servidor.
+     */
+    suspend fun uploadText(text: String, context: Context): String {
+        val file = File(context.cacheDir, "text.txt")
+        file.writeText(text)
+
+        val requestFile = file.asRequestBody("text/plain".toMediaType())
+        val multipart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val result = filesAPI.uploadFile(multipart)
+
+        if (result.isSuccessful) {
+            val fileResponse = result.body()!!
+            return fileResponse.filename
+        } else {
+            return ""
+        }
+    }
+
+    /**
+     * Actualización del texto.
+     *
+     * @param fileName Nombre del fichero que se quiere actualizar.
+     * @param text Texto actualizado.
+     * @param context Contexto de la aplicación.
+     *
+     * @return Resultado de la ejecución.
+     */
+    suspend fun updateText(fileName: String, text: String, context: Context): String {
+        val file = File(context.cacheDir, fileName)
+        file.writeText(text)
+
+        val requestFile = file.asRequestBody("text/plain".toMediaType())
+        val multipart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val result = filesAPI.updateFile(fileName, multipart)
+
+        if (result.isSuccessful) {
+            val fileResponse = result.body()!!
+            return fileResponse.message
+        } else {
+            return getErrorFromApi(result)
+        }
     }
 }

@@ -8,6 +8,7 @@ from routes.auth import router as auth_router
 from routes.files import router as files_routes
 from routes.campaigns import router as campaign_router
 from routes.notes import router as note_router
+from routes.characters import router as character_router
 
 # Inicializa la app
 app = FastAPI()
@@ -26,3 +27,4 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(files_routes, prefix="/files")
 app.include_router(campaign_router, prefix="/campaigns")
 app.include_router(note_router, prefix="/notes")
+app.include_router(character_router, prefix="/characters")

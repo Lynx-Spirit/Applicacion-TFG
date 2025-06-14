@@ -1,7 +1,6 @@
 package com.tfgmanuel.dungeonvault.data.model
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 /**

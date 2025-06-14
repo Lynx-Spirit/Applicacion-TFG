@@ -134,7 +134,7 @@ def delete_note(id: int, user_id = Depends(get_current_user), db: Session = Depe
         db (Session): Sesión de SQLAlchemy para acceder a la base de datos.
 
     Retorna:
-        None
+        {"message": "Nota eliminada correctamente"}
     
     Lanza:
         HTTPException: Si el usuario que quiere eliminar la nota no es el creador de esta, lanza un error.
@@ -146,3 +146,5 @@ def delete_note(id: int, user_id = Depends(get_current_user), db: Session = Depe
         raise HTTPException(status_code=403, detail="You are not allowed to delete this note")
     
     remove_note(db=db, note_id=id)
+
+    return {"message": "Nota eliminada correctamente"}
