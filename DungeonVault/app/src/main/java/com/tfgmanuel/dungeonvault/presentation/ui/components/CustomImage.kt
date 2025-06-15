@@ -41,7 +41,7 @@ fun CustomImage(
         }
 
         val painter = rememberAsyncImagePainter(
-            model = "${BASE_URL}images/${imgName}",
+            model = "${BASE_URL}files/${imgName}",
             imageLoader = imageLoader,
             error = painterResource(placeHolder)
         )

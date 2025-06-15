@@ -44,6 +44,16 @@ interface NoteDAO {
     suspend fun getCampaignNotes(campaignID: Int): List<Note>
 
     /**
+     * Obtención de una nota específica.
+     *
+     * @param noteID Identificador de la nota que se quiere obtener.
+     *
+     * @return Información de la nota específica.
+     */
+    @Query("SELECT * FROM Note WHERE id = :noteID")
+    suspend fun getNote(noteID: Int): Note
+
+    /**
      * Actualización de la nota.
      *
      * @param note Nota actualizada

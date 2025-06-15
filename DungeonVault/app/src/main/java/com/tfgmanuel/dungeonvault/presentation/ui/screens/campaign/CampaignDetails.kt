@@ -63,6 +63,7 @@ fun CampaignDetails(modifier: Modifier = Modifier, viewModel: CampaignDetailsVie
         refreshing = isRefreshing,
         onRefresh = { viewModel.forceUpdate() }
     )
+
     uiState.campaign?.let { campaign ->
         Scaffold(
             modifier = modifier,
@@ -104,7 +105,7 @@ fun BackgroundImage(paddingValues: PaddingValues, imgName: String) {
             .fillMaxSize()
             .padding(top = paddingValues.calculateTopPadding()),
         painter = rememberAsyncImagePainter(
-            model = "${BASE_URL}images/${imgName}",
+            model = "${BASE_URL}files/${imgName}",
             error = painterResource(id = R.drawable.sinimg),
             placeholder = painterResource(id = R.drawable.sinimg)
         ),
@@ -199,7 +200,7 @@ fun CampaignButtons(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth(0.95f)
             .wrapContentHeight()
             .padding(10.dp)
             .background(

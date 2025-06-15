@@ -23,6 +23,5 @@ data class Note(
     val title: String,
     val creation_date: String,
     val file_name: String,
-    val img_name: String,
-    val visibility: String
+    val visibility: Boolean
 )

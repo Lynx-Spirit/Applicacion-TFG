@@ -10,7 +10,9 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignDetai
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignSelection
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.EnterCampaign
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.NewCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.NewNote
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.UpdateCampaign
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.ViewNote
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignCharacters
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignChat
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignMainScreen
@@ -23,6 +25,8 @@ import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.C
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignChatViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignMainViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignNotesViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.NewNoteViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.ViewNoteViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignDetailsViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignSelectionViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.EnterCampaignViewModel
@@ -131,6 +135,20 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         composable("${Screen.CampaignChatScreen.route}/{campaignID}") {
             val viewModel: CampaignChatViewModel = hiltViewModel<CampaignChatViewModel>()
             CampaignChat(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignViewNote.route}/{noteID}") {
+            val viewModel: ViewNoteViewModel = hiltViewModel<ViewNoteViewModel>()
+            ViewNote(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignNewNote.route}/{noteID}") {
+            val viewModel: NewNoteViewModel = hiltViewModel<NewNoteViewModel>()
+            NewNote(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignTranscription.route}/{campaignID}") {
+
         }
     }
 }

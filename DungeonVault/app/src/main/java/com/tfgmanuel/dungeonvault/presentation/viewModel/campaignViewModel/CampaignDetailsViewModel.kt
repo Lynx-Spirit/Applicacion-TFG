@@ -195,6 +195,11 @@ class CampaignDetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Permite echar a un usuario seleccionado de la campaña
+     *
+     * @param userId Identificador del usuario a echar
+     */
     fun onKickClick(userId: Int) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)

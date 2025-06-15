@@ -15,6 +15,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Interfaz que define las llamadas a la API relacionadas con la gestión de las notas de la campaña.
@@ -60,7 +61,7 @@ interface NotesAPI {
      */
     @GET("notes/")
     suspend fun getCampaignNotes(
-        @Body campaignID: Int,
+        @Query("campaign_id") campaignID: Int,
         @Header("Authorization") token: String
     ): Response<List<Note>>
 
@@ -68,10 +69,10 @@ interface NotesAPI {
      * Actualización de los datos de una nota.
      *
      * @param id Identificador de la nota del que se quiere actualizar los datos.
-     * @param noteUpdate Información necesaria para actualizar los datos de la nota.
+     * @param updateNote Información necesaria para actualizar los datos de la nota.
      * @param token Token de autorización del usuario.
      */
-    @PUT("characters/{id}/update")
+    @PUT("notes/{id}/update")
     suspend fun updateNote(
         @Path("id") id: Int,
         @Body updateNote: UpdateNote,
@@ -84,7 +85,7 @@ interface NotesAPI {
      * @param id Identificador de la nota del que se quiere actualizar los datos.
      * @param token Token de autorización del usuario.
      */
-    @DELETE("characters/{id}/delete")
+    @DELETE("notes/{id}/delete")
     suspend fun deleteNote(
         @Path("id") id: Int,
         @Header("Authorization") token: String

@@ -1,5 +1,6 @@
 package com.tfgmanuel.dungeonvault.presentation.ui.components
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -153,9 +154,9 @@ fun SimpleCustomContainer(
                 shape = shape
             )
     ) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             CustomImage(
                 modifier = Modifier
                     .size(40.dp)
@@ -228,4 +229,53 @@ fun SheetOption(
             )
         }
     )
+}
+
+@Composable
+fun TextContainter(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    shape: Shape = RoundedCornerShape(8.dp),
+    containerColor: Color = Color(0xFF1A1A1A),
+    textColor: Color = Color.White,
+    title: String,
+    date: String,
+    icon: @Composable () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = containerColor,
+                shape = shape
+            )
+            .clickable { onClick() }
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            icon()
+
+            Spacer(Modifier.width(5.dp))
+
+            Column(
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = title,
+                    color = textColor,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(Modifier.height(5.dp))
+
+                Text(
+                    text = "Creación: $date",
+                    color = textColor,
+                    fontSize = 15.sp
+                )
+            }
+        }
+    }
 }

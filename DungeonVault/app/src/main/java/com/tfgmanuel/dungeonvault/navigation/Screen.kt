@@ -62,6 +62,21 @@ sealed class Screen(val route: String) {
     object  CampaignNotesScreen: Screen("CampaignNotes")
 
     /**
+     * Ruta de la pantalla de creación de nota.
+     */
+    object  CampaignNewNote: Screen("CreateNote")
+
+    /**
+     * Ruta de la pantalla de visualizar la nota
+     */
+    object  CampaignViewNote: Screen("ViewNote")
+
+    /**
+     * Ruta de la pantalla de transcripcion
+     */
+    object  CampaignTranscription: Screen("NewTranscription")
+
+    /**
      * Ruta de la pantalla del chatbot
      */
     object  CampaignChatScreen: Screen("CampaignChat")
