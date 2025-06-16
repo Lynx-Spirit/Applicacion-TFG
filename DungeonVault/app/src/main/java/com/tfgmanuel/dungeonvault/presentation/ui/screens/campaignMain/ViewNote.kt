@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomButtonText
 import com.tfgmanuel.dungeonvault.presentation.ui.components.CustomSwitch
@@ -65,49 +67,57 @@ fun ViewNote(viewModel: ViewNoteViewModel) {
 
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        CustomTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = uiState.newContent,
-                            textLabel = "CONTENIDO",
-                            onValueChange = {
-                                viewModel.onValueChange(
-                                    uiState.newTitle,
-                                    it,
-                                    uiState.newVisibility
-                                )
-                            },
-                            singleLine = false
-                        )
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        CustomSwitch(
-                            information = "Visibilidad",
-                            checked = uiState.newVisibility,
-                            onValueChange = {
-                                viewModel.onValueChange(
-                                    uiState.newTitle,
-                                    uiState.newContent,
-                                    it
-                                )
-                            }
-                        )
-
-                        Row {
-                            CustomButtonText(
-                                modifier = Modifier.weight(1f),
-                                onClick = { viewModel.showDialog() },
-                                text = "Eliminar nota",
-                                buttonColor = Color(0xFFF44336)
+                        if (!uiState.readOnlyContent) {
+                            CustomTextField(
+                                modifier = Modifier.fillMaxWidth(),
+                                value = uiState.newContent,
+                                textLabel = "CONTENIDO",
+                                onValueChange = {
+                                    viewModel.onValueChange(
+                                        uiState.newTitle,
+                                        it,
+                                        uiState.newVisibility
+                                    )
+                                },
+                                singleLine = false
                             )
 
-                            Spacer(modifier = Modifier.width(20.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
 
-                            CustomButtonText(
-                                modifier = Modifier.weight(1f),
-                                onClick = { viewModel.onSaveClick() },
-                                text = "Guardar cambios",
-                                enabled = uiState.isFormValid
+                            CustomSwitch(
+                                information = "Visibilidad",
+                                checked = uiState.newVisibility,
+                                onValueChange = {
+                                    viewModel.onValueChange(
+                                        uiState.newTitle,
+                                        uiState.newContent,
+                                        it
+                                    )
+                                }
+                            )
+
+                            Row {
+                                CustomButtonText(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = { viewModel.showDialog() },
+                                    text = "Eliminar nota",
+                                    buttonColor = Color(0xFFF44336)
+                                )
+
+                                Spacer(modifier = Modifier.width(20.dp))
+
+                                CustomButtonText(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = { viewModel.onSaveClick() },
+                                    text = "Guardar cambios",
+                                    enabled = uiState.isFormValid
+                                )
+                            }
+                        } else {
+                            Text(
+                                text = uiState.content,
+                                color = Color.White,
+                                textAlign = TextAlign.Start
                             )
                         }
 

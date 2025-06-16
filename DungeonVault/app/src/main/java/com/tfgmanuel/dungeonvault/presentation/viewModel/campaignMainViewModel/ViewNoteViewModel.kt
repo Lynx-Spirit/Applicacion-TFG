@@ -3,17 +3,18 @@ package com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tfgmanuel.dungeonvault.data.TokenManager
 import com.tfgmanuel.dungeonvault.data.local.dao.NoteDAO
 import com.tfgmanuel.dungeonvault.data.repository.FileRepository
 import com.tfgmanuel.dungeonvault.data.repository.NoteRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
-import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.ViewNoteState
 import com.tfgmanuel.dungeonvault.presentation.viewModel.ContextProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +28,8 @@ class ViewNoteViewModel @Inject constructor(
     private val noteDAO: NoteDAO,
     private val noteRepository: NoteRepository,
     private val fileRepository: FileRepository,
-    private val contextProvider: ContextProvider
+    private val contextProvider: ContextProvider,
+    private  val tokenManager: TokenManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ViewNoteState())
     val uiState: StateFlow<ViewNoteState> = _uiState.asStateFlow()
@@ -42,10 +44,16 @@ class ViewNoteViewModel @Inject constructor(
             if (noteID != null) {
                 val note = noteDAO.getNote(noteID = noteID.toInt())
                 val content = fileRepository.readTextFile(note.file_name)
+                var readOnly = false
+
+                if (note.user_id == 0 || tokenManager.getUserID().first()!! != note.user_id) {
+                    readOnly = true
+                }
 
                 _uiState.value = _uiState.value.copy(
                     title = note.title,
                     newTitle = note.title,
+                    readOnlyContent = readOnly,
                     content = content,
                     newContent = content,
                     visibility = note.visibility,
@@ -69,9 +77,9 @@ class ViewNoteViewModel @Inject constructor(
             newVisibility = visibility
         )
     }
-    
+
     fun onSaveClick() {
-        viewModelScope.launch { 
+        viewModelScope.launch {
             if (noteID != null) {
                 val note = noteDAO.getNote(noteID.toInt())
 
@@ -98,12 +106,12 @@ class ViewNoteViewModel @Inject constructor(
     fun hideDialog() {
         _uiState.value = _uiState.value.copy(showDialog = false)
     }
-    
+
     fun onDeleteClick() {
-        viewModelScope.launch { 
+        viewModelScope.launch {
             if (noteID != null) {
                 val result = noteRepository.deleteNote(noteID.toInt())
-                
+
                 if (result.isSuccess) {
                     navManager.goBack()
                 }

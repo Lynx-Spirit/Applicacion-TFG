@@ -12,6 +12,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Interfaz que define las llamadas a la API relacionadas con la gestión de los personajes de la campaña
@@ -57,7 +58,7 @@ interface CharactersAPI {
      */
     @GET("characters/")
     suspend fun getCampaignCharacters(
-        @Body campaignID: Int,
+        @Query("campaign_id") campaignID: Int,
         @Header("Authorization") token: String
     ): Response<List<Character>>
 

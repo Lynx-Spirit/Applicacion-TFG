@@ -44,6 +44,16 @@ interface CharacterDAO {
     suspend fun getCampaignCharacters(campaignID: Int): List<Character>
 
     /**
+     * Obtiene un personaje determinado.
+     *
+     * @param characterID Identificador del personaje que se quiere obtener.
+     *
+     * @return Personaje con el id pasado como parámetro.
+     */
+    @Query("SELECT * FROM Character WHERE id = :characterID")
+    suspend fun getCharacter(characterID: Int): Character
+
+    /**
      * Actualización de los datos de un personaje
      *
      * @param character Personaje con los datos actualizados.

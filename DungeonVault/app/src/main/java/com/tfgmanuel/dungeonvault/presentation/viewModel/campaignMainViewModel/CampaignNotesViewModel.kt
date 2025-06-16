@@ -27,7 +27,7 @@ class CampaignNotesViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     private val noteRepository: NoteRepository
 ) : ViewModel() {
-    private  val _uiState = MutableStateFlow(CampaignNotesState())
+    private val _uiState = MutableStateFlow(CampaignNotesState())
     val uiState: StateFlow<CampaignNotesState> = _uiState.asStateFlow()
 
     private val campaignID: String? = savedStateHandle["campaignID"]
@@ -42,17 +42,21 @@ class CampaignNotesViewModel @Inject constructor(
     /**
      * Carga las notas de la campaña.
      */
-    fun load() {
+    fun load(update: Boolean = false) {
         viewModelScope.launch {
             if (campaignID != null) {
                 val campaign = campaignDAO.getCampaignById(campaignID.toInt())
                 val notes = noteDAO.getCampaignNotes(campaignID.toInt())
 
-                _uiState.value = _uiState.value.copy(
-                    notes = notes,
-                    userID = tokenManager.getUserID().first()!!,
-                    creatorID = campaign!!.creator_id
-                )
+                if (notes.isEmpty() && !update) {
+                    forceUpdate()
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        notes = notes,
+                        userID = tokenManager.getUserID().first()!!,
+                        creatorID = campaign!!.creator_id
+                    )
+                }
             }
 
         }
@@ -65,7 +69,7 @@ class CampaignNotesViewModel @Inject constructor(
         viewModelScope.launch {
             if (campaignID != null) {
                 noteRepository.getAllNotes(campaignID.toInt())
-                load()
+                load(true)
             }
         }
     }
@@ -91,7 +95,7 @@ class CampaignNotesViewModel @Inject constructor(
     /**
      * Selección de una nota concreta.
      *
-     * @param id Identificador de la nota seleccionada.
+     * @param noteID Identificador de la nota seleccionada.
      */
     fun onNoteSelected(noteID: Int) {
         viewModelScope.launch {
@@ -103,7 +107,7 @@ class CampaignNotesViewModel @Inject constructor(
 
     fun onItemSelected(route: String) {
         viewModelScope.launch {
-            if(route != Screen.CampaignNotesScreen.route) {
+            if (route != Screen.CampaignNotesScreen.route) {
                 navManager.navigate(
                     route = route + "/${campaignID}",
                     popUpTo = route,

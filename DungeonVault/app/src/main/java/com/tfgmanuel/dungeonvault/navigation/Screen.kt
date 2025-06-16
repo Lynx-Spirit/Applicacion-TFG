@@ -57,6 +57,16 @@ sealed class Screen(val route: String) {
     object CampaignCharactersScreen: Screen("CampaignCharacters")
 
     /**
+     * Pantalla para la creación de un nuevo personaje para la campaña.
+     */
+    object  CampaignNewCharacterScreen: Screen("CampaignNewCharacter")
+
+    /**
+     * Pantalla para ver o modificar un personaje.
+     */
+    object CampaignViewCharacterScreen: Screen("ViewCharacterScreen")
+
+    /**
      * Ruta de la pantalla de notas
      */
     object  CampaignNotesScreen: Screen("CampaignNotes")

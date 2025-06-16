@@ -17,6 +17,8 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignC
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignChat
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignMainScreen
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CampaignNotes
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.CreateCharacter
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaignMain.ViewCharacter
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
@@ -25,7 +27,9 @@ import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.C
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignChatViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignMainViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignNotesViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CreateCharacterViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.NewNoteViewModel
+import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.ViewCharacterViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.ViewNoteViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignDetailsViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignViewModel.CampaignSelectionViewModel
@@ -127,6 +131,16 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
             CampaignCharacters(viewModel = viewModel)
         }
 
+        composable("${Screen.CampaignNewCharacterScreen.route}/{campaignID}") {
+            val viewModel: CreateCharacterViewModel = hiltViewModel<CreateCharacterViewModel>()
+            CreateCharacter(viewModel = viewModel)
+        }
+
+        composable("${Screen.CampaignViewCharacterScreen.route}/{characterID}") {
+            val viewModel: ViewCharacterViewModel = hiltViewModel<ViewCharacterViewModel>()
+            ViewCharacter(viewModel = viewModel)
+        }
+
         composable("${Screen.CampaignNotesScreen.route}/{campaignID}") {
             val viewModel: CampaignNotesViewModel = hiltViewModel<CampaignNotesViewModel>()
             CampaignNotes(viewModel = viewModel)
@@ -142,7 +156,7 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
             ViewNote(viewModel = viewModel)
         }
 
-        composable("${Screen.CampaignNewNote.route}/{noteID}") {
+        composable("${Screen.CampaignNewNote.route}/{campaignID}") {
             val viewModel: NewNoteViewModel = hiltViewModel<NewNoteViewModel>()
             NewNote(viewModel = viewModel)
         }

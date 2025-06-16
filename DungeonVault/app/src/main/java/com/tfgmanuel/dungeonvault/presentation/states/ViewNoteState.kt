@@ -5,6 +5,7 @@ package com.tfgmanuel.dungeonvault.presentation.states
  *
  * @property title Titulo original de la nota.
  * @property newTitle Nuevo título de la nota.
+ * @property readOnlyContent Indica si el contenido solo es de lectura (para trasncripciones).
  * @property content Contenido original de la nota.
  * @property newContent Nuevo contenido de la nota.
  * @property visibility Visibilidad original de la nota.
@@ -14,6 +15,7 @@ package com.tfgmanuel.dungeonvault.presentation.states
 data class ViewNoteState(
     val title: String = "",
     val newTitle: String = "",
+    val readOnlyContent: Boolean = false,
     val content: String = "",
     val newContent: String = "",
     val visibility: Boolean = false,
