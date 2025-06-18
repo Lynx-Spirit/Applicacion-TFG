@@ -31,7 +31,7 @@ def create_note(db: Session, campaign_id: int, user_id: int, title: str, file_na
     )
 
     db.add(note)
-    db.commmit()
+    db.commit()
     db.refresh(note)
 
     return note
@@ -76,7 +76,7 @@ def update_note(db: Session, note_id: int, title: str, file_name: str, visibilit
         note.visibility = visibility
 
     db.commit()
-    db.refresh()
+    db.refresh(note)
 
     return note
 

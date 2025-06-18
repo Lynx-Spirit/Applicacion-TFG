@@ -23,7 +23,7 @@ class NoteRepository @Inject constructor(
      * @param title Título de la nota que se va a crear.
      * @param content Contenido de la nota que se va a crear.
      * @param visibility Visibilidad de la nueva nota.
-     * @param contex Contexto de la aplicación.
+     * @param context Contexto de la aplicación.
      *
      * @return [Result] con el resultado de la ejecución
      */

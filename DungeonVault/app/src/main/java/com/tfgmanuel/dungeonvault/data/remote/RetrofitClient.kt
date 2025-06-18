@@ -92,4 +92,17 @@ object RetrofitInstance {
     fun provideCharactersAPI(retrofit: Retrofit): CharactersAPI {
         return retrofit.create(CharactersAPI::class.java)
     }
+
+    /**
+     * Proporciona una instancia de [TranscriptionAPI] generada por Retrofit.
+     *
+     * @param retrofit Instancia de retrofit
+     *
+     * @return Instancia de [TranscriptionAPI]
+     */
+    @Provides
+    @Singleton
+    fun provideTranscriptionAPI(retrofit: Retrofit): TranscriptionAPI {
+        return retrofit.create(TranscriptionAPI::class.java)
+    }
 }

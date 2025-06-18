@@ -14,7 +14,7 @@ import com.tfgmanuel.dungeonvault.data.model.Note
 
 @Database(
     entities = [Campaign::class, User::class, CampaignUserCrossRef::class, Note::class, Character::class],
-    version = 7
+    version = 8
 )
 abstract class AppDatabase : RoomDatabase() {
     /**

@@ -114,6 +114,15 @@ fun ViewNote(viewModel: ViewNoteViewModel) {
                                 )
                             }
                         } else {
+
+                            if (uiState.isDM) {
+                                CustomButtonText(
+                                    onClick = { viewModel.showDialog() },
+                                    text = "Eliminar nota",
+                                    buttonColor = Color(0xFFF44336)
+                                )
+                            }
+
                             Text(
                                 text = uiState.content,
                                 color = Color.White,

@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
 data class Note(
     @PrimaryKey val id: Int,
     val campaign_id: Int,
-    val user_id: Int,
+    val user_id: Int?,
     val title: String,
     val creation_date: String,
     val file_name: String,

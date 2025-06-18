@@ -19,14 +19,14 @@ import retrofit2.http.Query
 
 /**
  * Interfaz que define las llamadas a la API relacionadas con la gestión de las notas de la campaña.
- * Usa REtrofit para mapear las peticiones HTTP.
+ * Usa Retrofit para mapear las peticiones HTTP.
  */
 interface NotesAPI {
 
     /**
      * Creación de una nueva nota.
      *
-     * @param createNote Inforamción necesaria para la creación de la nota.
+     * @param createNote Información necesaria para la creación de la nota.
      * @param token Token de autorización del usuario.
      *
      * @return [Response] que contiene la información de la nota recién creada.

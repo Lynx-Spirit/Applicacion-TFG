@@ -88,13 +88,31 @@ class FileRepository @Inject constructor(
     }
 
     /**
+     * Subida de un archivo a la API.
+     *
+     * @param file Fichero que se quiere subir.
+     *
+     * @return Nombre del fichero.
+     */
+    suspend fun uploadFile(file: File): String {
+        val multiFile = prepareImageFile(file = file, mime = "audio/mp4")
+        val response = filesAPI.uploadFile(multiFile)
+
+        return if (response.isSuccessful) {
+            response.body()!!.filename
+        } else {
+            ""
+        }
+    }
+
+    /**
      * Prepara un archivo de imagen para ser enviado en una solicitud HTTP como parte de un formulario multipart.
      *
      * @param file El archivo de imagen que se desea enviar.
      *
      * @return Un objeto MultipartBody.Part listo para ser incluido en una solicitud HTTP.
      */
-    private fun prepareImageFile(file: File): MultipartBody.Part {
+    private fun prepareImageFile(file: File, mime: String = "image/*"): MultipartBody.Part {
         val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("file", file.name, requestBody)
     }

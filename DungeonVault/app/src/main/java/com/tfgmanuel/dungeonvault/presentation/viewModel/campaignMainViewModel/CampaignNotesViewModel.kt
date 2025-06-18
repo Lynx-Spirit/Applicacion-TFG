@@ -89,7 +89,11 @@ class CampaignNotesViewModel @Inject constructor(
      * Inicio de una nueva transcripcion.
      */
     fun onCreateTranscription() {
-        //Para hacerlo creo que tendríamos llamar a la api o algo apra indicar que iniciamos transcripción
+        viewModelScope.launch {
+            navManager.navigate(
+                "${Screen.CampaignTranscription.route}/$campaignID"
+            )
+        }
     }
 
     /**

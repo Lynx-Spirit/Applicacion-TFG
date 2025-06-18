@@ -18,7 +18,7 @@ def create(note: note, user_id = Depends(get_current_user), db: Session = Depend
         note (note): Objecto con los datos necesarios para crear una nueva nota.
             Incluye: título, nombre del fichero y visibilidad de la nota.
         campaign_id (int): Camapaña en la que se va a insertar la nota.
-        user_id (int): Es inyectado automáticamentep por 'Depends(get_current_user)', y del cual se obtiene el identificador del usuario.
+        user_id (int): Es inyectado automáticamente por 'Depends(get_current_user)', y del cual se obtiene el identificador del usuario.
         db (Session): Sesión de SQLAlchemy para acceder a la base de datos.
 
     Retorna:
@@ -141,8 +141,9 @@ def delete_note(id: int, user_id = Depends(get_current_user), db: Session = Depe
     """
 
     note = get_note_by_id(db=db, note_id=id)
+    campaign = get_campaign_by_id(db=db, campaign_id=note.campaign_id)
 
-    if note.user_id != int(user_id):
+    if note.user_id != int(user_id) and campaign.creator_id != int(user_id):
         raise HTTPException(status_code=403, detail="You are not allowed to delete this note")
     
     remove_note(db=db, note_id=id)

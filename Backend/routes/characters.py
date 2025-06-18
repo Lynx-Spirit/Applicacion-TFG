@@ -36,6 +36,7 @@ def create(character: character, user_id = Depends(get_current_user), db: Sessio
         campaign_id=character.campaign_id,
         user_id=user_id,
         name=character.name,
+        description=character.description,
         filename_backstory=character.filename_backstory,
         img_name=character.img_name,
         visibility=character.visibility

@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.data.TokenManager
+import com.tfgmanuel.dungeonvault.data.local.dao.CampaignDAO
 import com.tfgmanuel.dungeonvault.data.local.dao.NoteDAO
+import com.tfgmanuel.dungeonvault.data.repository.CampaignRepository
 import com.tfgmanuel.dungeonvault.data.repository.FileRepository
 import com.tfgmanuel.dungeonvault.data.repository.NoteRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
@@ -29,7 +31,8 @@ class ViewNoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
     private val fileRepository: FileRepository,
     private val contextProvider: ContextProvider,
-    private  val tokenManager: TokenManager
+    private  val tokenManager: TokenManager,
+    private val campaignDAO: CampaignDAO
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ViewNoteState())
     val uiState: StateFlow<ViewNoteState> = _uiState.asStateFlow()
@@ -44,16 +47,23 @@ class ViewNoteViewModel @Inject constructor(
             if (noteID != null) {
                 val note = noteDAO.getNote(noteID = noteID.toInt())
                 val content = fileRepository.readTextFile(note.file_name)
+                val campaign = campaignDAO.getCampaignById(note.campaign_id)
                 var readOnly = false
+                var isDM = false
 
-                if (note.user_id == 0 || tokenManager.getUserID().first()!! != note.user_id) {
+                if (note.user_id == null || tokenManager.getUserID().first()!! != note.user_id) {
                     readOnly = true
+                }
+
+                if (tokenManager.getUserID().first()!! == campaign!!.creator_id) {
+                    isDM = true
                 }
 
                 _uiState.value = _uiState.value.copy(
                     title = note.title,
                     newTitle = note.title,
                     readOnlyContent = readOnly,
+                    isDM = isDM,
                     content = content,
                     newContent = content,
                     visibility = note.visibility,

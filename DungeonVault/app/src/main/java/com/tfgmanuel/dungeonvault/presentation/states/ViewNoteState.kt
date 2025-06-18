@@ -16,6 +16,7 @@ data class ViewNoteState(
     val title: String = "",
     val newTitle: String = "",
     val readOnlyContent: Boolean = false,
+    val isDM: Boolean = false,
     val content: String = "",
     val newContent: String = "",
     val visibility: Boolean = false,

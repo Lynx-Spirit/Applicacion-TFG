@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tfgmanuel.dungeonvault.presentation.ui.screens.audio.AudioRecorderScreen
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignDetails
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.CampaignSelection
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.campaign.EnterCampaign
@@ -23,6 +24,7 @@ import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.ChangePassword
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.CreateAccount
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.login.Login
 import com.tfgmanuel.dungeonvault.presentation.ui.screens.other.UpdateUserInfo
+import com.tfgmanuel.dungeonvault.presentation.viewModel.audioViewModel.AudioViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignCharactersViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignChatViewModel
 import com.tfgmanuel.dungeonvault.presentation.viewModel.campaignMainViewModel.CampaignMainViewModel
@@ -162,7 +164,8 @@ fun NavigationApp(navManager: NavManager, start: String = Screen.Login.route) {
         }
 
         composable("${Screen.CampaignTranscription.route}/{campaignID}") {
-
+            val viewModel: AudioViewModel = hiltViewModel<AudioViewModel>()
+            AudioRecorderScreen(viewModel = viewModel)
         }
     }
 }

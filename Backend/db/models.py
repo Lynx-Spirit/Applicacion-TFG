@@ -125,7 +125,7 @@ class Note(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     campaign_id = Column(Integer, ForeignKey("campaign.id", ondelete="CASCADE"))
-    user_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"))
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"), nullable=True)
     creation_date = Column(Date)
     title = Column(String)
     file_name = Column(String)

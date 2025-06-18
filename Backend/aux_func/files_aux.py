@@ -27,6 +27,25 @@ async def save(file, upload_folder = settings.UPLOAD_FOLDER) -> str:
 
     return filename
 
+def createFile(upload_folder= settings.UPLOAD_FOLDER) -> str:
+    """
+    Creación de un nuevo fichero de texto vacío.
+
+    Parámetros:
+        upload_folder (str): Ruta donde se almacenará el archivo.
+            Por defecto, se toma de `settings.UPLOAD_FOLDER`.s
+
+    Retorna:
+        Nombre del nuevo fichero de texto
+    """
+    filename = f"{uuid4()}.txt"
+    path = os.path.join(upload_folder, filename)
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("")
+
+    return filename
+
 def delete(filename: str, upload_folder = settings.UPLOAD_FOLDER):
     """
     Elimina un archivo (por ejemplo, una imagen) del servidor si existe.

@@ -1,5 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 class Config:
     """
@@ -186,7 +187,7 @@ class note_response(BaseModel):
     """
     id: int
     campaign_id: int
-    user_id: int
+    user_id: Optional[int] 
     creation_date: date
     title: str
     file_name: str
@@ -251,3 +252,27 @@ class character_response(BaseModel):
     filename_backstory: str
     img_name: str
     visibility: bool
+
+class transcribe_info(BaseModel):
+    """
+    Modelo de entrada con toda la información necesaria para poder realizar las transcripciones de forma correcta.
+
+    Atributos:
+        campaign_id (int): Identificación de la campaña la cual se va a guardar los datos.
+        audio (str): Nombre del fichero de audio del cual se van a obtener los datos.
+        filename (str): Nombre del fichero donde se va a guardar el resultado de la transcripción
+    """
+    campaign_id: int
+    audio: str
+    filename: str
+
+class clean_info(BaseModel):
+    """
+    Modelo de entrada con toda la información necesaria para poder realizar la limpieza de la trancripción de forma correcta.
+
+    Atributos:
+        campaign_id (int): Identificación de la campaña la cual se va a guardar los datos.
+        filename (str): Nombre del fichero donde se va a guardar el resultado de la transcripción
+    """
+    campaign_id: int
+    filename: str
