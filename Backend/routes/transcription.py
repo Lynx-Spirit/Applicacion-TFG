@@ -65,7 +65,7 @@ async def transcribe(information: transcribe_info, user_id = Depends(get_current
     # await delete(information.audio)
     return {"message": "Transcripción realizada correctamente"}
 
-@router.put("/clean", response_model=note_response)
+@router.put("/clean") #, response_model=note_response
 async def clean(information: clean_info, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Endpoint para realizar la limpieza del archivo de la transcripción y realice el resumen.
@@ -80,4 +80,4 @@ async def clean(information: clean_info, user_id = Depends(get_current_user), db
     """
     # await clean_transcription()
     # await create_summary()
-    return None
+    return {"message": "Transcripción realizada correctamente"}

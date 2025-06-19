@@ -1,4 +1,8 @@
-FROM python:3.11
+FROM nvidia/cuda:12.3.2-devel-ubuntu20.04
+
+# Instalar Python 3.11
+RUN apt-get update && \
+    apt-get install -y python3.11 python3-pip python3-dev
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
