@@ -6,7 +6,9 @@ from db.campaign_crud import get_campaign_by_id
 from aux_func.auth import get_current_user
 from aux_func.files_aux import createFile, delete
 from schema import note_response, transcribe_info, clean_info
+from aux_func.transcription_model import transcribe_audio
 import datetime
+import asyncio
 
 #Inicializa el enrutador para agrupar las rutas relacionadas con las transcripciontes
 router = APIRouter()
@@ -60,9 +62,8 @@ async def transcribe(information: transcribe_info, user_id = Depends(get_current
     Retorna:
         Mensaje de que se ha trancrito todo de forma correcta.
     """
+    await asyncio.create_task(transcribe_audio(information.audio,information.filename))
     
-    # await trasncribe_file(information) aquí se realizará la transcripción solamente
-    # await delete(information.audio)
     return {"message": "Transcripción realizada correctamente"}
 
 @router.put("/clean") #, response_model=note_response

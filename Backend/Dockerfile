@@ -1,62 +1,39 @@
-# Etapa 1: Builder
-FROM python:3.11-slim as builder
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
-# Instala dependencias del sistema necesarias para compilar y audio
+# 1. Instala Python 3.11 y herramientas del sistema
 RUN apt-get update && apt-get install -y \
-    git \
+    software-properties-common \
     curl \
-    ca-certificates \
+    git \
     ffmpeg \
     libsndfile1 \
+    libflac8 libogg0 libvorbis0a libvorbisenc2 libvorbisfile3 \
     build-essential \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    ca-certificates && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y \
+    python3.11 \
+    python3.11-venv \
+    python3.11-distutils && \
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11 && \
+    ln -s /usr/bin/python3.11 /usr/bin/python && \
+    ln -s /usr/local/bin/pip3.11 /usr/bin/pip && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Establece directorio de trabajo
+# 2. Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos del proyecto
+# 3. Copia el proyecto
 COPY . ./
 
-# Actualiza pip
-RUN pip install --upgrade pip
+# 4. Instala dependencias desde Requirements.txt (incluye PyTorch con CUDA)
+RUN pip install --upgrade pip && \
+    pip install -r Requirements.txt
 
-# Establece un directorio para instalaciones limpias
-ENV PYTHONUSERBASE=/install
-
-# Instala PyTorch + Hugging Face Transformers, Datasets con soporte para audio y Accelerate
-RUN pip install --user \
-    torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --user transformers datasets[audio] accelerate
-
-# Instala las dependencias propias de la app
-RUN pip install --user -r Requirements.txt
-
-# Etapa 2: Imagen final liviana
-FROM python:3.11-slim as final
-
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED=1
-
-# Instala solo las librerías necesarias para ejecutar
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    libsndfile1 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Crea el directorio de trabajo
-WORKDIR /app
-
-# Copia el entorno de instalación del builder
-COPY --from=builder /install /usr/local
-
-# Copia tu aplicación
-COPY . ./
-
-# Exponer el puerto usado por FastAPI
+# 5. Expone el puerto y ejecuta la aplicación
 EXPOSE 8000
 
-# Comando para ejecutar el servidor
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
