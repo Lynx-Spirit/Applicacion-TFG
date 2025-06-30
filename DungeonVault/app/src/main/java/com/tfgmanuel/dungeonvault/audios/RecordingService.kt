@@ -104,7 +104,7 @@ class RecordingService : Service () {
                     start()
                 }
 
-                delay(1 * 60 * 1000)
+                delay(15 * 60 * 1000)
 
                 mediaRecorder?.apply {
                     stop()
@@ -113,11 +113,11 @@ class RecordingService : Service () {
 
                 val file = currentFile!!
 
-                fileRepository.uploadFile(file)
+                val fileName = fileRepository.uploadFile(file)
 
                 val result = transcriptionRepository.transcribe(
                     campaignID,
-                    audio = file.name,
+                    audio = fileName,
                     filename = name
                 )
 
@@ -177,7 +177,12 @@ class RecordingService : Service () {
 
             currentFile?.let { file ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    fileRepository.uploadFile(file)
+                    val fileName = fileRepository.uploadFile(file)
+                    val result = transcriptionRepository.transcribe(
+                        campaignID,
+                        audio = fileName,
+                        filename = name
+                    )
                     file.delete()
                 }
             }

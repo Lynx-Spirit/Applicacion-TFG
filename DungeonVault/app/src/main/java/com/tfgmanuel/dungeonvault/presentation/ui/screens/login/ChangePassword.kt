@@ -95,7 +95,7 @@ fun ChangePassword(modifier: Modifier = Modifier, viewModel: ChangePasswordViewM
                             onClick = { /*TODO*/ },
                             painter = painterResource(id = R.drawable.googlelogo),
                             contentDescription = "Logo google",
-                            text = "Login sesion"
+                            text = "Iniciar sesión"
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))

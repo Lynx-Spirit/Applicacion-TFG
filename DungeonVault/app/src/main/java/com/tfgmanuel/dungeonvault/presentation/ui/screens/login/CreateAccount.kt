@@ -96,12 +96,12 @@ fun CreateAccount(modifier: Modifier = Modifier, viewModel: CreateAccountViewMod
 
                         CustomButtonImgText(
                             modifier = Modifier
-                                .fillMaxWidth(0.5f)
+                                .fillMaxWidth(0.6f)
                                 .fillMaxHeight(0.105f),
                             onClick = { /*TODO*/ },
                             painter = painterResource(id = R.drawable.googlelogo),
                             contentDescription = "Logo google",
-                            text = "Login sesion"
+                            text = "Iniciar sesión"
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))

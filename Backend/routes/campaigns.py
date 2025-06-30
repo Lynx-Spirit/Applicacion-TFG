@@ -215,7 +215,7 @@ def delete(id: int, user_id = Depends(get_current_user), db: Session = Depends(g
             {"message": "Camapaña eliminada correctamente"}
     
     Lanza:
-        HTTPException: Se lanza en el caso de no ser el usuario de la campaña.
+        HTTPException: Se lanza en el caso de no ser el creador de la campaña.
     """
     campaign_creator = get_campaign_creator(db,id)
     if int(user_id) == int(campaign_creator):
