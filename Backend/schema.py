@@ -261,10 +261,23 @@ class transcribe_info(BaseModel):
         campaign_id (int): Identificación de la campaña la cual se va a guardar los datos.
         audio (str): Nombre del fichero de audio del cual se van a obtener los datos.
         filename (str): Nombre del fichero donde se va a guardar el resultado de la transcripción
+        summary (str): Nombre del fichero del resumen.
     """
     campaign_id: int
     audio: str
     filename: str
+    summary: str
+
+class transcribe_init(BaseModel):
+    """
+    Modelo de salida con toda la inforamción de salida necesria para poder realizar las transcripciones de forma correcta.
+
+    Atributos:
+        filename (str): Nombre del fichero donde se va a guardar el resultado de la transcripción
+        summary (str): Nombre del fichero donde se va a guardar el resumen.
+    """
+    filename: str
+    summary: str
 
 class clean_info(BaseModel):
     """
