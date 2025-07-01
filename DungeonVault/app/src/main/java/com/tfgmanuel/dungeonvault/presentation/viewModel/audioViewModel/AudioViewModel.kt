@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tfgmanuel.dungeonvault.audios.RecordingService
 import com.tfgmanuel.dungeonvault.navigation.NavManager
+import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.AudioState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -58,11 +59,18 @@ class AudioViewModel @Inject constructor(
      * Finalización de la grabación
      */
     fun stopRecording() {
-        val intent = Intent(application, RecordingService::class.java)
-        application.stopService(intent)
+        viewModelScope.launch {
+            val intent = Intent(application, RecordingService::class.java)
+            application.stopService(intent)
 
-        _uiState.value = _uiState.value.copy(isRecording = false)
-        stopTimer()
+            _uiState.value = _uiState.value.copy(isRecording = false)
+            stopTimer()
+            navManager.navigate(
+                route = "${Screen.CampaignNotesScreen.route}/$campaignID",
+                popUpTo = "${Screen.CampaignNotesScreen.route}/$campaignID",
+                inclusive = true
+            )
+        }
     }
 
     /**

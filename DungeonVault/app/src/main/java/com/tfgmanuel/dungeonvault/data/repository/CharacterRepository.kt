@@ -123,7 +123,7 @@ class CharacterRepository @Inject constructor(
      */
     private suspend fun firstAttemptGetAllCharacters(campaignID: Int): Result<String>? {
         val access = tokenManager.getAccessToken().first()
-        val response = characterAPI.getCampaignCharacters(campaignID, "Berer ${access}")
+        val response = characterAPI.getCampaignCharacters(campaignID, "Bearer ${access}")
 
         if (response.isSuccessful) {
             characterDAO.insertAll(response.body()!!)
