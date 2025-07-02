@@ -10,6 +10,7 @@ import com.tfgmanuel.dungeonvault.data.repository.CampaignRepository
 import com.tfgmanuel.dungeonvault.data.repository.FileRepository
 import com.tfgmanuel.dungeonvault.data.repository.NoteRepository
 import com.tfgmanuel.dungeonvault.navigation.NavManager
+import com.tfgmanuel.dungeonvault.navigation.Screen
 import com.tfgmanuel.dungeonvault.presentation.states.ViewNoteState
 import com.tfgmanuel.dungeonvault.presentation.viewModel.ContextProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +39,7 @@ class ViewNoteViewModel @Inject constructor(
     val uiState: StateFlow<ViewNoteState> = _uiState.asStateFlow()
 
     private val noteID: String? = savedStateHandle["noteID"]
+    private var campaignId = 0
 
     /**
      * Inicializa los datos de la nota.
@@ -48,6 +50,7 @@ class ViewNoteViewModel @Inject constructor(
                 val note = noteDAO.getNote(noteID = noteID.toInt())
                 val content = fileRepository.readTextFile(note.file_name)
                 val campaign = campaignDAO.getCampaignById(note.campaign_id)
+                campaignId = note.campaign_id
                 var readOnly = false
                 var isDM = false
 
@@ -123,7 +126,10 @@ class ViewNoteViewModel @Inject constructor(
                 val result = noteRepository.deleteNote(noteID.toInt())
 
                 if (result.isSuccess) {
-                    navManager.goBack()
+                    navManager.navigate(
+                        route = "${Screen.CampaignNotesScreen.route}/${campaignId}",
+                        popUpTo = "${Screen.CampaignNotesScreen.route}/${campaignId}",
+                        inclusive = true)
                 }
             }
         }

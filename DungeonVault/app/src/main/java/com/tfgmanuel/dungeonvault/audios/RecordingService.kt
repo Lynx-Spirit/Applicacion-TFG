@@ -47,6 +47,7 @@ class RecordingService : Service () {
     private var job: Job? = null
     private var campaignID: Int = -1
     private var name: String = ""
+    private var summary: String = ""
 
 
     /**
@@ -67,8 +68,10 @@ class RecordingService : Service () {
             val result = transcriptionRepository.createTranscription(campaignID)
 
             result.fold(
-                onSuccess = { filename ->
-                    name = filename
+                onSuccess = { files ->
+                    val data = files.split(',')
+                    name = data[0]
+                    summary = data[1]
                     startRecordingLoop()
                 },
                 onFailure = { error ->
@@ -118,7 +121,8 @@ class RecordingService : Service () {
                 val result = transcriptionRepository.transcribe(
                     campaignID,
                     audio = fileName,
-                    filename = name
+                    filename = name,
+                    summary = summary
                 )
 
                 result.onFailure {
@@ -181,7 +185,8 @@ class RecordingService : Service () {
                     val result = transcriptionRepository.transcribe(
                         campaignID,
                         audio = fileName,
-                        filename = name
+                        filename = name,
+                        summary = summary
                     )
                     file.delete()
                 }

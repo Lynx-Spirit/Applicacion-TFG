@@ -44,8 +44,8 @@ class TranscriptionRepository @Inject constructor(
         val response = transcriptionAPI.initTranscription(campaignID, "Bearer $access")
 
         if (response.isSuccessful) {
-            noteDAO.insert(response.body()!!)
-            return Result.success(response.body()!!.file_name)
+            val data = response.body()!!
+            return Result.success(data.filename + "," + data.summary)
         }
 
         if (response.code() != 401) {
@@ -70,8 +70,8 @@ class TranscriptionRepository @Inject constructor(
         val response = transcriptionAPI.initTranscription(campaignID, "Bearer $access")
 
         if (response.isSuccessful) {
-            noteDAO.insert(response.body()!!)
-            return Result.success(response.body()!!.file_name)
+            val data = response.body()!!
+            return Result.success(data.filename + "," + data.summary)
         }
 
         val detail = getErrorFromApi(response)
@@ -84,18 +84,21 @@ class TranscriptionRepository @Inject constructor(
      * @param campaignID Identificador de la campaña
      * @param audio Nombre del fichero de audio que se quiere transcribir.
      * @param filename Nombre del fichero de texto donde se almacenará el resultado.
+     * @param summary Nombre del archivo de texto donde se almacenará el resumen.
      *
      * @return [Result] con el resultado de la ejecución
      */
     suspend fun transcribe(
         campaignID: Int,
         audio: String,
-        filename: String
+        filename: String,
+        summary : String
     ): Result<String> {
         val transcribeInfo = TranscribeInfo(
             campaign_id = campaignID,
             audio = audio,
-            filename = filename
+            filename = filename,
+            summary = summary
         )
 
         return firstAttemptTranscribe(transcribeInfo)
@@ -186,7 +189,6 @@ class TranscriptionRepository @Inject constructor(
         val response = transcriptionAPI.clean(cleanInfo, "Bearer $access")
 
         if (response.isSuccessful) {
-            noteDAO.insert(response.body()!!)
             return Result.success("Limpieza realizada de forma correcta.")
         }
 
@@ -212,7 +214,6 @@ class TranscriptionRepository @Inject constructor(
         val response = transcriptionAPI.clean(cleanInfo, "Bearer $access")
 
         if (response.isSuccessful) {
-            noteDAO.insert(response.body()!!)
             return Result.success("Limpieza realizada de forma correcta.")
         }
 

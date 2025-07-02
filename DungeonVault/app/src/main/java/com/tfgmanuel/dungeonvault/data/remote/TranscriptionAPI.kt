@@ -4,6 +4,7 @@ import com.tfgmanuel.dungeonvault.data.model.APIResponse
 import com.tfgmanuel.dungeonvault.data.model.CleanInfo
 import com.tfgmanuel.dungeonvault.data.model.Note
 import com.tfgmanuel.dungeonvault.data.model.TranscribeInfo
+import com.tfgmanuel.dungeonvault.data.model.TranscriptionStart
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -28,7 +29,7 @@ interface TranscriptionAPI {
     suspend fun initTranscription(
         @Query("campaign_id") campaignId: Int,
         @Header("Authorization") token: String
-    ): Response<Note>
+    ): Response<TranscriptionStart>
 
     /**
      * Realiza la transcripción del fichero pasado como parámetro.
@@ -56,5 +57,5 @@ interface TranscriptionAPI {
     suspend fun clean(
         @Body cleanInfo: CleanInfo,
         @Header("Authorization") token: String
-    ): Response<Note>
+    ): Response<APIResponse>
 }
