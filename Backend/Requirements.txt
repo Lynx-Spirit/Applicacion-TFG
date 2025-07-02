@@ -24,3 +24,4 @@ accelerate
 numpy>=1.25,<2.0
 aiofiles
 python-Levenshtein
+gpt4all[cuda]

@@ -1,6 +1,7 @@
 import os
 from config import settings
 from uuid import uuid4
+import asyncio
 
 async def save(file, upload_folder = settings.UPLOAD_FOLDER) -> str:
     """
@@ -75,3 +76,10 @@ async def update(file_path: str, file):
     with open(file_path,"wb") as f:
         content = await file.read()
         f.write(content)
+
+async def cleanup_temp_files(files: list[str], upload_folder: str):
+    """
+    Elimina todos los archivos temporales pasados como parámetro.
+    """
+    for file in files:
+        await asyncio.to_thread(delete, file)

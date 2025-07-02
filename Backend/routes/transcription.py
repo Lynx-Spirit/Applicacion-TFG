@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from db.database import get_db
 from db.note_crud import *
@@ -62,7 +62,7 @@ def create(campaign_id: int, user_id = Depends(get_current_user), db: Session = 
     return result
 
 @router.put("/transcribe")
-async def transcribe(information: transcribe_info, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
+async def transcribe(information: transcribe_info, background_tasks: BackgroundTasks, user_id = Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Endpoint que permmite transcribir el fichero que se ha pasado como parámetro.
 
@@ -74,7 +74,14 @@ async def transcribe(information: transcribe_info, user_id = Depends(get_current
     Retorna:
         Mensaje de que se ha trancrito todo de forma correcta.
     """
-    await asyncio.create_task(transcribe_audio(db,information.campaign_id, information.audio,information.filename))
+    background_tasks.add_task(
+        transcribe_audio,
+        db,
+        information.campaign_id,
+        information.audio,
+        information.filename,
+        information.summary
+    )
     
     return {"message": "Transcripción realizada correctamente"}
 
