@@ -29,6 +29,9 @@ class WhisperTranscriber:
         )
 
     def transcribe(self, audio_path: str):
-        return self.pipe(audio_path, return_timestamps=True)
+        with torch.inference_mode():
+            result = self.pipe(audio_path, return_timestamps=True)
+        
+        return result
 
 whisper_instance = WhisperTranscriber()

@@ -27,5 +27,4 @@ class Summarizer:
         result = self.model.generate(prompt, max_tokens=512)
         return result
 
-# Singleton
 summarizer_instance = Summarizer("qwen2.5-coder-7b-instruct-q4_0.gguf")
