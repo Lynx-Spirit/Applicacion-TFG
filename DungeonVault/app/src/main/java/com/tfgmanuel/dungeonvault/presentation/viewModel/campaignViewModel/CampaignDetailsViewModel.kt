@@ -103,15 +103,43 @@ class CampaignDetailsViewModel @Inject constructor(
     /**
      * Muestra el cuadro de diálogo de confirmación.
      */
-    fun showDialog() {
-        _uiState.value = _uiState.value.copy(showDialog = true)
+    fun showDeleteDialog() {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = true)
     }
 
     /**
      * Oculta el cuadro de diálogo de confirmación.
      */
-    fun hideDialog() {
-        _uiState.value = _uiState.value.copy(showDialog = false)
+    fun hideDeleteDialog() {
+        _uiState.value = _uiState.value.copy(showDeleteDialog = false)
+    }
+
+    /**
+     * Muestra el cuadro de diálogo de confirmación.
+     */
+    fun showKickDialog() {
+        _uiState.value = _uiState.value.copy(showKickDialog = true)
+    }
+
+    /**
+     * Oculta el cuadro de diálogo de confirmación.
+     */
+    fun hideKickDialog() {
+        _uiState.value = _uiState.value.copy(showKickDialog = false)
+    }
+
+    /**
+     * Muestra el cuadro de diálogo de confirmación.
+     */
+    fun showLeaveDialog() {
+        _uiState.value = _uiState.value.copy(showLeaveDialog = true)
+    }
+
+    /**
+     * Oculta el cuadro de diálogo de confirmación.
+     */
+    fun hideLeaveDialog() {
+        _uiState.value = _uiState.value.copy(showLeaveDialog = false)
     }
 
     /**
