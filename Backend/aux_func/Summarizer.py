@@ -18,10 +18,10 @@ class Summarizer:
             Texto resumido.
         """
         prompt = (
-        "Devuelve solo el resumen puro y directo del siguiente texto, sin comentarios ni explicaciones:\n\n"
+        "Devuelve solo el resumen puro sin comentarios ni explicaciones:\n\n"
         f"{text}\n\n"
         "Resumen:"
-        )  
+        ) 
 
 
         result = self.model.generate(prompt, max_tokens=512)
