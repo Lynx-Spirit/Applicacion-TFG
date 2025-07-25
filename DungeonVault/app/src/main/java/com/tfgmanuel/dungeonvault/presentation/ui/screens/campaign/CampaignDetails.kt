@@ -83,12 +83,19 @@ fun CampaignDetails(modifier: Modifier = Modifier, viewModel: CampaignDetailsVie
                     members = uiState.members,
                     permission = uiState.hasPermission,
                     creatorId = uiState.creatorId,
-                    dialog = uiState.showDialog,
-                    showDialog = { viewModel.showDialog() },
-                    hideDialog = { viewModel.hideDialog() },
+                    deleteDialog = uiState.showDeleteDialog,
+                    showDeleteDialog = { viewModel.showDeleteDialog() },
+                    hideDeleteDialog = { viewModel.hideDeleteDialog() },
+                    kickDialog = uiState.showKickDialog,
+                    showKickDialog = { viewModel.showKickDialog() },
+                    hideKickDialog = { viewModel.hideKickDialog() },
+                    leaveDialog = uiState.showLeaveDialog,
+                    showLeaveDialog = { viewModel.showLeaveDialog() },
+                    hideLeaveDialog = { viewModel.hideKickDialog() },
                     onStartClick = { viewModel.onStartClick() },
                     onEditClick = { viewModel.onEditClick() },
                     onDeleteClick = { viewModel.onDeleteClick() },
+                    onLeaveClick = { viewModel.onAbandonClick() },
                     onKickClick = { userId: Int -> viewModel.onKickClick(userId) },
                     isRefreshing = isRefreshing,
                     pullRefreshState = pullRefreshState
@@ -122,12 +129,19 @@ fun Content(
     creatorId: Int,
     members: List<User>,
     permission: Boolean,
-    dialog: Boolean,
-    showDialog: () -> Unit,
-    hideDialog: () -> Unit,
+    deleteDialog: Boolean,
+    showDeleteDialog: () -> Unit,
+    hideDeleteDialog: () -> Unit,
+    kickDialog: Boolean,
+    showKickDialog: () -> Unit,
+    hideKickDialog: () -> Unit,
+    leaveDialog: Boolean,
+    showLeaveDialog: () -> Unit,
+    hideLeaveDialog: () -> Unit,
     onEditClick: () -> Unit,
     onStartClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onLeaveClick: () -> Unit,
     onKickClick: (userId: Int) -> Unit,
     isRefreshing: Boolean,
     pullRefreshState: PullRefreshState
@@ -153,12 +167,16 @@ fun Content(
 
                 CampaignButtons(
                     permission = permission,
-                    dialog = dialog,
-                    showDialog = { showDialog() },
-                    hideDialog = { hideDialog() },
+                    deleteDialog = deleteDialog,
+                    showDeleteDialog = { showDeleteDialog() },
+                    hideDeleteDialog = { hideDeleteDialog() },
+                    leaveDialog = leaveDialog,
+                    showLeaveDialog = { showLeaveDialog() },
+                    hideLeaveDialog = { hideLeaveDialog() },
                     onStartClick = { onStartClick() },
                     onEditClick = { onEditClick() },
-                    onDeleteClick = { onDeleteClick() }
+                    onDeleteClick = { onDeleteClick() },
+                    onLeaveClick = { onLeaveClick() }
                 )
 
                 InviteCodeBox(inviteCode = campaign.invite_code)
@@ -174,9 +192,9 @@ fun Content(
                     onKickClick = { userId: Int -> onKickClick(userId) },
                     permission = permission,
                     creatorId = creatorId,
-                    dialog = dialog,
-                    hideDialog = { hideDialog() },
-                    showDialog = { showDialog() }
+                    dialog = kickDialog,
+                    hideDialog = { hideKickDialog() },
+                    showDialog = { showKickDialog() }
                 )
             }
         }
@@ -191,12 +209,16 @@ fun Content(
 @Composable
 fun CampaignButtons(
     permission: Boolean,
-    dialog: Boolean,
-    showDialog: () -> Unit,
-    hideDialog: () -> Unit,
+    deleteDialog: Boolean,
+    showDeleteDialog: () -> Unit,
+    hideDeleteDialog: () -> Unit,
+    leaveDialog: Boolean,
+    showLeaveDialog: () -> Unit,
+    hideLeaveDialog: () -> Unit,
     onStartClick: () -> Unit,
     onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    onLeaveClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -239,17 +261,17 @@ fun CampaignButtons(
                         icon = Icons.Default.Delete,
                         textColor = Color(0xFFF44336),
                         text = "ELIMINAR",
-                        onClick = { showDialog() }
+                        onClick = { showDeleteDialog() }
                     )
                 }
 
-                if (dialog) {
+                if (deleteDialog) {
                     DecisionDialog(
                         onDismissRequest = {
-                            hideDialog()
+                            hideDeleteDialog()
                         },
                         onConfirmation = {
-                            hideDialog()
+                            hideDeleteDialog()
                             onDeleteClick()
                         },
                         dialogTitle = "Eliminar campaña",
@@ -262,17 +284,17 @@ fun CampaignButtons(
                     icon = Icons.AutoMirrored.Filled.ExitToApp,
                     textColor = Color(0xFFF44336),
                     text = "ABANDONAR CAMPAÑA",
-                    onClick = { showDialog() }
+                    onClick = { showLeaveDialog() }
                 )
 
-                if (dialog) {
+                if (leaveDialog) {
                     DecisionDialog(
                         onDismissRequest = {
-                            hideDialog()
+                            hideLeaveDialog()
                         },
                         onConfirmation = {
-                            hideDialog()
-                            onDeleteClick()
+                            hideLeaveDialog()
+                            onLeaveClick()
                         },
                         dialogTitle = "Abandonar campaña",
                         dialogText = "¿Estás seguro de que quieres abandonar esta camapaña? Esta acción no se puede deshacer."

@@ -107,7 +107,7 @@ class RecordingService : Service () {
                     start()
                 }
 
-                delay(15 * 60 * 1000)
+                delay(5 * 60 * 1000)
 
                 mediaRecorder?.apply {
                     stop()
